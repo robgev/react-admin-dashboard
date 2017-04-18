@@ -2,9 +2,9 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import {Provider} from 'react-redux';
 import {createStore, applyMiddleware} from 'redux';
-import allReducers from './reducers/index';
+import { allReducers } from './reducers/index';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import App from './components/App';
+import App from './lib/App';
 
 const store = createStore(
   allReducers
