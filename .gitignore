@@ -5,3 +5,4 @@ style.css
 .tern-port
 .sass-cache
 *.css.map
+public/css

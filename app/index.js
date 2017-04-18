@@ -6,6 +6,8 @@ import { allReducers } from './reducers/index';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import App from './lib/App';
 
+import './scss/main.sass';
+
 const store = createStore(
   allReducers
 );

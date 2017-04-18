@@ -1,0 +1,128 @@
+@import "colors.sass"
+
+.mainpage
+  display: flex
+  overflow-x: hidden
+
+  .calendar
+    width: 100%
+
+.room-name
+  padding: 18px
+  font-weight: 500
+  font-size: 40px
+  color: $appbarColor
+
+.room-description
+  padding: 10px
+  font-size: 18px
+
+.room-image-container
+  width: 400px
+
+  .room-image
+    width: 300px
+    margin: 20px
+    border: 1px solid $appbarColor
+    box-shadow: 3px 4px 4px $shadowColor
+
+@media (max-width: 1100px) and (min-width: 780px)
+  .mainpage
+    display: flex
+    flex-wrap: wrap
+    overflow-x: hidden
+
+    .calendar
+      order: 1
+
+    .room-whole-details
+      width: 70vw
+      margin-bottom: 20px
+
+  .room-details-container
+    display: flex
+    flex-direction: row-reverse
+    flex-shrink: 1
+    width: 100%
+
+    .room-description
+      width: 100%
+
+    .room-image-container
+      width: 100%
+
+      .room-image
+        width: 285px
+
+@media (max-width: 780px)
+  .mainpage
+    display: flex
+    flex-wrap: wrap
+    overflow-x: hidden
+
+    .calendar
+      order: 1
+
+  .room-details-container
+    display: flex
+    flex-direction: column-reverse
+    flex-shrink: 1
+
+    .room-description
+      padding: 0 0 15px 25px
+
+  .room-name
+    padding: 18px
+    font-weight: 500
+    font-size: 30px
+
+
+//colors
+
+.green
+  background-color: lightgreen
+  border-radius: 20px
+  height: 24px !important
+  width: 15px !important
+
+.orange
+  background-color: orange
+  border-radius: 20px
+  height: 24px !important
+  width: 15px !important
+
+.yellow
+  background-color: yellow
+  border-radius: 20px
+  height: 24px !important
+  width: 15px !important
+
+.blue
+  background-color: $appbarColor
+  border-radius: 10px
+  height: 24px !important
+  width: 15px !important
+
+.brown
+  background-color: brown
+  border-radius: 20px
+  height: 24px !important
+  width: 15px !important
+
+.g:hover
+  background-color: $green
+
+.o:hover
+  background-color: $orange
+
+.y:hover
+  background-color: $yellow
+
+.b:hover
+  background-color: $blue
+
+.c:hover
+  background-color: $brown
+
+.selected
+  background-color: lightblue !important
