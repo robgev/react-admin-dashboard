@@ -4,6 +4,7 @@ import LoginSignup from './LoginSignup';
 import Candidates from './Candidates';
 import CustomQuestions from './CustomQuestions';
 import injectTapEventPlugin from 'react-tap-event-plugin';
+import '../../scss/hrHome.sass';
 
 export default
 class ResourceManager extends React.PureComponent {
@@ -15,8 +16,8 @@ class ResourceManager extends React.PureComponent {
   render() {
 
     return(
-      <div>
-        <CustomQuestions />
+      <div className="mainhrApp">
+        <Candidates />
       </div>
     )
   }
