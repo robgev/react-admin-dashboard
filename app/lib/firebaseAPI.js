@@ -1,6 +1,8 @@
 import firebase from 'firebase';
 import moment from 'moment';
 
+export { firebase };
+
 const firebaseConf = {
   apiKey: "AIzaSyAyTbFTm6al2lHZ0xctrC_HEaG_oL63X_Q",
   authDomain: "apollobytes-internal.firebaseapp.com",
@@ -230,7 +232,7 @@ const getUserActiveState = async (uid) => {
   return targetUserData.active;
 }
 
-const saveEvent = (data) => {
+export const saveEvent = (data) => {
   const { roomNumber, startDate, endDate, description, email } = data;
   const key = firebase.database().ref().child('posts').push().key;
   const updates = {};
@@ -257,5 +259,4 @@ export default {
   checkLoggedIn,
   toggleUserActiveState,
   getUserActiveState,
-  saveEvent
 }

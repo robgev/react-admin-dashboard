@@ -2,7 +2,7 @@ import React from 'react';
 import BigCalendar from 'react-big-calendar';
 import moment from 'moment';
 import {connect} from 'react-redux';
-import { firebase, saveEvent } from '../firebaseAPI.js';
+import { firebase, saveEvent } from '../firebaseAPI';
 
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 
