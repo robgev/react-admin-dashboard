@@ -58,11 +58,6 @@ class Calendar extends React.Component{
     this.setState({reservationSlot});
   }
 
-  componentDidMount(){
-    const { email } = require('../firebaseAPI.js');
-    this.setState({email});
-  }
-
   colorChooser = (n) => {
     switch (n) {
       case 0:
@@ -80,29 +75,10 @@ class Calendar extends React.Component{
     }
   }
 
-  componentWillReceiveProps(nextProps){
-    const events = [];
-
-    firebase.database().ref('/events/' + nextProps.room.index).once('value').then((eventList) => {
-      eventList = eventList.val();
-      let idx = 0;
-      for (let i in eventList){
-        events[idx] = {
-          'title': eventList[i].description,
-          'start': new Date(eventList[i].startDate),
-          'end': new Date(eventList[i].endDate),
-          'color': this.colorChooser(nextProps.room.index)
-        }
-        idx += 1;
-      }
-      this.setState({events});
-    });
-  }
-
   componentDidMount(){
     const events = [];
-
-    firebase.database().ref('/events/' + this.props.room.index).once('value').then((eventList) => {
+    const { email } = require('../firebaseAPI.js');
+    firebase.database().ref('/events/' + this.props.room.index).on('value', (eventList) => {
       eventList = eventList.val();
       let idx = 0;
       for (let i in eventList){
@@ -111,6 +87,26 @@ class Calendar extends React.Component{
           'start': new Date(eventList[i].startDate),
           'end': new Date(eventList[i].endDate),
           'color': this.colorChooser(this.props.room.index)
+        }
+        idx += 1;
+      }
+      const reservationSlot = {};
+      this.setState({events, email, reservationSlot});
+    });
+  }
+
+  componentWillReceiveProps(nextProps){
+    const events = [];
+
+    firebase.database().ref('/events/' + nextProps.room.index).on('value', (eventList) => {
+      eventList = eventList.val();
+      let idx = 0;
+      for (let i in eventList){
+        events[idx] = {
+          'title': eventList[i].description,
+          'start': new Date(eventList[i].startDate),
+          'end': new Date(eventList[i].endDate),
+          'color': this.colorChooser(nextProps.room.index)
         }
         idx += 1;
       }
