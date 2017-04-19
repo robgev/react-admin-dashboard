@@ -18,7 +18,8 @@ class Calendar extends React.Component{
     super();
     this.state = {
       email: '',
-      events: []
+      events: [],
+      reservationSlot: {}
     }
   }
 
@@ -48,6 +49,13 @@ class Calendar extends React.Component{
     this.props.changeData(data);
     const date = moment(start).format('DD/MM/YYYY');
     this.props.changeTime({startTime: start, endTime: end, date: date});
+    const reservationSlot = {
+      'title': 'Your Reservation',
+      'start': start,
+      'end': end,
+      'color': 'red'
+    };
+    this.setState({reservationSlot});
   }
 
   componentDidMount(){
@@ -111,11 +119,13 @@ class Calendar extends React.Component{
   }
 
   render(){
+    const { events } = this.state;
+    events.push(this.state.reservationSlot);
     return(
       <div className='calendar'>
         <BigCalendar
           selectable = 'ignoreEvents'
-          events = { this.state.events }
+          events = { events }
           step = {30}
           defaultView='week'
           onSelectSlot={(slotInfo) => {

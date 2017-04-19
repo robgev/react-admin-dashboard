@@ -33,11 +33,7 @@ class MainPage extends React.Component {
       };
     }
 
-    render() { /*
-        // remove the login page for development
-        if (!this.props.loggedIn) {
-            return (<LoginForm/>);
-        }*/
+    render() {
         return (
             <div>
                 <MuiThemeProvider>
