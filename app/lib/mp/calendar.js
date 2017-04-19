@@ -55,7 +55,9 @@ class Calendar extends React.Component{
       'end': end,
       'color': 'red'
     };
-    this.setState({reservationSlot});
+    const currentEvents = this.state.events;
+    currentEvents.push(reservationSlot);
+    this.setState({events: currentEvents});
   }
 
   colorChooser = (n) => {
@@ -78,7 +80,7 @@ class Calendar extends React.Component{
   componentDidMount(){
     const events = [];
     const { email } = require('../firebaseAPI.js');
-    firebase.database().ref('/events/' + this.props.room.index).on('value', (eventList) => {
+    firebase.database().ref('/events/' + this.props.room.index).once('value').then((eventList) => {
       eventList = eventList.val();
       let idx = 0;
       for (let i in eventList){
@@ -115,13 +117,11 @@ class Calendar extends React.Component{
   }
 
   render(){
-    const { events } = this.state;
-    events.push(this.state.reservationSlot);
     return(
       <div className='calendar'>
         <BigCalendar
           selectable = 'ignoreEvents'
-          events = { events }
+          events = { this.state.events }
           step = {30}
           defaultView='week'
           onSelectSlot={(slotInfo) => {
