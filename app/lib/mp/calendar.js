@@ -18,7 +18,8 @@ class Calendar extends React.Component{
     super();
     this.state = {
       email: '',
-      events: []
+      events: [],
+      reservationSlot: {}
     }
   }
 
@@ -48,11 +49,13 @@ class Calendar extends React.Component{
     this.props.changeData(data);
     const date = moment(start).format('DD/MM/YYYY');
     this.props.changeTime({startTime: start, endTime: end, date: date});
-  }
-
-  componentDidMount(){
-    const { email } = require('../firebaseAPI.js');
-    this.setState({email});
+    const reservationSlot = {
+      'title': 'Your Reservation',
+      'start': start,
+      'end': end,
+      'color': 'red'
+    };
+    this.setState({reservationSlot});
   }
 
   colorChooser = (n) => {
@@ -72,10 +75,30 @@ class Calendar extends React.Component{
     }
   }
 
+  componentDidMount(){
+    const events = [];
+    const { email } = require('../firebaseAPI.js');
+    firebase.database().ref('/events/' + this.props.room.index).on('value', (eventList) => {
+      eventList = eventList.val();
+      let idx = 0;
+      for (let i in eventList){
+        events[idx] = {
+          'title': eventList[i].description,
+          'start': new Date(eventList[i].startDate),
+          'end': new Date(eventList[i].endDate),
+          'color': this.colorChooser(this.props.room.index)
+        }
+        idx += 1;
+      }
+      const reservationSlot = {};
+      this.setState({events, email, reservationSlot});
+    });
+  }
+
   componentWillReceiveProps(nextProps){
     const events = [];
 
-    firebase.database().ref('/events/' + nextProps.room.index).once('value').then((eventList) => {
+    firebase.database().ref('/events/' + nextProps.room.index).on('value', (eventList) => {
       eventList = eventList.val();
       let idx = 0;
       for (let i in eventList){
@@ -91,31 +114,14 @@ class Calendar extends React.Component{
     });
   }
 
-  componentDidMount(){
-    const events = [];
-
-    firebase.database().ref('/events/' + this.props.room.index).once('value').then((eventList) => {
-      eventList = eventList.val();
-      let idx = 0;
-      for (let i in eventList){
-        events[idx] = {
-          'title': eventList[i].description,
-          'start': new Date(eventList[i].startDate),
-          'end': new Date(eventList[i].endDate),
-          'color': this.colorChooser(this.props.room.index)
-        }
-        idx += 1;
-      }
-      this.setState({events});
-    });
-  }
-
   render(){
+    const { events } = this.state;
+    events.push(this.state.reservationSlot);
     return(
       <div className='calendar'>
         <BigCalendar
           selectable = 'ignoreEvents'
-          events = { this.state.events }
+          events = { events }
           step = {30}
           defaultView='week'
           onSelectSlot={(slotInfo) => {

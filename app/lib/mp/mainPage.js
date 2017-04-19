@@ -26,7 +26,6 @@ const appBarStyle = {
 class MainPage extends React.Component {
     constructor(){
       super();
-      injectTapEventPlugin();
       this.state = {
         startTime: '',
         endTime: '',

@@ -5,6 +5,8 @@ import {createStore, applyMiddleware} from 'redux';
 import { allReducers } from './reducers/index';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import App from './lib/App';
+import injectTapEventPlugin from 'react-tap-event-plugin';
+injectTapEventPlugin();
 
 import './scss/main.sass';
 
