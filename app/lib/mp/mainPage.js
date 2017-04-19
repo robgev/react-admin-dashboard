@@ -9,7 +9,6 @@ import RoomList from './roomList';
 import Calendar from './calendar';
 import RoomInfo from './roomInfo';
 import ResForm from './reservationForm';
-import injectTapEventPlugin from 'react-tap-event-plugin';
 
 require('../firebaseAPI.js');
 
@@ -24,7 +23,6 @@ const appBarStyle = {
 class MainPage extends React.Component {
     constructor(){
       super();
-      injectTapEventPlugin();
       this.state = {
         startTime: '',
         endTime: '',
