@@ -12,7 +12,7 @@ const paperstyle = {
     width: '212px',
     margin: 0,
     overflow: 'hidden',
-    height: '95%'
+    height: '100%'
 };
 
 function mapStateToProps(state) {
