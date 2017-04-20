@@ -10,6 +10,8 @@ import {map} from 'lodash';
 import TextField from 'material-ui/TextField';
 import FlatButton from 'material-ui/FlatButton';
 import Paper from 'material-ui/Paper';
+import DropDownMenu from 'material-ui/DropDownMenu';
+import MenuItem from 'material-ui/MenuItem';
 
 function mapStateToProps(state) {
   return (
@@ -88,26 +90,12 @@ class CustomQuestions extends React.PureComponent {
 
   render() {
     const RenderPositions = map(this.state.allPositions, position => {
-      const isSelected = position.id === this.state.selectedPosition ?
-          {backgroundColor: "#224C75"} : {backgroundColor: "rgb(216, 226, 242)"};
       return(
-        <Paper className="hrPaper"
+        <MenuItem
           key={position.id}
-          style=
-          {{...isSelected,
-             width:"300px" ,
-             height: '50px',
-             lineHeight: "50px",
-             marginTop: '20px',
-             fontFamily: 'Roboto',
-             fontSize: "20px",
-             textAlign: "center",
-             cursor: 'pointer'
-          }}
-          onTouchTap={() => this.setState({selectedPosition: position.id})}
-        >
-          {position.positionName}
-        </Paper>
+          value={position.id}
+          primaryText={position.positionName}
+        />
       );
     });
     const RenderQuestions = map(this.state.allQuestions, question => {
@@ -148,7 +136,13 @@ class CustomQuestions extends React.PureComponent {
           label="Delete"
           onTouchTap={() => this.deletePosition()}
         />
-        {RenderPositions}
+        <DropDownMenu
+          value={this.state.selectedPosition}
+          onChange={(e, i, selectedPosition) => this.setState({selectedPosition})}
+        >
+          <MenuItem value='-1' primaryText='All questions' />
+          {RenderPositions}
+        </DropDownMenu>
         <TextField
           name="newQuestion"
           floatingLabelText="New Question"
