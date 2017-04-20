@@ -1,118 +1,152 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import _ from 'lodash/core';
-import uuid from 'uuid/v4';
+import firebase from 'firebase';
 import moment from 'moment';
+import {map, forEach, sortBy} from 'lodash';
+import LoadingScreen from '../ur/components/Loadingscreen';
+import {addCandidateFirebase, editCandidateFirebase, deleteCandidateFirebase} from '../firebaseAPI';
 
-import { Table, TableBody, TableHeader, TableHeaderColumn,
-         TableRow, TableRowColumn } from 'material-ui/Table';
-import DropDownMenu from 'material-ui/DropDownMenu';
-import MenuItem from 'material-ui/MenuItem';
+import {addCandidate, deleteCandidate, setInitial} from '../../actions/candidate.action';
+
+import {Table, TableBody, TableHeader, TableHeaderColumn,
+         TableRow, TableRowColumn} from 'material-ui/Table';
 import FlatButton from 'material-ui/FlatButton';
 import TextField from 'material-ui/TextField';
-import Dialog from 'material-ui/Dialog';
 
 import CandidateChangePopup from './CandidateChangePopup';
 import CandidateInterviewHomepage from './CandidateInterviewHomepage';
-
-import {candidateChange, addCandidate, deleteCandidate} from '../../actions/candidate.action';
 
 function mapStateToProps(state) {
   return (
     {
       candidates: state.candidates,
-      questions: state.questions
     }
   )
 }
 
 class Candidates extends React.PureComponent {
-  constructor(props) {
-    super(props);
+  constructor() {
+    super();
     this.state = {
-      candidates: this.props.candidates,
-      dialogueBoxId: "-1",
-      isDialogueBoxActive: false,
-      filterValue: "",
-      interviewScreen: false
-    }
-  }
+      candidates: {},
+      selected: '-1',
+      filter: '',
+      interview: false,
+      editScreen: false,
+      sortValue: ''
+    };
+  };
+
+  componentWillMount() {
+    firebase.database().ref('candidates').once('value').then(candidates => {
+      candidates = candidates.val();
+      if (candidates){
+        this.props.setInitial(candidates);
+      }
+    });
+  };
 
   componentWillReceiveProps(props) {
     this.setState({candidates: props.candidates});
-  }
+  };
 
-  showCandidateDialogue = (dialogueBoxId) =>  {
-    this.setState({dialogueBoxId});
-  }
-
-  closeDialogueBox = () => {
-    this.setState({isDialogueBoxActive: false});
-  }
-
-  closeInterviewScreen = () => {
-    this.setState({interviewScreen: false});
-  }
-
-  saveInterview = () => {
-    console.log("saved")
-  }
-
-  saveChangedCandidate = (candidate, isNew) => {
+  saveCandidate = (candidate, isNew) => {
     if(isNew) {
-      this.props.addCandidate(candidate)
+      const id = addCandidateFirebase(candidate);
+      firebase.database().ref('candidates/' + id).on('value', snapshot => {
+        this.props.addCandidate({...(snapshot.val()), id: id});
+      });
     } else {
-      this.props.candidateChange(candidate);
+      const changedId = editCandidateFirebase(candidate);
+      firebase.database().ref('candidates/' + changedId).on('value', snapshot => {
+        this.props.addCandidate({...(snapshot.val()), id: changedId});
+      })
     }
-  }
+  };
 
-  filterListElements = (value) => {
-    let candidates =  this.state.candidates.slice();
+  deleteCandidate = (id) => {
+    deleteCandidateFirebase(id).then(() => {
+      this.props.deleteCandidate(id);
+    });
+  };
+
+  filterListElements = (candidates) => {
     const compareStatus = (a, b) => {
       if (b.status === "Accepted" && a.status !== "Accepted"
       || b.status === "Shortlisted" && a.status === "Rejected") {
         return 1;
       }
     };
-    switch (value) {
+    switch (this.state.sortValue) {
       case "Name":
-        candidates = _.sortBy(candidates, i => i.name);
-        break;
+        return sortBy(candidates, i => i.name);
       case "Profession":
-        candidates = _.sortBy(candidates, i => i.profession);
-        break;
+        return sortBy(candidates, i => i.profession);
       case "Status":
-        candidates = candidates.sort(compareStatus);
-        break;
+        return candidates.sort(compareStatus);
       case "Date":
-        candidates = _.sortBy(candidates, i => i.date);
-        break;
+        return sortBy(candidates, i => i.date);
       case "Level":
-        candidates = _.sortBy(candidates, i => i.level);
-        break;
-      default:
-        break;
+        return sortBy(candidates, i => i.level);
+      case "":
+        return candidates;
     }
-    this.setState({candidates});
-  }
+  };
 
   render() {
-    const {candidates,filterValue} = this.state;
-    const header =  ["Name", "Profession", "Level", "Date", "Status"];
-    const candidate =  _.find(this.state.candidates, {id: this.state.dialogueBoxId});
-    const filterCandidates = candidates.filter((c) => {
-      return header.some(i => {
-        return c[i.toLowerCase()].toString().toLowerCase().includes(filterValue)
-      })
+    const selectedCandidate = this.state.candidates[this.state.selected];
+    const header =  ['Name', 'Profession', 'Level', 'Date', 'Status'];
+    let filteredCandidates = [];
+    forEach(this.state.candidates, candidate => {
+      const fits = header.some(i => {
+        return candidate[i.toLowerCase()].toString().toLowerCase().includes(this.state.filter)
+      });
+      if (fits) {
+        filteredCandidates.push(candidate);
+      }
+    });
+    filteredCandidates = this.filterListElements(filteredCandidates);
+    const RenderCandidates = filteredCandidates.map(candidate => {
+      const isSelected = candidate.id === this.state.selected ?
+          {backgroundColor: '#E0E0E0'} : {};
+      return (
+        <TableRow
+          key={candidate.id}
+          style={{...isSelected, cursor: 'pointer'}}
+          onTouchTap={
+            () => {
+              candidate.id === this.state.selected ?
+                this.setState({selected: '-1'}) :
+                this.setState({selected: candidate.id});
+            }
+          }
+        >
+          <TableRowColumn>
+            {candidate.name}
+          </TableRowColumn>
+          <TableRowColumn>
+            {candidate.profession}
+          </TableRowColumn>
+          <TableRowColumn>
+            {candidate.level}
+          </TableRowColumn>
+          <TableRowColumn>
+            {moment(candidate.date).format('Do MMMM YYYY, h:mm a')}
+          </TableRowColumn>
+          <TableRowColumn>
+            {candidate.status}
+          </TableRowColumn>
+        </TableRow>
+      );
     });
 
-    const CandidatesTable = () => {
-      return (
+    const CandidateTable = () => {
+      return(
         <Table
           selectable={false}
         >
           <TableHeader
-            style={{backgroundColor: "#00BCD4"}}
+            style={{backgroundColor: '#00BCD4'}}
             displaySelectAll={false}
             adjustForCheckbox={false}
           >
@@ -121,11 +155,12 @@ class Candidates extends React.PureComponent {
                 header.map(column => (
                   <TableHeaderColumn
                     key={column}
+                    className="tableRows"
                   >
                     <FlatButton
-                      style={{color: "white"}}
+                      style={{color: 'white'}}
                       label={column}
-                      onTouchTap={() => this.filterListElements(column)}
+                      onTouchTap={() => this.setState({sortValue: column})}
                     />
                   </TableHeaderColumn>
                 ))
@@ -135,39 +170,7 @@ class Candidates extends React.PureComponent {
           <TableBody
             displayRowCheckbox={false}
           >
-            {filterCandidates.map((candidate, index) => {
-              const isSelected = candidate.id === this.state.dialogueBoxId ?
-                {backgroundColor: "#E0E0E0"} : {};
-              return(
-                <TableRow
-                  style={{...isSelected, cursor: "pointer"}}
-                  key={candidate.id}
-                  onTouchTap={
-                    () => {
-                      candidate.id === this.state.dialogueBoxId ?
-                        this.setState({dialogueBoxId: "-1"}) :
-                        this.setState({dialogueBoxId: candidate.id});
-                    }
-                  }
-                >
-                  <TableRowColumn>
-                    {candidate.name}
-                  </TableRowColumn>
-                  <TableRowColumn>
-                    {candidate.profession}
-                  </TableRowColumn>
-                  <TableRowColumn>
-                    {candidate.level}
-                  </TableRowColumn>
-                  <TableRowColumn>
-                    {moment(candidate.date).format("Do MMMM YYYY, h:mm a")}
-                  </TableRowColumn>
-                  <TableRowColumn>
-                    {candidate.status}
-                  </TableRowColumn>
-                </TableRow>
-              )
-            })}
+            {RenderCandidates}
           </TableBody>
         </Table>
       );
@@ -176,83 +179,59 @@ class Candidates extends React.PureComponent {
     const CandidateChange = () => {
       return (
         <CandidateChangePopup
-          closeDialogueBox={this.closeDialogueBox}
-          saveChangedCandidate={this.saveChangedCandidate}
+          closeDialogueBox={() => this.setState({editScreen: false})}
+          saveChangedCandidate={this.saveCandidate}
           candidate={
-            candidate
+            selectedCandidate
            || {
-            id: uuid(), name: "", profession: "", status: "", isNew: true
+            name: "", profession: "", status: "", isNew: true, date: new Date()
           }}
+          id={this.state.selected}
         />
       );
     };
 
-    const CandidateInterview = () => {
-      return (
-        <CandidateInterviewHomepage
-          closeInterviewScreen={this.closeInterviewScreen}
-          candidate={candidate}
-          saveInterview={this.saveInterview}
-          questions={this.props.questions[candidate.profession][candidate.level]}
-        />
-      )
-    };
-
     return(
-      <div>
+      <div className="hrHome">
         <TextField
-          floatingLabelText="Filter"
-          value={this.state.filterValue}
-          onChange={(e) => this.setState({filterValue: e.target.value.toLowerCase()})}
+          floatingLabelText='Filter'
+          value={this.state.filter}
+          onChange={(e) => this.setState({filter: e.target.value})}
         />
         <FlatButton
-          primary={true}
-          style={{marginLeft: "20px"}}
-          label="add"
+          primary
+          style={{marginLeft: '20px'}}
+          label='add'
           onTouchTap={() => {
-              this.setState({dialogueBoxId: "new", isDialogueBoxActive: true});
+              this.setState({selected: 'new', editScreen: true});
             }
           }
         />
         <FlatButton
-          primary={true}
-          disabled={this.state.dialogueBoxId === "-1" || this.state.dialogueBoxId === "new"}
-          style={{marginLeft: "20px"}}
-          label="Interview"
-          onTouchTap={() => this.setState({interviewScreen: true})}
-        />
-        <FlatButton
-          primary={true}
-          disabled={this.state.dialogueBoxId === "-1" || this.state.dialogueBoxId === "new"}
+          primary
+          disabled={this.state.selected === "-1" || this.state.selected === "new"}
           style={{marginLeft: "20px"}}
           label="edit"
-          onTouchTap={() => this.setState({isDialogueBoxActive: true})}
+          onTouchTap={() => this.setState({editScreen: true})}
         />
         <FlatButton
-          primary={true}
-          disabled={this.state.dialogueBoxId === "-1" || this.state.dialogueBoxId === "new"}
+          primary
+          disabled={this.state.selected === "-1" || this.state.selected === "new"}
           style={{marginLeft: "20px"}}
           label="delete"
-          onTouchTap={() => this.props.deleteCandidate(this.state.dialogueBoxId)}
+          onTouchTap={() => this.deleteCandidate(this.state.selected)}
         />
-        <CandidatesTable />
+        <CandidateTable />
         {
           (() => {
-            if (this.state.isDialogueBoxActive) {
+            if (this.state.editScreen) {
               return <CandidateChange />
             }
           })()
         }
-        {
-          (() => {
-            if (this.state.interviewScreen) {
-              return <CandidateInterview />
-            }
-          })()
-        }
       </div>
-    )
-  }
-}
+    );
+  };
+};
 
-export default connect(mapStateToProps, {candidateChange, addCandidate, deleteCandidate})(Candidates);
+export default connect(mapStateToProps, {addCandidate, deleteCandidate, setInitial})(Candidates);

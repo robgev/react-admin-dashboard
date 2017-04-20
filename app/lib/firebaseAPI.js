@@ -245,6 +245,73 @@ export const saveEvent = (data) => {
   return firebase.database().ref().update(updates);
 }
 
+export const addCandidateFirebase = (data) => {
+  const {name, profession, status, date, level} = data;
+  const key = firebase.database().ref().child('candidates').push().key;
+  firebase.database().ref('/candidates/' + key).set({
+    name: name,
+    profession: profession,
+    status: status,
+    date: date,
+    level: level,
+    id: key
+  });
+  return key;
+};
+
+export const editCandidateFirebase = (data) => {
+  const {id, name, profession, status, date, level} = data;
+  firebase.database().ref('/candidates/' + id).set({
+    name: name,
+    profession: profession,
+    status: status,
+    date: date,
+    level: level,
+    id: id
+  });
+  return id;
+};
+
+export const deleteCandidateFirebase = (id) => {
+  return firebase.database().ref('/candidates/' + id).remove();
+}
+
+export const addPositionFirebase = (positionName) => {
+  const key = firebase.database().ref().child('positions').push().key;
+  firebase.database().ref('/positions/' + key).set({
+    id: key,
+    positionName: positionName
+  });
+  return key;
+};
+
+export const deletePositionFirebase = (id) => {
+  return firebase.database().ref('/positions/' + id).remove();
+};
+
+export const addQuestionFirebase = (info) => {
+  const key = firebase.database().ref().child('questions').push().key;
+  firebase.database().ref('/questions/' + key).set({
+    id: key,
+    positionId: info.positionId,
+    questionText: info.questionText
+  });
+  return key;
+};
+
+export const editQuestionFirebase = (question) => {
+  firebase.database().ref('/questions/' + key).set({
+    id: question.id,
+    positionId: question.positionId,
+    questionText: info.questionText
+  });
+  return question.id;
+}
+
+export const deleteQuestionFirebase = (id) => {
+  return firebase.database().ref('/questions/' + id).remove();
+};
+
 export const getUser = () => {
   return firebase.auth().currentUser;
 }
