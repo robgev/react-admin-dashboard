@@ -90,27 +90,73 @@ class App extends Component {
               />
               <Route
                 path="/room"
-                render={ props =>
-                  currentUser ?
-                  <MainPage
-                    user = {currentUser}
-                    admin = {isAdmin}
-                    signOut={auth.handleSignOut}
-                  /> :
-                  <Redirect to="/signin"/>
-                 }
+                render={ props => {
+                  if(currentUser) {
+                    return(
+                      <LoadingScreen
+                        promise={ promise }
+                        whenPending= { () => {
+                          return (
+                            <div className="loading-screen">
+                              <img src="/loading.gif" />
+                            </div>
+                          );
+                        }}
+                        whenResolved={ snapshot => {
+                          const value = snapshot.val();
+                          const isAdmin = value ? value.isAdmin : false;
+                          return (
+                            <MainPage
+                              user = {currentUser}
+                              admin = {isAdmin}
+                              signOut={auth.handleSignOut}
+                            />
+                          );
+                        }}
+                      />
+                    );
+                  }
+                  else {
+                    return (
+                      <Redirect to="/signin"/>
+                    );
+                  }
+                }}
               />
               <Route
                 path="/management"
-                render={ props =>
-                  currentUser ?
-                  <ResourceManager
-                    user = {currentUser}
-                    admin = {isAdmin}
-                    signOut={auth.handleSignOut}
-                  /> :
-                  <Redirect to="/signin"/>
-                 }
+                render={ props => {
+                  if(currentUser) {
+                    return(
+                      <LoadingScreen
+                        promise={ promise }
+                        whenPending= { () => {
+                          return (
+                            <div className="loading-screen">
+                              <img src="/loading.gif" />
+                            </div>
+                          );
+                        }}
+                        whenResolved={ snapshot => {
+                          const value = snapshot.val();
+                          const isAdmin = value ? value.isAdmin : false;
+                          return (
+                            <ResourceManager
+                              user = {currentUser}
+                              admin = {isAdmin}
+                              signOut={auth.handleSignOut}
+                            />
+                          );
+                        }}
+                      />
+                    );
+                  }
+                  else {
+                    return (
+                      <Redirect to="/signin"/>
+                    );
+                  }
+                }}
               />
               <Route
                 path="/user"
