@@ -55,11 +55,22 @@ class CustomQuestions extends React.PureComponent {
   render() {
     const RenderPositions = map(this.state.allPositions, position => {
       const isSelected = position.id === this.state.selectedPosition ?
-          {backgroundColor: '#E0E0E0'} : {};
+          {backgroundColor: "#224C75"} : {};
       return(
-        <Paper
+        <Paper className="hrPaper"
           key={position.id}
-          style={{...isSelected, height: '50px', marginTop: '20px', cursor: 'pointer'}}
+          style=
+          {{...isSelected,
+             width:"300px" ,
+             height: '50px',
+             lineHeight: "50px",
+             marginTop: '20px',
+             backgroundColor: "rgb(216, 226, 242)",
+             fontFamily: 'Roboto',
+             fontSize: "20px",
+             textAlign: "center",
+             cursor: 'pointer'
+          }}
           onTouchTap={() => this.setState({selectedPosition: position.id})}
         >
           {position.positionName}
