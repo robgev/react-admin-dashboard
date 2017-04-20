@@ -12,11 +12,11 @@ export default class CandidateChangePopup extends React.PureComponent {
     super(props);
     const {candidate} = props;
     this.state = {
-      name: candidate.name || "",
+      name: candidate.name,
       profession: candidate.profession,
       status: candidate.status,
       isNew: candidate.isNew || false,
-      date: candidate.date || new Date(),
+      date: new Date(candidate.date),
       level: candidate.level
     }
   }
@@ -97,13 +97,14 @@ export default class CandidateChangePopup extends React.PureComponent {
         primary={true}
         onTouchTap={
           () => {
+            const id = this.props.id === "-1" ? false : this.props.id;
             const changedCandidate = {
-              id: candidate.id,
               name: this.state.name,
               profession: this.state.profession,
               status: this.state.status,
               date: this.state.date,
-              level: this.state.level
+              level: this.state.level,
+              id: id
             };
             saveChangedCandidate(changedCandidate, this.state.isNew);
             closeDialogueBox();

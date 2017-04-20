@@ -2,26 +2,14 @@ const addCandidate = (newCandidate) => {
   return {
     type: "ADD_CANDIDATE",
     payload: {
-      id: newCandidate.id,
-      name: newCandidate.name,
-      profession: newCandidate.profession,
-      status: newCandidate.status,
-      date: newCandidate.date,
-      level: newCandidate.level
-    }
-  }
-}
-
-const candidateChange = (changedCandidate) => {
-  return {
-    type: "CANDIDATE_CHANGE",
-    payload: {
-      id: changedCandidate.id,
-      name: changedCandidate.name,
-      profession: changedCandidate.profession,
-      status: changedCandidate.status,
-      date: changedCandidate.date,
-      level: changedCandidate.level
+      candidate: {
+        name: newCandidate.name,
+        profession: newCandidate.profession,
+        status: newCandidate.status,
+        date: newCandidate.date,
+        level: newCandidate.level
+      },
+      id: newCandidate.id
     }
   }
 }
@@ -35,14 +23,13 @@ const deleteCandidate = (id) => {
   }
 }
 
-const interviewAnswer = (answers, id) => {
+const setInitial = (candidates) => {
   return {
-    type: "INTERVIEW_ANSWER",
+    type: "SET_INITIAL",
     payload: {
-      answers: answers,
-      id: id
+      candidates: candidates
     }
   }
 }
 
-export {addCandidate, candidateChange, deleteCandidate, interviewAnswer};
+export {addCandidate, deleteCandidate, setInitial};

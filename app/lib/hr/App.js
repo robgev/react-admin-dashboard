@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import LoginSignup from './LoginSignup';
+import Candidates1 from './Candidates1';
 import Candidates from './Candidates';
 import CustomQuestions from './CustomQuestions';
 import injectTapEventPlugin from 'react-tap-event-plugin';
@@ -16,7 +17,7 @@ class ResourceManager extends React.PureComponent {
 
     return(
       <div>
-        <CustomQuestions />
+        <Candidates />
       </div>
     )
   }

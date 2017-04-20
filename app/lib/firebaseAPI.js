@@ -245,6 +245,40 @@ export const saveEvent = (data) => {
   return firebase.database().ref().update(updates);
 }
 
+export const addCandidateFirebase = (data) => {
+  const {name, profession, status, date, level} = data;
+  const key = firebase.database().ref().child('candidates').push().key;
+  const updates = {};
+  updates[`/candidates/${key}`] = {
+    name: name,
+    profession: profession,
+    status: status,
+    date: date,
+    level: level
+  };
+  firebase.database().ref().update(updates);
+  return key;
+};
+
+export const editCandidateFirebase = (data) => {
+  const {id, name, profession, status, date, level} = data;
+  console.log(data)
+  const updates = {};
+  updates[`/candidates/${id}`] = {
+    name: name,
+    profession: profession,
+    status: status,
+    date: date,
+    level: level
+  };
+  firebase.database().ref().update(updates);
+  return id;
+};
+
+export const deleteCandidateFirebase = (id) => {
+  return firebase.database().ref('/candidates/' + id).remove();
+}
+
 export default {
   handleSignIn,
   handleSignOut,
