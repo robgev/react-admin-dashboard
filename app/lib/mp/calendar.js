@@ -4,7 +4,7 @@ import moment from 'moment';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import RaisedButton from 'material-ui/RaisedButton';
 import {connect} from 'react-redux';
-import {firebase, saveEvent} from '../firebaseAPI';
+import {getUser, firebase, saveEvent} from '../firebaseAPI';
 
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 
@@ -80,41 +80,31 @@ class Calendar extends React.Component {
     }
 
     componentDidMount() {
-        const {email} = require('../firebaseAPI.js');
-        if (this.props.room.index === 0) {
-            firebase.database().ref('/events/').once('value').then((allRoomsEvents) => {
-                allRoomsEvents = allRoomsEvents.val();
-                let events = [];
-                for (let i in allRoomsEvents) {
-                    for (let idx in allRoomsEvents[i]) {
-                        console.log(allRoomsEvents[i][idx])
-                        events.push({'title': allRoomsEvents[i][idx].description,
-                            'start': new Date(allRoomsEvents[i][idx].startDate),
-                            'end': new Date(allRoomsEvents[i][idx].endDate),
-                            'color': this.colorChooser(Number(i))
-                        });
-                    }
+        const userInterval = setInterval(()=>{
+            const user = getUser();
+            if (user != null){
+              this.setState({email: user.email});
+              clearInterval(userInterval);
+            }
+        }, 500);
+        firebase.database().ref('/events/').once('value').then((allRoomsEvents) => {
+            allRoomsEvents = allRoomsEvents.val();
+            let events = [];
+            for (let i in allRoomsEvents) {
+                for (let idx in allRoomsEvents[i]) {
+                    events.push({'title': allRoomsEvents[i][idx].description,
+                        'start': new Date(allRoomsEvents[i][idx].startDate),
+                        'end': new Date(allRoomsEvents[i][idx].endDate),
+                        'color': this.colorChooser(Number(i)),
+                        'user': allRoomsEvents[i][idx].user,
+                        'key': idx,
+                        'room': i
+                    });
                 }
-                const reservationSlot = {};
-                this.setState({events, email, reservationSlot});
-            });
-        } else {
-            firebase.database().ref('/events/' + this.props.room.index).once('value').then((eventList) => {
-                eventList = eventList.val();
-                let idx = 0;
-                for (let i in eventList) {
-                    events[idx] = {
-                        'title': eventList[i].description,
-                        'start': new Date(eventList[i].startDate),
-                        'end': new Date(eventList[i].endDate),
-                        'color': this.colorChooser(this.props.room.index)
-                    }
-                    idx += 1;
-                }
-                const reservationSlot = {};
-                this.setState({events, email, reservationSlot});
-            });
-        }
+            }
+            const reservationSlot = {};
+            this.setState({events, reservationSlot});
+        });
     }
 
   componentWillReceiveProps(nextProps){
@@ -128,7 +118,10 @@ class Calendar extends React.Component {
               'title': allRoomsEvents[i][idx].description,
               'start': new Date(allRoomsEvents[i][idx].startDate),
               'end': new Date(allRoomsEvents[i][idx].endDate),
-              'color': this.colorChooser(Number(i))
+              'color': this.colorChooser(Number(i)),
+              'user': allRoomsEvents[i][idx].user,
+              'key': idx,
+              'room': i
             });
           }
         }
@@ -139,16 +132,19 @@ class Calendar extends React.Component {
     else {
       firebase.database().ref('/events/' + nextProps.room.index).once('value').then((eventList) => {
         eventList = eventList.val();
-        let idx = 0;
         let events = [];
         for (let i in eventList){
-          events[idx] = {
-            'title': eventList[i].description,
-            'start': new Date(eventList[i].startDate),
-            'end': new Date(eventList[i].endDate),
-            'color': this.colorChooser(nextProps.room.index)
+          for (let idx in eventList[i]){
+            events.push({
+              'title': eventList[i][idx].description,
+              'start': new Date(eventList[i][idx].startDate),
+              'end': new Date(eventList[i][idx].endDate),
+              'color': this.colorChooser(Number(i)),
+              'user': eventList[i][idx].user,
+              'key': idx,
+              'room': i
+            });
           }
-          idx += 1;
         }
         const reservationSlot = {};
         this.setState({events, reservationSlot});
@@ -180,11 +176,20 @@ class Calendar extends React.Component {
                                 <div className = 'descr-button'>
                                   <MuiThemeProvider>
                                     <div>
-                                    <RaisedButton
-                                      label="Delete"
-                                      primary={true}
-
-                                    />
+                                      {
+                                        this.state.email === this.state.event.user ?
+                                        <RaisedButton
+                                          label="Delete"
+                                          primary={true}
+                                          onClick={()=>{
+                                            firebase.database().ref('events/'+this.state.event.room).child(this.state.event.key).remove().then(()=>{
+                                              this.setState({showPopup: false, event: ''});
+                                            });
+                                          }}
+                                        />
+                                        :
+                                        <div></div>
+                                      }
                                     <RaisedButton
                                       label="Close"
                                       primary={false}
