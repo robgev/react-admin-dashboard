@@ -190,17 +190,6 @@ class Candidates1 extends React.PureComponent {
       );
     };
 
-    const CandidateInterview = () => {
-      return (
-        <CandidateInterviewHomepage
-          closeInterviewScreen={this.closeInterviewScreen}
-          candidate={candidate}
-          saveInterview={this.saveInterview}
-          questions={this.props.questions[candidate.profession][candidate.level]}
-        />
-      );
-    };
-
     return(
       <div>
         <TextField
@@ -216,13 +205,6 @@ class Candidates1 extends React.PureComponent {
               this.setState({selected: 'new', editScreen: true});
             }
           }
-        />
-        <FlatButton
-          primary
-          disabled={this.state.selected === '-1' || this.state.selected === 'new'}
-          style={{marginLeft: '20px'}}
-          label='Interview'
-          onTouchTap={() => this.setState({interview: true})}
         />
         <FlatButton
           primary
@@ -243,13 +225,6 @@ class Candidates1 extends React.PureComponent {
           (() => {
             if (this.state.editScreen) {
               return <CandidateChange />
-            }
-          })()
-        }
-        {
-          (() => {
-            if (this.state.interview) {
-              return <CandidateInterview />
             }
           })()
         }
