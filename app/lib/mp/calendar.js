@@ -85,7 +85,6 @@ class Calendar extends React.Component{
         let events = [];
         for (let i in allRoomsEvents){
           for (let idx in allRoomsEvents[i]){
-            console.log(allRoomsEvents[i][idx])
             events.push({
               'title': allRoomsEvents[i][idx].description,
               'start': new Date(allRoomsEvents[i][idx].startDate),
@@ -118,22 +117,42 @@ class Calendar extends React.Component{
   }
 
   componentWillReceiveProps(nextProps){
-    const events = [];
-
-    firebase.database().ref('/events/' + nextProps.room.index).on('value', (eventList) => {
-      eventList = eventList.val();
-      let idx = 0;
-      for (let i in eventList){
-        events[idx] = {
-          'title': eventList[i].description,
-          'start': new Date(eventList[i].startDate),
-          'end': new Date(eventList[i].endDate),
-          'color': this.colorChooser(nextProps.room.index)
+    if (nextProps.room.index === 0){
+      firebase.database().ref('/events/').once('value').then((allRoomsEvents) => {
+        allRoomsEvents = allRoomsEvents.val();
+        let events = [];
+        for (let i in allRoomsEvents){
+          for (let idx in allRoomsEvents[i]){
+            events.push({
+              'title': allRoomsEvents[i][idx].description,
+              'start': new Date(allRoomsEvents[i][idx].startDate),
+              'end': new Date(allRoomsEvents[i][idx].endDate),
+              'color': this.colorChooser(Number(i))
+            });
+          }
         }
-        idx += 1;
-      }
-      this.setState({events});
-    });
+        const reservationSlot = {};
+        this.setState({events, reservationSlot});
+      });
+    }
+    else {
+      firebase.database().ref('/events/' + nextProps.room.index).once('value').then((eventList) => {
+        eventList = eventList.val();
+        let idx = 0;
+        let events = [];
+        for (let i in eventList){
+          events[idx] = {
+            'title': eventList[i].description,
+            'start': new Date(eventList[i].startDate),
+            'end': new Date(eventList[i].endDate),
+            'color': this.colorChooser(nextProps.room.index)
+          }
+          idx += 1;
+        }
+        const reservationSlot = {};
+        this.setState({events, reservationSlot});
+      });
+    }
   }
 
   render(){
