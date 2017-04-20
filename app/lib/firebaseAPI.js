@@ -287,7 +287,17 @@ export const addPositionFirebase = (positionName) => {
 
 export const deletePositionFirebase = (id) => {
   return firebase.database().ref('/positions/' + id).remove();
-}
+};
+
+export const addQuestionFirebase = (info) => {
+  const key = firebase.database().ref().child('questions').push().key;
+  firebase.database().ref('/questions/' + key).set({
+    id: key,
+    positionId: info.positionId,
+    questionText: info.questionText
+  });
+  return key;
+};
 
 export default {
   handleSignIn,
