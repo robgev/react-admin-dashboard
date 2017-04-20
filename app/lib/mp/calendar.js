@@ -147,10 +147,7 @@ class Calendar extends React.Component {
                   this.setState({showPopup: !this.state.showPopup, event});
                 }} eventPropGetter={this.eventStyleGetter}/> {this.state.showPopup
                     ? <div className="reservationPopup">
-                            <div className='popupWindow'>
-                                <div>
-                                    {this.props.room.name}
-                                </div>
+                            <div className='popupWindowDescr'>
                                 <div className='event-title'>
                                     Event title: {this.state.event.title}
                                 </div>
@@ -161,16 +158,22 @@ class Calendar extends React.Component {
                                 {this.state.event.start.toLocaleDateString() + ' '}
                                 from {this.state.event.start.toLocaleTimeString() + ' '}
                                 to {this.state.event.end.toLocaleTimeString()}
-                                <div>
+                                <div className = 'descr-button'>
                                   <MuiThemeProvider>
+                                    <div>
+                                    <RaisedButton
+                                      label="Delete"
+                                      primary={true}
+
+                                    />
                                     <RaisedButton
                                       label="Close"
-                                      primary={true}
-                                      fullWidth={true}
+                                      primary={false}
                                       onClick={()=>{
                                         this.setState({showPopup: false})
                                       }}
                                     />
+                                  </div>
                                   </MuiThemeProvider>
                                 </div>
                             </div>
