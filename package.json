@@ -11,12 +11,16 @@
     "Gohar Mkrtchyan <medivh>"
   ],
   "scripts": {
-    "watch": "webpack --progress -d --colors --watch",
+    "watch": "node scripts/watch-project.js",
+    "babel-watch": "NODE_ENV='debug' babel backend/*.jsx --watch --out-dir .",
+    "webpack-watch": "NODE_ENV='debug' webpack --progress -d --colors --watch",
+    "server-watch": "NODE_ENV='debug' nodemon backend/server.js",
     "start": "webpack-dev-server --progress --colors"
   },
   "license": "ISC",
   "dependencies": {
     "firebase": "^3.7.5",
+    "firebase-admin": "^4.2.1",
     "lodash": "^4.17.4",
     "material-ui": "^0.17.1",
     "moment": "^2.18.1",
@@ -46,6 +50,7 @@
     "file-loader": "^0.11.1",
     "flow-bin": "^0.42.0",
     "node-sass": "^4.5.2",
+    "nodemon": "^1.11.0",
     "react-redux": "^5.0.3",
     "react-tap-event-plugin": "^2.0.1",
     "redux": "^3.6.0",
