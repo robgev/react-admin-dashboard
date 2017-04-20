@@ -78,7 +78,7 @@ class CustomQuestions extends React.PureComponent {
       );
     });
     return(
-      <div>
+      <div className="hrHome">
         <TextField
           name="newPosition"
           floatingLabelText="Add new position"
