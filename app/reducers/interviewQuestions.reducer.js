@@ -11,7 +11,9 @@ export default function(questions = {}, action) {
     case "ADD_NEW_QUESTION":
       return {...questions, [action.newQuestion.id]: action.newQuestion};
     case "DELETE_QUESTION":
-      return deleteQuestion(questions, action.id)
+      return deleteQuestion(questions, action.id);
+    case "EDIT_QUESTION":
+      return {...questions, [action.question.id]: action.question};
   }
   return questions;
 }

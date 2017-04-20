@@ -3,9 +3,9 @@ import {connect} from 'react-redux';
 import firebase from 'firebase';
 import {setInitialPositions, addPosition,
   deletePosition} from '../../actions/positions.action';
-import {setInitialQuestions, addQuestion, deleteQuestion} from '../../actions/questions.action';
+import {setInitialQuestions, addQuestion, deleteQuestion, editQuestion} from '../../actions/questions.action';
 import {addPositionFirebase, deletePositionFirebase,
-  addQuestionFirebase, deleteQuestionFirebase} from '../firebaseAPI';
+  addQuestionFirebase, deleteQuestionFirebase, editCandidateFirebase} from '../firebaseAPI';
 import {map} from 'lodash';
 import TextField from 'material-ui/TextField';
 import FlatButton from 'material-ui/FlatButton';
@@ -78,6 +78,13 @@ class CustomQuestions extends React.PureComponent {
     firebase.database().ref('questions/' + id).on('value', snapshot => {
       this.props.addQuestion(snapshot.val());
       this.setState({newQuestion: ""});
+    });
+  };
+
+  editQuestion = (question) => {
+    const id = editQuestionFirebase(question);
+    firebase.database().ref('questions/' + id).on('value', snapshot => {
+      this.props.editQuestion(snapshot.val());
     });
   };
 
@@ -169,4 +176,4 @@ class CustomQuestions extends React.PureComponent {
 };
 
 export default connect(mapStateToProps, {setInitialPositions, addPosition,
-  deletePosition, setInitialQuestions, addQuestion, deleteQuestion})(CustomQuestions);
+  deletePosition, setInitialQuestions, addQuestion, deleteQuestion, editQuestion})(CustomQuestions);

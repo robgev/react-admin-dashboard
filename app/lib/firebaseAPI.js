@@ -299,6 +299,15 @@ export const addQuestionFirebase = (info) => {
   return key;
 };
 
+export const editQuestionFirebase = (question) => {
+  firebase.database().ref('/questions/' + key).set({
+    id: question.id,
+    positionId: question.positionId,
+    questionText: info.questionText
+  });
+  return question.id;
+}
+
 export const deleteQuestionFirebase = (id) => {
   return firebase.database().ref('/questions/' + id).remove();
 };

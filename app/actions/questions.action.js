@@ -19,4 +19,15 @@ const deleteQuestion = (id) => {
   }
 };
 
+const editQuestion = (changedQuestion) => {
+  return {
+    type: "EDIT_QUESTION",
+    question: {
+      id: changedQuestion.id,
+      positionId: changedQuestion.positionId,
+      questionText: changedQuestion.questionText
+    }
+  }
+};
+
 export {setInitialQuestions, addQuestion, deleteQuestion}
