@@ -155,6 +155,7 @@ class Candidates1 extends React.PureComponent {
                 header.map(column => (
                   <TableHeaderColumn
                     key={column}
+                    className="tableRows"
                   >
                     <FlatButton
                       style={{color: 'white'}}
@@ -191,7 +192,7 @@ class Candidates1 extends React.PureComponent {
     };
 
     return(
-      <div>
+      <div className="hrHome">
         <TextField
           floatingLabelText='Filter'
           value={this.state.filter}
