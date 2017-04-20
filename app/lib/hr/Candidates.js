@@ -99,7 +99,6 @@ class Candidates extends React.PureComponent {
     let filteredCandidates = [];
     forEach(this.state.candidates, candidate => {
       const fits = header.some(i => {
-        console.log(candidate)
         return candidate[i.toLowerCase()].toString().toLowerCase().includes(this.state.filter)
       });
       if (fits) {

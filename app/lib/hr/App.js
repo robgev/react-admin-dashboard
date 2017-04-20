@@ -18,7 +18,7 @@ class ResourceManager extends React.PureComponent {
 
     return(
       <div className="hrBody">
-        <Candidates />
+        <CustomQuestions1 />
       </div>
     )
   }

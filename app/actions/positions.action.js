@@ -9,7 +9,7 @@ const addPosition = (newPosition) => {
   return {
     type: "ADD_NEW_POSITION",
     payload: {
-      position: newPosition.positionName,
+      positionName: newPosition.positionName,
       id: newPosition.id
     }
   }
@@ -22,4 +22,4 @@ const deletePosition = (id) => {
   }
 }
 
-export {setInitialPositions, addPosition};
+export {setInitialPositions, addPosition, deletePosition};

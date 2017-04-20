@@ -7,7 +7,7 @@ export default function(positions = {}, action) {
     case "DELETE_POSITION":
       const positionsCopy = Object.assign({}, positions);
       delete positionsCopy[action.id];
-      return posotionsCopy;
+      return positionsCopy;
   };
   return positions;
 };

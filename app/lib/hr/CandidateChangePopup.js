@@ -34,7 +34,6 @@ export default class CandidateChangePopup extends React.PureComponent {
   }
 
   render() {
-    console.log(this.state)
     const professions = ["Developer", "Engineer", "Designer"];
     const statuses = ["Accepted", "Rejected", "Shortlisted"];
     const levels = ["Intern", "Junior", "Middle", "Senior"];
