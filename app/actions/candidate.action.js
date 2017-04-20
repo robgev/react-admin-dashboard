@@ -7,9 +7,9 @@ const addCandidate = (newCandidate) => {
         profession: newCandidate.profession,
         status: newCandidate.status,
         date: newCandidate.date,
-        level: newCandidate.level
+        level: newCandidate.level,
+        id: newCandidate.id
       },
-      id: newCandidate.id
     }
   }
 }

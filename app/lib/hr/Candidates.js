@@ -24,7 +24,7 @@ function mapStateToProps(state) {
   )
 }
 
-class Candidates1 extends React.PureComponent {
+class Candidates extends React.PureComponent {
   constructor() {
     super();
     this.state = {
@@ -37,7 +37,7 @@ class Candidates1 extends React.PureComponent {
     };
   };
 
-  componentDidMount() {
+  componentWillMount() {
     firebase.database().ref('candidates').once('value').then(candidates => {
       candidates = candidates.val();
       if (candidates){
@@ -65,7 +65,7 @@ class Candidates1 extends React.PureComponent {
   };
 
   deleteCandidate = (id) => {
-    const removedId = deleteCandidateFirebase(id).then(() => {
+    deleteCandidateFirebase(id).then(() => {
       this.props.deleteCandidate(id);
     });
   };
@@ -97,12 +97,13 @@ class Candidates1 extends React.PureComponent {
     const selectedCandidate = this.state.candidates[this.state.selected];
     const header =  ['Name', 'Profession', 'Level', 'Date', 'Status'];
     let filteredCandidates = [];
-    forEach(this.state.candidates, (candidate, id) => {
+    forEach(this.state.candidates, candidate => {
       const fits = header.some(i => {
+        console.log(candidate)
         return candidate[i.toLowerCase()].toString().toLowerCase().includes(this.state.filter)
       });
       if (fits) {
-        filteredCandidates.push({...candidate, id: id});
+        filteredCandidates.push(candidate);
       }
     });
     filteredCandidates = this.filterListElements(filteredCandidates);
@@ -234,4 +235,4 @@ class Candidates1 extends React.PureComponent {
   };
 };
 
-export default connect(mapStateToProps, {addCandidate, deleteCandidate, setInitial})(Candidates1);
+export default connect(mapStateToProps, {addCandidate, deleteCandidate, setInitial})(Candidates);
