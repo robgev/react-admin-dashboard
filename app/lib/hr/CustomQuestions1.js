@@ -82,6 +82,7 @@ class CustomQuestions extends React.PureComponent {
   deleteQuestion = () => {
     deleteQuestionFirebase(this.state.selectedQuestion).then(() => {
       this.props.deleteQuestion(this.state.selectedQuestion);
+      this.setState({selectedQuestion: '-1'});
     });
   };
 
@@ -110,15 +111,24 @@ class CustomQuestions extends React.PureComponent {
       );
     });
     const RenderQuestions = map(this.state.allQuestions, question => {
-      return(
-        <Paper
-          key={question.id}
-          style={{cursor: 'pointer'}}
-          onTouchTap={() => this.setState({selectedQuestion: question.id})}
-        >
-          {question.questionText}
-        </Paper>
-      );
+      if(question.positionId === this.state.selectedPosition || this.state.selectedPosition === '-1'){
+        const isSelected = question.id === this.state.selectedQuestion ?
+            {backgroundColor: "#224C75"} : {backgroundColor: "rgb(216, 226, 242)"};
+        return(
+          <Paper
+            key={question.id}
+            style={{...isSelected, cursor: 'pointer'}}
+            onTouchTap={() => {
+              this.state.selectedQuestion !== question.id ?
+                this.setState({selectedQuestion: question.id}) :
+                this.setState({selectedQuestion: '-1'})
+              }
+            }
+          >
+            {question.questionText}
+          </Paper>
+        );
+      }
     });
     return(
       <div className="hrHome">
@@ -148,11 +158,13 @@ class CustomQuestions extends React.PureComponent {
         />
         <FlatButton
           label="add question"
+          disabled={this.state.selectedPosition === '-1'}
           primary
           onTouchTap={() => this.addQuestion()}
         />
         <FlatButton
           label="delete question"
+          disabled={this.state.selectedQuestion === '-1'}
           primary
           onTouchTap={() => this.deleteQuestion()}
         />
