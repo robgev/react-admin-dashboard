@@ -1,6 +1,7 @@
 import firebase from 'firebase';
 import moment from 'moment';
 
+export let userEmail = "";
 export { firebase };
 
 const firebaseConf = {
@@ -93,6 +94,7 @@ const sendPasswordReset = (email) => {
 firebase.auth().onAuthStateChanged(user => {
   if (user) {
     const { displayName, email, emailVerified, photoURL, uid, providerData } = user;
+    userEmail = email;
     const dbRef = firebase.database().ref(`users/${uid}`);
     if (!emailVerified) {
       sendEmailVerification();
@@ -237,7 +239,7 @@ export const saveEvent = (data) => {
   const key = firebase.database().ref().child('posts').push().key;
   const updates = {};
   updates[`/events/${roomNumber}/${key}`] = {
-    user: email,
+    user: 'test',
     startDate: startDate,
     endDate: endDate,
     description: description

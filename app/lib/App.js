@@ -92,7 +92,11 @@ class App extends Component {
                 path="/room"
                 render={ props =>
                   currentUser ?
-                  <MainPage /> :
+                  <MainPage
+                    user = {currentUser}
+                    admin = {isAdmin}
+                    signOut={auth.handleSignOut}
+                  /> :
                   <Redirect to="/signin"/>
                  }
               />
@@ -100,7 +104,11 @@ class App extends Component {
                 path="/management"
                 render={ props =>
                   currentUser ?
-                  <ResourceManager /> :
+                  <ResourceManager
+                    user = {currentUser}
+                    admin = {isAdmin}
+                    signOut={auth.handleSignOut}
+                  /> :
                   <Redirect to="/signin"/>
                  }
               />

@@ -9,6 +9,8 @@ import RoomList from './roomList';
 import Calendar from './calendar';
 import RoomInfo from './roomInfo';
 import ResForm from './reservationForm';
+import Header from '../ur/components/Header';
+import Footer from '../ur/components/Footer';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 
 require('../firebaseAPI.js');
@@ -24,7 +26,6 @@ const appBarStyle = {
 class MainPage extends React.Component {
     constructor(){
       super();
-      injectTapEventPlugin();
       this.state = {
         startTime: '',
         endTime: '',
@@ -33,13 +34,14 @@ class MainPage extends React.Component {
       };
     }
 
-    render() { /*
-        // remove the login page for development
-        if (!this.props.loggedIn) {
-            return (<LoginForm/>);
-        }*/
+    render() {
         return (
             <div>
+                <Header
+                  user={this.props.user}
+                  admin={this.props.admin}
+                  signOut={this.props.signOut}
+                />
                 <MuiThemeProvider>
                     <AppBar style={appBarStyle} title="Rooms" iconElementLeft={< IconButton ></IconButton>}/>
                 </MuiThemeProvider>
@@ -69,6 +71,7 @@ class MainPage extends React.Component {
                       />
                     </div>
                 </div>
+                <Footer />
             </div>
         );
     }
