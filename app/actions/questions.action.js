@@ -3,13 +3,20 @@ const setInitialQuestions = (questions) => {
     type: "SET_INITIAL_QUESTIONS",
     questions: questions
   }
-}
+};
 
 const addQuestion = (newQuestion) => {
   return {
     type: "ADD_NEW_QUESTION",
     newQuestion: newQuestion
   }
-}
+};
 
-export {setInitialQuestions, addQuestion}
+const deleteQuestion = (id) => {
+  return {
+    type: "DELETE_QUESTION",
+    id: id
+  }
+};
+
+export {setInitialQuestions, addQuestion, deleteQuestion}

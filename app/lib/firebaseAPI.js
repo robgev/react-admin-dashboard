@@ -299,6 +299,10 @@ export const addQuestionFirebase = (info) => {
   return key;
 };
 
+export const deleteQuestionFirebase = (id) => {
+  return firebase.database().ref('/questions/' + id).remove();
+};
+
 export default {
   handleSignIn,
   handleSignOut,

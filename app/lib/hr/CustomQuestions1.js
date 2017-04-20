@@ -1,9 +1,11 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import firebase from 'firebase';
-import {setInitialPositions, addPosition, deletePosition} from '../../actions/positions.action';
-import {setInitialQuestions, addQuestion} from '../../actions/questions.action';
-import {addPositionFirebase, deletePositionFirebase, addQuestionFirebase} from '../firebaseAPI';
+import {setInitialPositions, addPosition,
+  deletePosition} from '../../actions/positions.action';
+import {setInitialQuestions, addQuestion, deleteQuestion} from '../../actions/questions.action';
+import {addPositionFirebase, deletePositionFirebase,
+  addQuestionFirebase, deleteQuestionFirebase} from '../firebaseAPI';
 import {map} from 'lodash';
 import TextField from 'material-ui/TextField';
 import FlatButton from 'material-ui/FlatButton';
@@ -26,7 +28,8 @@ class CustomQuestions extends React.PureComponent {
       newPositonName: '',
       selectedPosition: '-1',
       newQuestion: '',
-      allQuestions: {}
+      allQuestions: {},
+      selectedQuestion: '-1'
     };
   };
 
@@ -76,6 +79,12 @@ class CustomQuestions extends React.PureComponent {
     });
   };
 
+  deleteQuestion = () => {
+    deleteQuestionFirebase(this.state.selectedQuestion).then(() => {
+      this.props.deleteQuestion(this.state.selectedQuestion);
+    });
+  };
+
   render() {
     const RenderPositions = map(this.state.allPositions, position => {
       const isSelected = position.id === this.state.selectedPosition ?
@@ -104,6 +113,8 @@ class CustomQuestions extends React.PureComponent {
       return(
         <Paper
           key={question.id}
+          style={{cursor: 'pointer'}}
+          onTouchTap={() => this.setState({selectedQuestion: question.id})}
         >
           {question.questionText}
         </Paper>
@@ -140,10 +151,16 @@ class CustomQuestions extends React.PureComponent {
           primary
           onTouchTap={() => this.addQuestion()}
         />
+        <FlatButton
+          label="delete question"
+          primary
+          onTouchTap={() => this.deleteQuestion()}
+        />
         {RenderQuestions}
       </div>
     )
   }
 };
 
-export default connect(mapStateToProps, {setInitialPositions, addPosition, deletePosition, setInitialQuestions, addQuestion})(CustomQuestions);
+export default connect(mapStateToProps, {setInitialPositions, addPosition,
+  deletePosition, setInitialQuestions, addQuestion, deleteQuestion})(CustomQuestions);
