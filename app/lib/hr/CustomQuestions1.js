@@ -61,7 +61,7 @@ class CustomQuestions extends React.PureComponent {
     const id = addPositionFirebase(this.state.newPositonName);
     firebase.database().ref('positions/' + id).on('value', snapshot => {
       this.props.addPosition(snapshot.val());
-      this.setState({newPositonName: ""});
+      this.setState({newPositonName: ''});
     });
   };
 
@@ -77,7 +77,7 @@ class CustomQuestions extends React.PureComponent {
       questionText: this.state.newQuestion});
     firebase.database().ref('questions/' + id).on('value', snapshot => {
       this.props.addQuestion(snapshot.val());
-      this.setState({newQuestion: ""});
+      this.setState({newQuestion: ''});
     });
   };
 
@@ -108,7 +108,7 @@ class CustomQuestions extends React.PureComponent {
     const RenderQuestions = map(this.state.allQuestions, question => {
       if(question.positionId === this.state.selectedPosition || this.state.selectedPosition === '-1'){
         const isSelected = question.id === this.state.selectedQuestion ?
-            {backgroundColor: "#224C75"} : {backgroundColor: "rgb(216, 226, 242)"};
+            {backgroundColor: '#224C75'} : {backgroundColor: 'rgb(216, 226, 242)'};
         return(
           <Paper
             key={question.id}
@@ -126,29 +126,29 @@ class CustomQuestions extends React.PureComponent {
       }
     });
     return(
-      <div className="hrHomei">
-      <div className="hrHomeCustom">
-        <div className="hrPosition">
-<div className="hrPositionAdd">
+      <div className='hrHomei'>
+      <div className='hrHomeCustom'>
+        <div className='hrPosition'>
+<div className='hrPositionAdd'>
           <TextField
-          name="newPosition"
-          floatingLabelText="Add new position"
+          name='newPosition'
+          floatingLabelText='Add new position'
           onChange={(e) => this.setState({newPositonName: e.target.value})}
           value={this.state.newPositonName}
         />
         <FlatButton
           primary
-          label="Save"
+          label='Save'
           onTouchTap={() => this.addPosition()}
         />
         <FlatButton
           primary
-          label="Delete"
+          label='Delete'
           onTouchTap={() => this.deletePosition()}
         />
   </div>
         <DropDownMenu
-        className="hrPositionDropdown"
+        className='hrPositionDropdown'
           value={this.state.selectedPosition}
           onChange={(e, i, selectedPosition) => this.setState({selectedPosition})}
         >
@@ -156,16 +156,16 @@ class CustomQuestions extends React.PureComponent {
           {RenderPositions}
         </DropDownMenu>
       </div>
-        <div className="hrQuestion">
+        <div className='hrQuestion'>
 
         <FlatButton
-          label="add question"
+          label='add question'
           disabled={this.state.selectedPosition === '-1'}
           primary
           onTouchTap={() => this.addQuestion()}
         />
         <FlatButton
-          label="delete question"
+          label='delete question'
           disabled={this.state.selectedQuestion === '-1'}
           primary
           onTouchTap={() => this.deleteQuestion()}
@@ -178,8 +178,8 @@ class CustomQuestions extends React.PureComponent {
           onTouchTap={() => this.setState({isEditScreenOpen: true})}
         />
         <TextField
-          name="newQuestion"
-          floatingLabelText="New Question"
+          name='newQuestion'
+          floatingLabelText='New Question'
           fullWidth
           value={this.state.newQuestion}
           onChange={(e) => this.setState({newQuestion: e.target.value})}
