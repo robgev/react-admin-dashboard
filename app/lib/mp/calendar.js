@@ -134,17 +134,15 @@ class Calendar extends React.Component {
         eventList = eventList.val();
         let events = [];
         for (let i in eventList){
-          for (let idx in eventList[i]){
             events.push({
-              'title': eventList[i][idx].description,
-              'start': new Date(eventList[i][idx].startDate),
-              'end': new Date(eventList[i][idx].endDate),
-              'color': this.colorChooser(Number(i)),
-              'user': eventList[i][idx].user,
-              'key': idx,
-              'room': i
+              'title': eventList[i].description,
+              'start': new Date(eventList[i].startDate),
+              'end': new Date(eventList[i].endDate),
+              'color': this.colorChooser(Number(nextProps.room.index)),
+              'user': eventList[i].user,
+              'key': i,
+              'room': nextProps.room.index
             });
-          }
         }
         const reservationSlot = {};
         this.setState({events, reservationSlot});
