@@ -132,7 +132,7 @@ class Candidates extends React.PureComponent {
             {candidate.name}
           </TableRowColumn>
           <TableRowColumn>
-            {this.props.positions[candidate.profession].positionName}
+            {}
           </TableRowColumn>
           <TableRowColumn>
             {candidate.level}
