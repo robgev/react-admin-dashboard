@@ -5,6 +5,7 @@ import interviewQuestionsReducer from './interviewQuestions.reducer';
 import loginReducer from './login.reducer';
 import roomListReducer from './roomlist.reducer';
 import positionsReducer from './positions.reducer';
+import selectedCandidateReducer from './selectedCandidate.reducer';
 
 export const allReducers = combineReducers({
   loggedIn: loginReducer,
@@ -12,5 +13,6 @@ export const allReducers = combineReducers({
   activeRoom: activeRoomReducer,
   candidates: candidatesReducer,
   questions: interviewQuestionsReducer,
-  positions: positionsReducer
+  positions: positionsReducer,
+  selectedCandidate: selectedCandidateReducer
 });
