@@ -7,6 +7,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 import { saveEvent } from '../firebaseAPI.js';
 import moment from 'moment';
 import {ModalContainer, ModalDialog} from 'react-modal-dialog';
+import ErrorPopup from './errorPopup';
 
 const timeChecker = (t0, t1, t2, t3) => {
   const timeCheck0 = !moment(t0).isBetween(t2, t3);
@@ -29,7 +30,8 @@ class ReservationPopup extends React.Component {
       endDate: '',
       email: '',
       date: null,
-      events: []
+      events: [],
+      err: false
     }
   }
 
@@ -72,7 +74,7 @@ class ReservationPopup extends React.Component {
     }
 
     if (!freeTime){
-      alert('the time you selected is not free');
+      this.setState({err: true});
       return;
     }
 
@@ -128,6 +130,14 @@ class ReservationPopup extends React.Component {
                 onClick={ this.props.close }
               />
             </div>
+            {
+              this.state.err ? <ErrorPopup
+                msg='The time you selected is not free'
+                close={()=>{
+                  this.setState({err: false});
+                }}
+              /> : <div></div>
+            }
           </ModalDialog>
         </ModalContainer>
       </MuiThemeProvider>
