@@ -42,6 +42,7 @@ class ResForm extends Component {
                 this.setState({showPopup: false});
               }}
               data={ this.props.data }
+              events={ this.props.events }
             /> : <div></div> }
         </div>
       );

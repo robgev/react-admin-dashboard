@@ -5,6 +5,16 @@ import DatePicker from 'material-ui/DatePicker';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
 import { saveEvent } from '../firebaseAPI.js';
+import moment from 'moment';
+
+const timeChecker = (t0, t1, t2, t3) => {
+  const timeCheck0 = !moment(t0).isBetween(t2, t3);
+  const timeCheck1 = !moment(t1).isBetween(t2, t3);
+  const timeCheck2 = !moment(t2).isBetween(t0, t1);
+  const timeCheck3 = !moment(t3).isBetween(t0, t1);
+
+  return (timeCheck0 && timeCheck1 && timeCheck2 && timeCheck3);
+}
 
 export default
 class ReservationPopup extends React.Component {
@@ -17,7 +27,8 @@ class ReservationPopup extends React.Component {
       roomNumber: null,
       endDate: '',
       email: '',
-      date: null
+      date: null,
+      events: []
     }
   }
 
@@ -35,13 +46,34 @@ class ReservationPopup extends React.Component {
     this.initialDate = this.props.date.split('/');
     this.initialStart = this.props.start.toString().split(' ')[4].split(':');
     this.initialEnd = this.props.end.toString().split(' ')[4].split(':');
-    this.setState({...this.props.data, date: new Date(this.initialDate[2], this.initialDate[1]-1, this.initialDate[0])});
+    this.setState({...this.props.data,
+      date: new Date(this.initialDate[2], this.initialDate[1]-1, this.initialDate[0]),
+      events: this.props.events
+    });
   }
 
   reserve = () => {
     const date = this.date.state.date.toString().split(' ').slice(0, 4).join(' ');
     const startTime = new Date(date.toString() +" "+this.startTime.state.time.toString().split(' ').slice(4, 7).join(' ').toString());
     const endTime = new Date(date.toString()+" "+this.endTime.state.time.toString().split(' ').slice(4, 7).join(' ').toString());
+
+    let eventStartTime;
+    let eventEndTime;
+    let freeTime = true;
+
+    for (let i in this.state.events){
+      eventStartTime = this.state.events[i].start;
+      eventEndTime = this.state.events[i].end;
+      if (!timeChecker(startTime, endTime, eventStartTime, eventEndTime)){
+        freeTime = false;
+        break;
+      }
+    }
+
+    if (!freeTime){
+      alert('the time you selected is not free');
+      return;
+    }
 
     const data = {
       roomNumber: this.state.roomNumber,
