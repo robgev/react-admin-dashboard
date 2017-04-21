@@ -15,7 +15,7 @@ class ResourceManager extends React.PureComponent {
   render() {
 
     return(
-      <div className="hrBody mainhrApp">
+      <div className='hrBody mainhrApp'>
         <Header
           user={this.props.user}
           admin={this.props.admin}

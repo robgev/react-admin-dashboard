@@ -8,11 +8,11 @@ class LoginSignup extends React.PureComponent {
   }
   render() {
     return(
-      <div className="logsing-body">
-        <div className="container">
-          <div className="login-signup">
-            <input ref={email => this.email = email} placeholder="Email"></input>
-            <input ref={password => this.password = password} type="password" placeholder="Password"></input>
+      <div className='logsing-body'>
+        <div className='container'>
+          <div className='login-signup'>
+            <input ref={email => this.email = email} placeholder='Email'></input>
+            <input ref={password => this.password = password} type='password' placeholder='Password'></input>
             <button onClick={this.logIn}>Log In</button>
             <button> Sign Up </button>
           </div>

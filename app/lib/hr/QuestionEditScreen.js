@@ -53,7 +53,7 @@ class QuestionEditScreen extends React.PureComponent {
     });
     return(
       <Dialog
-          title="Edit the question"
+          title='Edit the question'
           open={this.props.open}
           actions={actions}
           onRequestClose={() => this.props.closeScreen()}
@@ -65,9 +65,9 @@ class QuestionEditScreen extends React.PureComponent {
           {RenderPositions}
         </DropDownMenu>
         <TextField
-          name="question"
+          name='question'
           fullWidth
-          floatingLabelText="Question"
+          floatingLabelText='Question'
           value={this.state.questionText}
           onChange={(e) => this.setState({questionText: e.target.value})}
         />

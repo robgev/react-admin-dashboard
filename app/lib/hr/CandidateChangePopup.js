@@ -36,8 +36,8 @@ export default class CandidateChangePopup extends React.PureComponent {
 
   render() {
     const {positions} = this.props;
-    const statuses = ["Accepted", "Rejected", "Shortlisted"];
-    const levels = ["Intern", "Junior", "Middle", "Senior"];
+    const statuses = ['Accepted', 'Rejected', 'Shortlisted'];
+    const levels = ['Intern', 'Junior', 'Middle', 'Senior'];
     const {closeDialogueBox, saveChangedCandidate, candidate} = this.props;
     const RenderLevels = () => {
       return (
@@ -91,16 +91,16 @@ export default class CandidateChangePopup extends React.PureComponent {
     }
     const actions = [
       <FlatButton
-        label="Cancel"
+        label='Cancel'
         primary={true}
         onTouchTap={closeDialogueBox}
       />,
       <FlatButton
-        label="Save"
+        label='Save'
         primary={true}
         onTouchTap={
           () => {
-            const id = this.props.id === "-1" ? false : this.props.id;
+            const id = this.props.id === '-1' ? false : this.props.id;
             const changedCandidate = {
               name: this.state.name,
               profession: this.state.profession,
@@ -118,16 +118,16 @@ export default class CandidateChangePopup extends React.PureComponent {
 
     return (
       <Dialog
-        title="Change canidate info"
+        title='Change canidate info'
         actions={actions}
         modal={false}
         open={true}
         onRequestClose={closeDialogueBox}
       >
         <TextField
-          name="name"
+          name='name'
           fullWidth={true}
-          floatingLabelText="Name"
+          floatingLabelText='Name'
           value={this.state.name}
           onChange={this.changeName}
         />
@@ -135,8 +135,8 @@ export default class CandidateChangePopup extends React.PureComponent {
         <RenderLevels />
         <RenderStatuses />
         <DatePicker
-          hintText="Select Interview Date"
-          mode="landscape"
+          hintText='Select Interview Date'
+          mode='landscape'
           value={this.state.date}
           onChange={(e, newDate) => {
             const o = this.state.date;
@@ -146,7 +146,7 @@ export default class CandidateChangePopup extends React.PureComponent {
           }}
         />
         <TimePicker
-          hintText="Select Interview Time"
+          hintText='Select Interview Time'
           value={this.state.date}
           onChange={(e, newTime) => {
             const o = this.state.date;
