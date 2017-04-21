@@ -6,8 +6,6 @@ import RaisedButton from 'material-ui/RaisedButton';
 import {connect} from 'react-redux';
 import {getUser, firebase, saveEvent} from '../firebaseAPI';
 
-import 'react-big-calendar/lib/css/react-big-calendar.css';
-
 BigCalendar.momentLocalizer(moment);
 
 function mapStateToProps(state) {

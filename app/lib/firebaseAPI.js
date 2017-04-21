@@ -209,26 +209,17 @@ const deleteUser = (oldPassword) => { // Consider writing in async/await
   .catch(error =>  console.log)
 }
 
-const toggleUserActiveState = async (uid) => {
-  const currentUser = firebase.auth().currentUser;
-  const targetUserRef = firebase.database().ref(`users/${uid}`)
-  const currentUserEntry = await
-    firebase.database().ref(`users/${currentUser.uid}`).once('value')
-  const targetUserEntry = await targetUserRef.once('value')
-  const targetUserData = targetUserEntry.val();
-  const currentUserData = currentUserEntry.val();
-  if(currentUserData.isAdmin) {
-    targetUserRef.update({
-      active: !targetUserData.active,
-    })
-  }
+const toggleUserActiveState = (uid) => {
+  return true;
 }
 
-const getUserActiveState = async (uid) => {
-  const targetUserRef =
-    await firebase.database().ref(`users/${uid}`).once('value');
-  const targetUserData = targetUserRef.val();
-  console.log(targetUserData.active)
+const getUserActiveState = (uid) => {
+  let targetUserData = {};
+  firebase.database().ref(`users/${uid}`).once('value')
+  .then(targetUserRef => {
+    targetUserData = targetUserRef.val();
+    console.log(targetUserData.active)
+  });
   return targetUserData.active;
 }
 

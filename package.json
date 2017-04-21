@@ -12,7 +12,9 @@
   ],
   "scripts": {
     "watch": "node scripts/watch-project.js",
-    "babel-watch": "NODE_ENV='debug' babel backend/*.jsx --watch --out-dir .",
+    "test": "NODE_ENV='debug' babel app/lib/firebaseAPI.js --out-dir frontend",
+    "babel-server-watch": "NODE_ENV='debug' babel backend/*.jsx --watch --out-dir .",
+    "babel-front-watch": "NODE_ENV='debug' babel app --watch --out-dir frontend",
     "webpack-watch": "NODE_ENV='debug' webpack --progress -d --colors --watch",
     "server-watch": "NODE_ENV='debug' nodemon backend/server.js",
     "start": "webpack-dev-server --progress --colors"
@@ -34,6 +36,7 @@
     "react-swipeable-views": "^0.11.2",
     "react-tap-event-plugin": "^2.0.1",
     "react-timer": "^1.0.2",
+    "serve-favicon": "^2.4.2",
     "uuid": "^3.0.1"
   },
   "devDependencies": {

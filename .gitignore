@@ -9,3 +9,4 @@ public/css
 firebase-debug.log
 backend/serviceAccountKey.json
 backend/server.js
+frontend

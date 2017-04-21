@@ -1,3 +1,4 @@
+//Import used libs
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import firebase from 'firebase';
@@ -9,16 +10,19 @@ import {
   Redirect,
 } from 'react-router-dom';
 
+// Import our compnents
+import User from './ur/User';
 import auth from './firebaseAPI';
 import SigninBox from './ur/Signin';
 import AdminPanel from './ur/Admin';
-import User from './ur/User';
-import NotFound from './ur/components/Notfound';
-import LoadingScreen  from './ur/components/Loadingscreen';
 import MainPage from './mp/mainPage';
 import ResourceManager from './hr/App';
-import './ur/main.scss';
+import NotFound from './ur/components/Notfound';
+import LoadingScreen  from './ur/components/Loadingscreen';
 
+//This App component is wrapped by MuiThemeProvider at the end.
+// This is done to allow server side rendering.
+// Check react-router-dom -> StaticRouter for more.
 export default
 class App extends Component {
   constructor() {
@@ -64,7 +68,6 @@ class App extends Component {
     const { currentUser, isAdmin, promise } = this.state;
     return (
       <div className='container'>
-        <Router>
           <div className='router-wrapper'>
             <Switch>
               <Route
@@ -142,6 +145,7 @@ class App extends Component {
                           const isAdmin = value ? value.isAdmin : false;
                           return (
                             <ResourceManager
+                              match = {props}
                               user = {currentUser}
                               admin = {isAdmin}
                               signOut={auth.handleSignOut}
@@ -254,7 +258,6 @@ class App extends Component {
               <Route component={NotFound} />
             </Switch>
           </div>
-        </Router>
       </div>
     );
   }
