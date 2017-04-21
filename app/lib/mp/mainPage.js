@@ -20,7 +20,8 @@ function mapStateToProps(state) {
 }
 
 const appBarStyle = {
-    backgroundColor: '#266cb2'
+    backgroundColor: '#266cb2',
+    zIndex: 5
 }
 
 class MainPage extends React.Component {

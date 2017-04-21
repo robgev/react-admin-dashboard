@@ -6,6 +6,7 @@ import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
 import { saveEvent } from '../firebaseAPI.js';
 import moment from 'moment';
+import {ModalContainer, ModalDialog} from 'react-modal-dialog';
 
 const timeChecker = (t0, t1, t2, t3) => {
   const timeCheck0 = !moment(t0).isBetween(t2, t3);
@@ -90,8 +91,8 @@ class ReservationPopup extends React.Component {
   render(){
     return(
       <MuiThemeProvider>
-        <div className="reservationPopup" style={{zIndex: 4}}>
-          <div className='popupWindow'>
+        <ModalContainer>
+          <ModalDialog>
             <DatePicker
               ref={(time) => { this.date = time; }}
               hintText="Date"
@@ -99,36 +100,36 @@ class ReservationPopup extends React.Component {
               defaultDate={ this.state.date }
               onChange={(_, newDate)=>{this.dateChangeHandler(newDate)}}
             />
-          <TimePicker
-            ref={(time) => { this.startTime = time; }}
-            hintText="12hr Format"
-            defaultTime={ new Date(this.initialDate[2], this.initialDate[1]-1, this.initialDate[0], this.initialStart[0], this.initialStart[1])}
-          />
-          <TimePicker
-            ref={(time) => { this.endTime = time; }}
-            hintText="12hr Format"
-            defaultTime={ new Date(this.initialDate[2], this.initialDate[1]-1, this.initialDate[0], this.initialEnd[0], this.initialEnd[1])}
-          />
-          <TextField
-            floatingLabelText="Event description and side notes"
-            multiLine={true}
-            rows={3}
-            onChange={this.descChangeHandler}
-          />
-        <div className="popup-buttons">
-          <RaisedButton
-            label="Reserve"
-            primary={true}
-            onClick={this.reserve}
-          />
-          <RaisedButton
-            label="Close"
-            primary={false}
-            onClick={ this.props.close }
-          />
-        </div>
-          </div>
-        </div>
+            <TimePicker
+              ref={(time) => { this.startTime = time; }}
+              hintText="12hr Format"
+              defaultTime={ new Date(this.initialDate[2], this.initialDate[1]-1, this.initialDate[0], this.initialStart[0], this.initialStart[1])}
+            />
+            <TimePicker
+              ref={(time) => { this.endTime = time; }}
+              hintText="12hr Format"
+              defaultTime={ new Date(this.initialDate[2], this.initialDate[1]-1, this.initialDate[0], this.initialEnd[0], this.initialEnd[1])}
+            />
+            <TextField
+              floatingLabelText="Event description and side notes"
+              multiLine={true}
+              rows={3}
+              onChange={this.descChangeHandler}
+            />
+            <div className="popup-buttons">
+              <RaisedButton
+                label="Reserve"
+                primary={true}
+                onClick={this.reserve}
+              />
+              <RaisedButton
+                label="Close"
+                primary={false}
+                onClick={ this.props.close }
+              />
+            </div>
+          </ModalDialog>
+        </ModalContainer>
       </MuiThemeProvider>
     )
   }
