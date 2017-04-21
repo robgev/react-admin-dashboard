@@ -23,7 +23,8 @@ class Calendar extends React.Component {
             events: [],
             reservationSlot: {},
             showPopup: false,
-            event: ''
+            event: '',
+            roomN: 0
         }
     }
 
@@ -57,9 +58,7 @@ class Calendar extends React.Component {
             'end': end,
             'color': 'red'
         };
-        const currentEvents = this.state.events;
-        currentEvents.push(reservationSlot);
-        this.setState({events: currentEvents});
+        this.setState({reservationSlot});
     }
 
     colorChooser = (n) => {
@@ -108,6 +107,8 @@ class Calendar extends React.Component {
     }
 
   componentWillReceiveProps(nextProps){
+    if (nextProps.room.index === this.state.roomN)
+      return;
     if (nextProps.room.index === 0){
       firebase.database().ref('/events/').once('value').then((allRoomsEvents) => {
         allRoomsEvents = allRoomsEvents.val();
@@ -126,11 +127,11 @@ class Calendar extends React.Component {
           }
         }
         const reservationSlot = {};
-        this.setState({events, reservationSlot});
+        this.setState({events, reservationSlot, roomN: nextProps.room.index});
       });
     }
     else {
-      firebase.database().ref('/events/' + nextProps.room.index).once('value').then((eventList) => {
+      firebase.database().ref('/events/' + nextProps.room.index).on('value', (eventList) => {
         eventList = eventList.val();
         let events = [];
         for (let i in eventList){
@@ -145,14 +146,18 @@ class Calendar extends React.Component {
             });
         }
         const reservationSlot = {};
-        this.setState({events, reservationSlot});
+        this.setState({events, reservationSlot, roomN: nextProps.room.index});
       });
     }
   }
     render() {
         return (
             <div className='calendar'>
-                <BigCalendar selectable= { this.props.room.index === 0 ? false : 'ignoreEvents'} events={this.state.events} step={30} defaultView='week' onSelectSlot={(slotInfo) => {
+                <BigCalendar selectable= { this.props.room.index === 0 ? false : 'ignoreEvents'}
+                  events={[...this.state.events, this.state.reservationSlot]}
+                  step={30}
+                  defaultView='week'
+                  onSelectSlot={(slotInfo) => {
                     let startTime = slotInfo.start.toLocaleString();
                     let endTime = slotInfo.end.toLocaleString();
                     this.onTimeSelect(startTime, endTime);
