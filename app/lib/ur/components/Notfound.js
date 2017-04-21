@@ -3,7 +3,7 @@ import React from 'react';
 export default ({ user }) => {
   return (
     <div style={missingStyle}>
-        <img src="/missing.png" style={imgStyle} />
+        <img src="/images/missing.png" style={imgStyle} />
         <div style={banner} >
           <h2 style={bannerHead}>Woopsie Daisy!</h2>
           <p style={bannerText}>

@@ -131,7 +131,7 @@ class AdminPanel extends Component {
                 <tr>
                   <td colSpan="5">
                     <div className="loading-screen users">
-                      <img src="/loadingSmall.gif" />
+                      <img src="/images/loadingSmall.gif" />
                     </div>
                   </td>
                 </tr>

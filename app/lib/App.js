@@ -46,9 +46,9 @@ class App extends Component {
           .catch(error => console.log)
 
         }
-        if (photoURL === null) {
+        if (photoURL === null || photoURL === "/profile.svg") {
           currentUser.updateProfile({
-            photoURL: "/profile.svg",
+            photoURL: "images/profile.svg",
           })
           .then(() => this.setState({...this.state, currentUser}))
           .catch(error => console.log)
@@ -101,7 +101,7 @@ class App extends Component {
                         whenPending= { () => {
                           return (
                             <div className="loading-screen">
-                              <img src="/loading.gif" />
+                              <img src="/images/loading.gif" />
                             </div>
                           );
                         }}
@@ -136,7 +136,7 @@ class App extends Component {
                         whenPending= { () => {
                           return (
                             <div className="loading-screen">
-                              <img src="/loading.gif" />
+                              <img src="/images/loading.gif" />
                             </div>
                           );
                         }}
@@ -172,7 +172,7 @@ class App extends Component {
                         whenPending= { () => {
                           return (
                             <div className="loading-screen">
-                              <img src="/loading.gif" />
+                              <img src="/images/loading.gif" />
                             </div>
                           );
                         }}
@@ -213,7 +213,7 @@ class App extends Component {
                           whenPending= { () => {
                             return (
                               <div className="loading-screen">
-                                <img src="/loading.gif" />
+                                <img src="/images/loading.gif" />
                               </div>
                             );
                           }}

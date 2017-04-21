@@ -21,7 +21,7 @@ export default () => {
 
   return (
     <div style={footer}>
-      <img src="logo.svg" style={logoStyle}></img>
+      <img src="/images/logo.svg" style={logoStyle}></img>
       <div className={'centerV full-width'}>
         <ul style={footerItemsContainer}>
           <li style={footerListItemStyle}>

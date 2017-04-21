@@ -91,7 +91,7 @@ app.use((req, res, next) => {
   }
 });
 
-app.use(favicon('public/favicon.png'));
+app.use(favicon('public/images/favicon.ico'));
 
 // No other handler picked it up yet, so this is our 404 handler
 app.use((req, res, next) => {

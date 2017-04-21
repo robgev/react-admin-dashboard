@@ -26,7 +26,7 @@ export default ({ user, signOut, admin }) => {
   return (
     <div style={topMenuStyle}>
       <div style={containerStyle}>
-        <img src="logo.svg" style={logoStyle}></img>
+        <img src="/images/logo.svg" style={logoStyle}></img>
         <ul style={topMenuListStyle}>
           {listItems}
         </ul>
