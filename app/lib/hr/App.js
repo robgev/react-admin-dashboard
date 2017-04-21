@@ -20,7 +20,7 @@ class ResourceManager extends React.PureComponent {
           admin={this.props.admin}
           signOut={this.props.signOut}
         />
-        <CustomQuestions1 />
+        <Candidates />
         <Footer />
       </div>
     )

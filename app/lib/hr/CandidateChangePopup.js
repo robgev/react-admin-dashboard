@@ -6,6 +6,7 @@ import DropDownMenu from 'material-ui/DropDownMenu';
 import MenuItem from 'material-ui/MenuItem';
 import DatePicker from 'material-ui/DatePicker';
 import TimePicker from 'material-ui/TimePicker';
+import {map} from 'lodash';
 
 export default class CandidateChangePopup extends React.PureComponent {
   constructor(props) {
@@ -34,7 +35,7 @@ export default class CandidateChangePopup extends React.PureComponent {
   }
 
   render() {
-    const professions = ["Developer", "Engineer", "Designer"];
+    const {positions} = this.props;
     const statuses = ["Accepted", "Rejected", "Shortlisted"];
     const levels = ["Intern", "Junior", "Middle", "Senior"];
     const {closeDialogueBox, saveChangedCandidate, candidate} = this.props;
@@ -57,13 +58,15 @@ export default class CandidateChangePopup extends React.PureComponent {
           onChange={this.changeProfession}
         >
           {
-            professions.map((profession, index) =>
-              <MenuItem
-                key={index}
-                value={profession}
-                primaryText={profession}
-              />
-            )
+            map(positions, position => {
+              return(
+                <MenuItem
+                  key={position.id}
+                  value={position.id}
+                  primaryText={position.positionName}
+                />
+              )
+            })
           }
         </DropDownMenu>
       )

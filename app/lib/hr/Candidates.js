@@ -5,7 +5,7 @@ import moment from 'moment';
 import {map, forEach, sortBy} from 'lodash';
 import LoadingScreen from '../ur/components/Loadingscreen';
 import {addCandidateFirebase, editCandidateFirebase, deleteCandidateFirebase} from '../firebaseAPI';
-
+import {setInitialPositions} from '../../actions/positions.action';
 import {addCandidate, deleteCandidate, setInitial} from '../../actions/candidate.action';
 
 import {Table, TableBody, TableHeader, TableHeaderColumn,
@@ -20,6 +20,7 @@ function mapStateToProps(state) {
   return (
     {
       candidates: state.candidates,
+      positions: state.positions
     }
   )
 }
@@ -44,6 +45,12 @@ class Candidates extends React.PureComponent {
         this.props.setInitial(candidates);
       }
     });
+    firebase.database().ref('positions').once('value').then(snapshot => {
+      const positions = snapshot.val();
+      if(positions){
+        this.props.setInitialPositions(positions);
+      }
+    })
   };
 
   componentWillReceiveProps(props) {
@@ -54,12 +61,12 @@ class Candidates extends React.PureComponent {
     if(isNew) {
       const id = addCandidateFirebase(candidate);
       firebase.database().ref('candidates/' + id).on('value', snapshot => {
-        this.props.addCandidate({...(snapshot.val()), id: id});
+        this.props.addCandidate(snapshot.val());
       });
     } else {
       const changedId = editCandidateFirebase(candidate);
       firebase.database().ref('candidates/' + changedId).on('value', snapshot => {
-        this.props.addCandidate({...(snapshot.val()), id: changedId});
+        this.props.addCandidate(snapshot.val());
       })
     }
   };
@@ -125,7 +132,7 @@ class Candidates extends React.PureComponent {
             {candidate.name}
           </TableRowColumn>
           <TableRowColumn>
-            {candidate.profession}
+            {this.props.positions[candidate.profession].positionName}
           </TableRowColumn>
           <TableRowColumn>
             {candidate.level}
@@ -179,6 +186,7 @@ class Candidates extends React.PureComponent {
     const CandidateChange = () => {
       return (
         <CandidateChangePopup
+          positions={this.props.positions}
           closeDialogueBox={() => this.setState({editScreen: false})}
           saveChangedCandidate={this.saveCandidate}
           candidate={
@@ -234,4 +242,4 @@ class Candidates extends React.PureComponent {
   };
 };
 
-export default connect(mapStateToProps, {addCandidate, deleteCandidate, setInitial})(Candidates);
+export default connect(mapStateToProps, {setInitialPositions, addCandidate, deleteCandidate, setInitial})(Candidates);
