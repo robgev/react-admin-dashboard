@@ -3,7 +3,6 @@ import ReactDOM from 'react-dom';
 import LoginSignup from './LoginSignup';
 import Candidates from './Candidates';
 import CustomQuestions from './CustomQuestions';
-import CustomQuestions1 from './CustomQuestions1';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 import Header from '../ur/components/Header';
 import Footer from '../ur/components/Footer';
@@ -21,7 +20,7 @@ class ResourceManager extends React.PureComponent {
           admin={this.props.admin}
           signOut={this.props.signOut}
         />
-        <CustomQuestions1 />
+        <CustomQuestions />
         <Footer />
       </div>
     )
