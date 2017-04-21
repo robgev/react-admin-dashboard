@@ -43,12 +43,12 @@ class CandidateInterviewHomepage extends React.PureComponent {
 
     const actions = [
       <FlatButton
-        label="cancel"
+        label='cancel'
         primary
         onTouchTap={this.props.closeInterviewScreen}
       />,
       <FlatButton
-        label="save"
+        label='save'
         primary
         onTouchTap={this.props.saveInterview}
       />
@@ -57,8 +57,8 @@ class CandidateInterviewHomepage extends React.PureComponent {
     const AdditionalComments = () => {
       return (
         <TextField
-          hintText="Comments"
-          floatingLabelText="Additional Comments"
+          hintText='Comments'
+          floatingLabelText='Additional Comments'
           multiLine
           rows={4}
         />
@@ -70,11 +70,11 @@ class CandidateInterviewHomepage extends React.PureComponent {
         onRequestClose={this.props.closeInterviewScreen}
         modal={false}
         autoScrollBodyContent
-        title="Interview Screen"
+        title='Interview Screen'
         open  >
         <FlatButton
-            className="forTimer"
-            label="Start the Timer"
+            className='forTimer'
+            label='Start the Timer'
             onClick={TimerNow}
             />
               {

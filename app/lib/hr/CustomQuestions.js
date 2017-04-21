@@ -23,13 +23,13 @@ class CustomQuestions extends React.PureComponent {
   constructor(props) {
     super(props);
     this.state = {
-      selectedQuestionId: "-1",
+      selectedQuestionId: '-1',
       questions: this.props.questions,
       professions: Object.keys(this.props.questions),
-      addProfession: "",
-      profession: "Developer",
-      level: "Intern",
-      editable: ""
+      addProfession: '',
+      profession: 'Developer',
+      level: 'Intern',
+      editable: ''
     }
   };
 
@@ -42,7 +42,7 @@ class CustomQuestions extends React.PureComponent {
 
   render() {
     const {selectedQuestionId, profession, level} = this.state;
-    const levels = ["Intern", "Junior", "Middle", "Senior"];
+    const levels = ['Intern', 'Junior', 'Middle', 'Senior'];
     const questions = this.state.questions[this.state.profession][this.state.level];
     const index = findIndex(questions, {id: selectedQuestionId});
 
@@ -74,7 +74,7 @@ class CustomQuestions extends React.PureComponent {
 
     const RenderQuestionEdit = () => {
       const {selectedQuestionId, profession, level} = this.state;
-      if (selectedQuestionId !== "-1"){
+      if (selectedQuestionId !== '-1'){
         const index = findIndex(this.state.questions[profession][level], {id: selectedQuestionId});
       }
       return (
@@ -85,24 +85,24 @@ class CustomQuestions extends React.PureComponent {
     }
 
     return (
-      <div style={{display: "flex"}}>
-        <div style={{width: "50%"}}>
+      <div style={{display: 'flex'}}>
+        <div style={{width: '50%'}}>
           <RenderProfessions />
           <RenderLevels />
           <br/>
           <TextField
             value={this.state.addProfession}
-            floatingLabelText="Add a new profession"
+            floatingLabelText='Add a new profession'
             onChange={(e) => this.setState({addProfession: e.target.value})}
           />
           <FlatButton
             primary={true}
-            label="Save"
+            label='Save'
             onTouchTap={() => {
               this.props.addProfession(this.state.addProfession);
-              this.setState({addProfession: ""})
+              this.setState({addProfession: ''})
             }}
-            style={{marginBottom: "20px"}}
+            style={{marginBottom: '20px'}}
           />
           {questions.map((question, index) => {
             return (
@@ -110,11 +110,11 @@ class CustomQuestions extends React.PureComponent {
                 <Paper
                   onTouchTap={() => this.setState({selectedQuestionId: question.id})}
                   style={{
-                    marginTop: "10px",
-                    marginLeft: "10px",
-                    width: "80%",
-                    height: "30px",
-                    cursor: "pointer"
+                    marginTop: '10px',
+                    marginLeft: '10px',
+                    width: '80%',
+                    height: '30px',
+                    cursor: 'pointer'
                   }}
                 >
                   {question.question}
@@ -124,16 +124,16 @@ class CustomQuestions extends React.PureComponent {
             })
           }
           <FlatButton
-            style={{marginTop: "20px"}}
+            style={{marginTop: '20px'}}
             primary={true}
-            label="add question"
+            label='add question'
             onTouchTap={() => this.props.addQuestion(this.state.profession, this.state.level)}
           />
         </div>
-        <div style={{width: "50%"}}>
+        <div style={{width: '50%'}}>
           {
             (()=>{
-              if (this.state.selectedQuestionId !== "-1") {
+              if (this.state.selectedQuestionId !== '-1') {
                 return (
                   <SelectedQuestionEdit
                     value={questions[index].question}

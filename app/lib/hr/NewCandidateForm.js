@@ -12,7 +12,7 @@ class NewCandidateForm extends React.PureComponent {
       super(props);
       injectTapEventPlugin();
       this.state = {
-        value: ""
+        value: ''
       };
     }
 
@@ -40,7 +40,7 @@ class NewCandidateForm extends React.PureComponent {
       const TextFieldName = () => (
       <div>
           <TextField
-          floatingLabelText="Full Name"
+          floatingLabelText='Full Name'
           floatingLabelStyle={styles.floatingLabelStyle}
           floatingLabelFocusStyle={styles.floatingLabelFocusStyle}
         />
@@ -50,7 +50,7 @@ class NewCandidateForm extends React.PureComponent {
       const TextFieldEmail = () => (
       <div>
           <TextField
-          floatingLabelText="Email Address"
+          floatingLabelText='Email Address'
           floatingLabelStyle={styles.floatingLabelStyle}
           floatingLabelFocusStyle={styles.floatingLabelFocusStyle}
         />
@@ -60,7 +60,7 @@ class NewCandidateForm extends React.PureComponent {
       const TextFieldPhone = () => (
       <div>
           <TextField
-          floatingLabelText="Phone"
+          floatingLabelText='Phone'
           floatingLabelStyle={styles.floatingLabelStyle}
           floatingLabelFocusStyle={styles.floatingLabelFocusStyle}
         />
@@ -70,7 +70,7 @@ class NewCandidateForm extends React.PureComponent {
       const TextFieldAddress = () => (
       <div>
           <TextField
-          floatingLabelText="Address"
+          floatingLabelText='Address'
           floatingLabelStyle={styles.floatingLabelStyle}
           floatingLabelFocusStyle={styles.floatingLabelFocusStyle}
         />
@@ -79,7 +79,7 @@ class NewCandidateForm extends React.PureComponent {
 
       const DatePickerMine = () => (
         <div>
-          <DatePicker hintText="Birthday Date" mode="landscape" />
+          <DatePicker hintText='Birthday Date' mode='landscape' />
         </div>
       );
 
@@ -87,7 +87,7 @@ class NewCandidateForm extends React.PureComponent {
     const RaisedButtonExampleSimple = () => (
       <div>
         <RaisedButton
-        label="Submit"
+        label='Submit'
         primary={true}
         prop={true}
         />
@@ -97,12 +97,12 @@ class NewCandidateForm extends React.PureComponent {
     const SelectPosition = () => (
       <div>
         <SelectField
-            floatingLabelText="Position"
+            floatingLabelText='Position'
             value={1}
         >
-        <MenuItem primaryText="Developer" value={1}/>
-        <MenuItem primaryText="Designer" />
-        <MenuItem primaryText="Engineer" />
+        <MenuItem primaryText='Developer' value={1}/>
+        <MenuItem primaryText='Designer' />
+        <MenuItem primaryText='Engineer' />
         </SelectField>
       </div>
     )

@@ -13,7 +13,7 @@ class SelectedQuestionEdit extends React.PureComponent {
     return (
       <div>
         <TextField
-          name="editable"
+          name='editable'
           value={this.state.value}
           onChange={(e) => this.setState({value: e.target.value})}
         />

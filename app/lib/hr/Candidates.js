@@ -79,23 +79,23 @@ class Candidates extends React.PureComponent {
 
   filterListElements = (candidates) => {
     const compareStatus = (a, b) => {
-      if (b.status === "Accepted" && a.status !== "Accepted"
-      || b.status === "Shortlisted" && a.status === "Rejected") {
+      if (b.status === 'Accepted' && a.status !== 'Accepted'
+      || b.status === 'Shortlisted' && a.status === 'Rejected') {
         return 1;
       }
     };
     switch (this.state.sortValue) {
-      case "Name":
+      case 'Name':
         return sortBy(candidates, i => i.name);
-      case "Profession":
+      case 'Profession':
         return sortBy(candidates, i => i.profession);
-      case "Status":
+      case 'Status':
         return candidates.sort(compareStatus);
-      case "Date":
+      case 'Date':
         return sortBy(candidates, i => i.date);
-      case "Level":
+      case 'Level':
         return sortBy(candidates, i => i.level);
-      case "":
+      case '':
         return candidates;
     }
   };
@@ -162,7 +162,7 @@ class Candidates extends React.PureComponent {
                 header.map(column => (
                   <TableHeaderColumn
                     key={column}
-                    className="tableRows"
+                    className='tableRows'
                   >
                     <FlatButton
                       style={{color: 'white'}}
@@ -192,7 +192,7 @@ class Candidates extends React.PureComponent {
           candidate={
             selectedCandidate
            || {
-            name: "", profession: "", status: "", isNew: true, date: new Date()
+            name: '', profession: '', status: '', isNew: true, date: new Date()
           }}
           id={this.state.selected}
         />
@@ -200,7 +200,7 @@ class Candidates extends React.PureComponent {
     };
 
     return(
-      <div className="hrHome">
+      <div className='hrHome'>
         <TextField
           floatingLabelText='Filter'
           value={this.state.filter}
@@ -217,16 +217,16 @@ class Candidates extends React.PureComponent {
         />
         <FlatButton
           primary
-          disabled={this.state.selected === "-1" || this.state.selected === "new"}
-          style={{marginLeft: "20px"}}
-          label="edit"
+          disabled={this.state.selected === '-1' || this.state.selected === 'new'}
+          style={{marginLeft: '20px'}}
+          label='edit'
           onTouchTap={() => this.setState({editScreen: true})}
         />
         <FlatButton
           primary
-          disabled={this.state.selected === "-1" || this.state.selected === "new"}
-          style={{marginLeft: "20px"}}
-          label="delete"
+          disabled={this.state.selected === '-1' || this.state.selected === 'new'}
+          style={{marginLeft: '20px'}}
+          label='delete'
           onTouchTap={() => this.deleteCandidate(this.state.selected)}
         />
         <CandidateTable />
