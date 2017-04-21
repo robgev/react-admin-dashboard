@@ -74,6 +74,7 @@ class Candidates extends React.PureComponent {
   deleteCandidate = (id) => {
     deleteCandidateFirebase(id).then(() => {
       this.props.deleteCandidate(id);
+      this.setState({selected: '-1'});
     });
   };
 
@@ -132,7 +133,7 @@ class Candidates extends React.PureComponent {
             {candidate.name}
           </TableRowColumn>
           <TableRowColumn>
-            {}
+            {this.props.positions[candidate.profession].positionName}
           </TableRowColumn>
           <TableRowColumn>
             {candidate.level}
