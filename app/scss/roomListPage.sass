@@ -2,7 +2,7 @@
 
 .mainpage
   width: 100%
-  height: 81.5vh
+  height: calc(90vh - 64px)
   display: flex
   overflow-x: hidden
 
@@ -35,11 +35,12 @@
 
     .calendar
       order: 1
-      height: 50vh
+      height: calc(50.5vh - 164px)
       overflow-y: scroll
 
     .room-whole-details
       display: flex
+      height: 40vh
       width: 70vw
       margin-bottom: 20px
 
@@ -55,12 +56,14 @@
 
 @media (max-width: 780px)
   .mainpage
+    height: calc(90.5vh-64px)
     display: flex
     flex-wrap: wrap
     overflow-x: hidden
 
     .calendar
       order: 1
+
 
   .room-details-container
     display: flex
@@ -75,7 +78,9 @@
     font-weight: 500
     font-size: 30px
 
-
+@media (max-height: 704px)
+  .mainpage
+    height: calc(100vh - 134px)
 //colors
 
 .green
