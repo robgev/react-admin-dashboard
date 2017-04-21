@@ -126,12 +126,15 @@ class CustomQuestions extends React.PureComponent {
       }
     });
     return(
-      <div className="hrHome">
-        <TextField
+      <div className="hrHomei">
+      <div className="hrHomeCustom">
+        <div className="hrPosition">
+<div className="hrPositionAdd">
+          <TextField
           name="newPosition"
           floatingLabelText="Add new position"
-          value={this.state.newPositonName}
           onChange={(e) => this.setState({newPositonName: e.target.value})}
+          value={this.state.newPositonName}
         />
         <FlatButton
           primary
@@ -143,20 +146,18 @@ class CustomQuestions extends React.PureComponent {
           label="Delete"
           onTouchTap={() => this.deletePosition()}
         />
+  </div>
         <DropDownMenu
+        className="hrPositionDropdown"
           value={this.state.selectedPosition}
           onChange={(e, i, selectedPosition) => this.setState({selectedPosition})}
         >
           <MenuItem value='-1' primaryText='All questions' />
           {RenderPositions}
         </DropDownMenu>
-        <TextField
-          name="newQuestion"
-          floatingLabelText="New Question"
-          fullWidth
-          value={this.state.newQuestion}
-          onChange={(e) => this.setState({newQuestion: e.target.value})}
-        />
+      </div>
+        <div className="hrQuestion">
+
         <FlatButton
           label="add question"
           disabled={this.state.selectedPosition === '-1'}
@@ -169,7 +170,42 @@ class CustomQuestions extends React.PureComponent {
           primary
           onTouchTap={() => this.deleteQuestion()}
         />
+
+        <FlatButton
+          label='edit question'
+          disabled={this.state.selectedQuestion === '-1'}
+          primary
+          onTouchTap={() => this.setState({isEditScreenOpen: true})}
+        />
+        <TextField
+          name="newQuestion"
+          floatingLabelText="New Question"
+          fullWidth
+          value={this.state.newQuestion}
+          onChange={(e) => this.setState({newQuestion: e.target.value})}
+        />
         {RenderQuestions}
+
+        {
+          (() => {
+            if(this.state.selectedQuestion !== '-1'){
+              return(
+                <QuestionEditScreen
+                  open={this.state.isEditScreenOpen}
+                  closeScreen={() => this.setState({isEditScreenOpen: false})}
+                  changeSelectedPosition={(selectedPosition) => this.setState({selectedPosition})}
+                  allPositions={this.state.allPositions}
+                  selectedPosition={this.state.selectedPosition}
+                  question={this.state.allQuestions[this.state.selectedQuestion]}
+                  saveQuestion={(question) => this.editQuestion(question)}
+                  addNewQuestion={(questionText) => this.addQuestion(questionText)}
+                />
+              );
+            }
+          })()
+        }
+        </div>
+        </div>
       </div>
     )
   }

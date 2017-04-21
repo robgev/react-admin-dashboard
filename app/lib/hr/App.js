@@ -8,6 +8,7 @@ import injectTapEventPlugin from 'react-tap-event-plugin';
 import Header from '../ur/components/Header';
 import Footer from '../ur/components/Footer';
 
+
 export default
 class ResourceManager extends React.PureComponent {
 
@@ -20,7 +21,7 @@ class ResourceManager extends React.PureComponent {
           admin={this.props.admin}
           signOut={this.props.signOut}
         />
-        <Candidates />
+        <CustomQuestions1 />
         <Footer />
       </div>
     )
