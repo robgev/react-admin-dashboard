@@ -144,6 +144,7 @@ class Calendar extends React.Component {
             });
         }
         const reservationSlot = {};
+        this.props.getEvents(events);
         this.setState({events, reservationSlot, roomN: nextProps.room.index});
       });
     }

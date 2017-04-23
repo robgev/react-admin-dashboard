@@ -20,7 +20,8 @@ function mapStateToProps(state) {
 }
 
 const appBarStyle = {
-    backgroundColor: '#266cb2'
+    backgroundColor: '#266cb2',
+    zIndex: 5
 }
 
 class MainPage extends React.Component {
@@ -30,7 +31,8 @@ class MainPage extends React.Component {
         startTime: '',
         endTime: '',
         date: '',
-        reservationData: {}
+        reservationData: {},
+        events: []
       };
     }
 
@@ -60,6 +62,9 @@ class MainPage extends React.Component {
                           reservationData: data
                         });
                       }}
+                      getEvents={(events)=>{
+                        this.setState({events});
+                      }}
                     />
                     <div className ="room-whole-details">
                       <RoomInfo/>
@@ -68,6 +73,7 @@ class MainPage extends React.Component {
                         endTime={ this.state.endTime }
                         date={ this.state.date }
                         data={ this.state.reservationData }
+                        events={ this.state.events }
                       />
                     </div>
                 </div>
