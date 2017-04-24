@@ -4,9 +4,10 @@ const path = require('path');
 const express = require('express');
 const admin_router = express.Router();
 const body_parser = require('body-parser');
-const admin = require('firebase-admin')
+const admin = require('firebase-admin');
 const json_parser = body_parser.json();
 const form_parser = body_parser.urlencoded({extended: true});
+const firebaseAPI  = require('../frontend/lib/firebaseAPI').default
 
 const serviceAccount = require("./serviceAccountKey.json");
 
@@ -30,10 +31,7 @@ admin_router.post('/deactivate', async (req, res) => {
     const updatedData = await admin.auth().updateUser(uid, {
      disabled: !userData.disabled
     })
-    const dbRef = firebase.database().ref(`users/${uid}`);
-    dbRef.update({
-      active: updatedData.disabled
-    })
+    firebaseAPI.deactivate(uid, updatedData.disabled)
     res.end(JSON.stringify({status: 'ok', disabled: updatedData.disabled}))
   } catch(error) {
     console.log('Error fetching user data:', error);
@@ -49,10 +47,7 @@ admin_router.post('/edit', async (req, res) => {
   if (displayName) { updatedData.displayName = displayName }
   try {
     const userData = await admin.auth().updateUser(uid, updatedData)
-    const dbRef = firebase.database().ref(`users/${uid}`);
-    dbRef.update({
-      updatedData
-    })
+    firebaseAPI.editUserInfo(uid, updatedData)
     res.end(JSON.stringify({status: 'ok', userData}))
   } catch(error) {
     console.log('Something went wrong:', error);
@@ -73,14 +68,14 @@ admin_router.post('/add', async (req, res) => {
   }
   try {
     const userData = await admin.auth().createUser(newUserData)
-    const dbRef = firebase.database().ref(`users/${userData.uid}`);
-    dbRef.set({
+    const newUserObject = {
       email,
       password,
       username: name,
       created: moment().format("MMM D, YYYY"),
       isAdmin : false,
-    });
+    }
+    firebaseAPI.addNewUser(userData.uid, newUserObject)
     res.end(JSON.stringify({status: 'ok', userData}))
   } catch(error) {
     console.log('Something went wrong:', error);

@@ -231,7 +231,6 @@ class App extends Component {
                                   updateName={auth.updateName}
                                   updateEmail={auth.updateEmail}
                                   updatePhoto={auth.updatePhoto}
-                                  getUserActiveState={auth.getUserActiveState}
                                   admin={isAdmin}
                                   {...props}
                                 />

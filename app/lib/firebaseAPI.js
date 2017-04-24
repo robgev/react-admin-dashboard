@@ -12,7 +12,11 @@ const firebaseConf = {
 };
 firebase.initializeApp(firebaseConf);
 
+//Conf end
+
 let userPassword = '';
+
+// Simple functions
 
 const handleSignOut = () => {
   if (firebase.auth().currentUser) {
@@ -90,6 +94,8 @@ const sendPasswordReset = (email) => {
   });
 }
 
+// End
+
 firebase.auth().onAuthStateChanged(user => {
   if (user) {
     const { displayName, email, emailVerified, photoURL, uid, providerData } = user;
@@ -129,9 +135,7 @@ firebase.auth().onAuthStateChanged(user => {
   }
 });
 
-const checkLoggedIn = () => {
-  return !!(currentUser);
-}
+// Current User Changes
 
 const updateEmail = (email) => {
   const user = firebase.auth().currentUser;
@@ -167,6 +171,7 @@ const updatePhoto = (photoURL) => {
   })
   .catch(error =>  console.log);
 }
+
 
 const reauth = (password) => {
   const user = firebase.auth().currentUser;
@@ -209,14 +214,28 @@ const deleteUser = (oldPassword) => { // Consider writing in async/await
   .catch(error =>  console.log)
 }
 
-const getUserActiveState = (uid) => {
-  let targetUserData = {};
-  firebase.database().ref(`users/${uid}`).once('value')
-  .then(targetUserRef => {
-    targetUserData = targetUserRef.val();
-  });
-  return targetUserData.active;
+// End
+
+// DB Updating stuff for admin side
+const deactivate = (uid, activeState) => {
+  const dbRef = firebase.database().ref(`users/${uid}`);
+  dbRef.update({
+    active: activeState
+  })
 }
+
+const editUserInfo = (uid, updatedData) => {
+  const dbRef = firebase.database().ref(`users/${uid}`);
+  dbRef.update({
+    updatedData
+  })
+}
+
+const addNewUser = (uid, newUserObject) => {
+  const dbRef = firebase.database().ref(`users/${uid}`);
+  dbRef.set(newUserObject);
+}
+// End
 
 export const saveEvent = (data) => {
   const { roomNumber, startDate, endDate, description, email } = data;
@@ -313,6 +332,7 @@ export default {
   updateName,
   updateEmail,
   updatePhoto,
-  checkLoggedIn,
-  getUserActiveState,
+  deactivate,
+  editUserInfo,
+  addNewUser
 }
