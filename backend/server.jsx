@@ -25,7 +25,8 @@ const ui = [
   {resource: '/about', link: 'about'},
   {resource: '/room',  link: 'room reservation'},
   {resource: '/management', link: 'management'},
-  {resource: '/admin', link: 'admin'}
+  {resource: '/admin', link: 'admin'},
+  {resource: '/management/questions', link: 'questions'},
 ]
 
 // const ui_routes = new Set (
