@@ -317,9 +317,15 @@ export const deleteQuestionFirebase = (id) => {
   return firebase.database().ref('/questions/' + id).remove();
 };
 
-export const addQuestionToCandidate = (candidateId, questionIds) => {
+export const addQuestionToCandidate = (candidateId, questions) => {
   const updates = {};
-  updates[`/candidates/${candidateId}/questions`] = questionIds;
+  updates[`/candidates/${candidateId}/questions`] = questions;
+  return firebase.database().ref().update(updates);
+};
+
+export const addQuestionAnswers = (candidateId, question_answers) => {
+  const updates = {};
+  updates[`/candidates/${candidateId}/questions`] = question_answers;
   return firebase.database().ref().update(updates);
 };
 

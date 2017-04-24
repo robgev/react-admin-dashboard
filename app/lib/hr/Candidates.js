@@ -245,6 +245,13 @@ class Candidates extends React.PureComponent {
           label='questionlist'
           containerElement={<Link to={'/management/interview/' + this.state.selected} />}
         />
+        <FlatButton
+          primary
+          disabled={this.state.selected === '-1' || this.state.selected === 'new'}
+          style={{marginLeft: '20px'}}
+          label='interview'
+          containerElement={<Link to={'/management/candidateInterview/' + this.state.selected} />}
+        />
         <CandidateTable />
         {
           (() => {

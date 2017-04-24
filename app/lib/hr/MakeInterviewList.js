@@ -1,6 +1,6 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import {map, filter} from 'lodash';
+import {map, filter, find, findIndex} from 'lodash';
 import {Table, TableBody, TableHeader, TableHeaderColumn,
   TableRow, TableRowColumn} from 'material-ui/Table';
 import {addQuestionToCandidate} from '../firebaseAPI';
@@ -27,8 +27,8 @@ class MakeInterviewList extends React.PureComponent {
   selectedCandidate = this.props.candidates[this.props.match.params.candidateId];
   allQuestions = filter(this.props.questions, {positionId: this.selectedCandidate.profession});
   render() {
-    const selectedQuestions = this.state.candidateQuestions.map(questionId => {
-      return this.props.questions[questionId];
+    const selectedQuestions = this.state.candidateQuestions.map(question => {
+      return this.props.questions[question.questionId];
     });
     return(
       <div style={{display: 'flex'}}>
@@ -43,20 +43,21 @@ class MakeInterviewList extends React.PureComponent {
                 </TableHeaderColumn>
               </TableRow>
             </TableHeader>
-            <TableBody>
+            <TableBody deselectOnClickaway={false}>
               {
                 this.allQuestions.map(question => {
                   return(
                     <TableRow
                       key={question.id}
-                      selected={this.state.candidateQuestions.includes(question.id)}
+                      selected={!!find(this.state.candidateQuestions, {questionId: question.id})}
                       onTouchTap={() => {
-                        if(!this.state.candidateQuestions.includes(question.id)){
-                          const candidateQuestions = [...this.state.candidateQuestions, question.id];
+                        if(!find(this.state.candidateQuestions, {questionId: question.id})){
+                          const candidateQuestions = [...this.state.candidateQuestions,
+                          {answer: '', questionId: question.id}];
                           this.setState({candidateQuestions});
                         } else {
                           let candidateQuestions = this.state.candidateQuestions.slice();
-                          const index = candidateQuestions.indexOf(question.id);
+                          const index = findIndex(candidateQuestions, {questionId: question.id});
                           candidateQuestions.splice(index, 1);
                           this.setState({candidateQuestions});
                         }
@@ -75,7 +76,7 @@ class MakeInterviewList extends React.PureComponent {
         <div
           style={{width: '50%'}}
         >
-          <Table>
+          <Table selectable={false}>
             <TableHeader>
               <TableRow>
                 <TableHeaderColumn>
@@ -89,12 +90,6 @@ class MakeInterviewList extends React.PureComponent {
                   return(
                     <TableRow
                       key={question.id}
-                      onTouchTap={() => {
-                        let candidateQuestions = this.state.candidateQuestions.slice();
-                        const index = candidateQuestions.indexOf(question.id);
-                        candidateQuestions.splice(index, 1);
-                        this.setState({candidateQuestions});
-                      }}
                     >
                       <TableRowColumn>
                         {question.questionText}

@@ -1,10 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import LoginSignup from './LoginSignup';
 import Candidates from './Candidates';
 import CustomQuestions from './CustomQuestions';
 import MakeInterviewList from './MakeInterviewList';
 import injectTapEventPlugin from 'react-tap-event-plugin';
+import CandidateInterviewHomepage from './CandidateInterviewHomepage';
 import Header from '../ur/components/Header';
 import Footer from '../ur/components/Footer';
 import {Switch, Route, Link} from 'react-router-dom';
@@ -35,6 +35,7 @@ class ResourceManager extends React.PureComponent {
         <Switch>
           <Route path={url + '/questions'} component={CustomQuestions} />
           <Route path={url + '/interview/:candidateId'} component={MakeInterviewList} />
+          <Route path={url + '/candidateInterview/:candidateId'} component={CandidateInterviewHomepage} />
           <Route path={url + '/'} component={Candidates} />
         </Switch>
         <Footer />
