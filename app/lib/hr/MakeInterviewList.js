@@ -21,7 +21,7 @@ class MakeInterviewList extends React.PureComponent {
   constructor(props){
     super(props);
     this.state = {
-      candidateQuestions: this.props.candidates[this.props.match.params.candidateId].questions
+      candidateQuestions: this.props.candidates[this.props.match.params.candidateId].questions || []
     }
   };
   selectedCandidate = this.props.candidates[this.props.match.params.candidateId];
