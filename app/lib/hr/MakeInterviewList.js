@@ -10,7 +10,8 @@ import {addCandidateQuestions} from '../../actions/candidate.action';
 function mapStateToProps(state) {
   return (
     {
-      questions: state.quesitons
+      questions: state.quesitons,
+      candidates: state.candidates
     }
   );
 };
@@ -23,6 +24,7 @@ class MakeInterviewList extends React.PureComponent {
     }
   };
   render() {
+    const selectedCandidate = this.props.candidates[this.props.match.params.candidateId];
     const allQuestions = filter(this.props.questions, {positionId: this.state.candidate.profession});
     const selectedQuestions = this.state.candidateQuestions.map(questionId => {
       return this.props.questions.questionId;
@@ -54,7 +56,7 @@ class MakeInterviewList extends React.PureComponent {
                       </TableRowColumn>
                     </TableRow>
                   );
-                });
+                })
               }
             </TableBody>
           </Table>
@@ -91,8 +93,8 @@ class MakeInterviewList extends React.PureComponent {
           <FlatButton
             label='save'
             onTouchTap={() => {
-              addQuestionToCandidate(this.props.candidate.id, this.state.candidateQuestions)
-                .then(this.props.addCandidateQuestions(this.props.candidate.id, this.state.candidateQuestions))
+              addQuestionToCandidate(selectedCandidate.id, this.state.candidateQuestions)
+                .then(this.props.addCandidateQuestions(selectedCandidate.id, this.state.candidateQuestions))
             }}
           />
         </div>

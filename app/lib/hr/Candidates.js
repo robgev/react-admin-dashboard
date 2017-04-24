@@ -4,6 +4,7 @@ import firebase from 'firebase';
 import moment from 'moment';
 import {map, forEach, sortBy} from 'lodash';
 import LoadingScreen from '../ur/components/Loadingscreen';
+import {Link} from 'react-router-dom';
 import {addCandidateFirebase, editCandidateFirebase, deleteCandidateFirebase} from '../firebaseAPI';
 import {setInitialPositions} from '../../actions/positions.action';
 import {addCandidate, deleteCandidate, setInitial} from '../../actions/candidate.action';
@@ -229,6 +230,13 @@ class Candidates extends React.PureComponent {
           style={{marginLeft: '20px'}}
           label='delete'
           onTouchTap={() => this.deleteCandidate(this.state.selected)}
+        />
+        <FlatButton
+          primary
+          disabled={this.state.selected === '-1' || this.state.selected === 'new'}
+          style={{marginLeft: '20px'}}
+          label='questionlist'
+          containerElement={<Link to={'/candidatequestions/' + this.state.selected} />}
         />
         <CandidateTable />
         {
