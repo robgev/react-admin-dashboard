@@ -1,4 +1,4 @@
-export const request_opts = body => {
+export const generate_request = body => {
   return {
     method:'post',
     headers: new Headers({

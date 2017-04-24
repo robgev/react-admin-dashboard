@@ -48,7 +48,7 @@ class App extends Component {
         }
         if (photoURL === null || photoURL === "/profile.svg") {
           currentUser.updateProfile({
-            photoURL: "images/profile.svg",
+            photoURL: "/images/profile.svg",
           })
           .then(() => this.setState({...this.state, currentUser}))
           .catch(error => console.log)
@@ -231,7 +231,6 @@ class App extends Component {
                                   updateName={auth.updateName}
                                   updateEmail={auth.updateEmail}
                                   updatePhoto={auth.updatePhoto}
-                                  toggleUserActiveState={auth.toggleUserActiveState}
                                   getUserActiveState={auth.getUserActiveState}
                                   admin={isAdmin}
                                   {...props}

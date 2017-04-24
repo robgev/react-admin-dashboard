@@ -209,16 +209,11 @@ const deleteUser = (oldPassword) => { // Consider writing in async/await
   .catch(error =>  console.log)
 }
 
-const toggleUserActiveState = (uid) => {
-  return true;
-}
-
 const getUserActiveState = (uid) => {
   let targetUserData = {};
   firebase.database().ref(`users/${uid}`).once('value')
   .then(targetUserRef => {
     targetUserData = targetUserRef.val();
-    console.log(targetUserData.active)
   });
   return targetUserData.active;
 }
@@ -319,6 +314,5 @@ export default {
   updateEmail,
   updatePhoto,
   checkLoggedIn,
-  toggleUserActiveState,
   getUserActiveState,
 }

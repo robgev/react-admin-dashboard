@@ -1,6 +1,5 @@
 'use strict';
 
-import { createServer } from 'http';
 import React from 'react';
 import { renderToString } from 'react-dom/server';
 import { StaticRouter } from 'react-router';
@@ -13,6 +12,7 @@ import injectTapEventPlugin from 'react-tap-event-plugin';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import NotFound from '../frontend/lib/ur/components/Notfound';
 import { allReducers } from '../frontend/reducers/index';
+import admin_router from './admin_routes'
 
 const debug = process.env.NODE_ENV === 'debug' ? true : false;
 const favicon = require('serve-favicon');
@@ -66,7 +66,6 @@ app.use((req, res, next) => {
     res.end()
   } else {
     // if (ui_routes.has(g) === false) next();
-    console.log(ui_routes)
     if(ui_routes.includes(g) === false) next();
     else {
       res.setHeader('Content-Type', 'text/html');
@@ -79,11 +78,11 @@ app.use((req, res, next) => {
       <link href="https://fonts.googleapis.com/css?family=Roboto:400" rel="stylesheet">
       <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
       <title>ApolloBytes Internal Management</title>
-      <link rel="preload" href="bundle.js" as="script"/>
+      <link rel="preload" href="/bundle.js" as="script"/>
     </head>
     <body>
       <div id="app">${html}</div>
-       <script src="bundle.js"></script>
+       <script src="/bundle.js"></script>
     </body>
   </html>
   `   );
@@ -92,6 +91,53 @@ app.use((req, res, next) => {
 });
 
 app.use(favicon('public/images/favicon.ico'));
+
+app.get('/management/interview/:candidateId', (req, res) => {
+  global.navigator = {
+    userAgent: req.headers['user-agent']
+  };
+  // This context object contains the results of the render
+  const context = {}
+  const muiTheme = getMuiTheme({}, {userAgent: req.headers['user-agent'] || 'all'});
+  const g = url.parse(req.url).pathname;
+  console.log('candidateId:', req.params.candidateId);
+  const html = renderToString(
+    <Provider store={store}>
+      <MuiThemeProvider muiTheme={muiTheme}>
+        <StaticRouter location={req.url} context={context}>
+          <App />
+        </StaticRouter>
+      </MuiThemeProvider>
+    </Provider>
+  )
+  if (context.url) {
+    res.writeHead(302, {
+      Location: context.url
+    })
+    res.end()
+  } else {
+      res.setHeader('Content-Type', 'text/html');
+      res.end(`
+  <!DOCTYPE html>
+  <html>
+    <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1"/>
+      <link href="https://fonts.googleapis.com/css?family=Roboto:400" rel="stylesheet">
+      <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+      <title>ApolloBytes Internal Management</title>
+      <link rel="preload" href="/bundle.js" as="script"/>
+    </head>
+    <body>
+      <div id="app">${html}</div>
+       <script src="/bundle.js"></script>
+    </body>
+  </html>
+  `   );
+  }
+});
+
+app.use('/manageusers', admin_router);
 
 // No other handler picked it up yet, so this is our 404 handler
 app.use((req, res, next) => {

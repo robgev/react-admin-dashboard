@@ -4,7 +4,8 @@ import Footer from './components/Footer';
 import Header from './components/Header';
 import LoadingScreen from './components/Loadingscreen';
 import {ModalContainer, ModalDialog} from 'react-modal-dialog';
-import _ from 'lodash';
+import {map} from 'lodash';
+import { generate_request } from '../utils';
 
 export default
 class AdminPanel extends Component {
@@ -14,7 +15,6 @@ class AdminPanel extends Component {
       email: '',
       name: '',
       password: '',
-      newPassword: '',
       showBanner: false,
       selectedUser: '',
       bannerText: '',
@@ -47,62 +47,70 @@ class AdminPanel extends Component {
     this.setState({...this.state, password});
   }
 
-  handleNewPassChange = e => {
-    const newPassword = e.target.value;
-    this.setState({...this.state, newPassword});
-  }
-
-  deleteAccount = () => { // Should think about a way of implementing
-    const { deleteUser } = this.props; // Popup, modal smth else?
+  deleteAccount = async () => {
+    const { selectedUser } = this.state;
+    this.toggleDeleteModal();
+    const send_to_server = generate_request({uid: selectedUser});
+    const answer = await fetch(`/manageusers/delete`, send_to_server);
+    const answer_json = await answer.json();
+    this.showBanner(`User was deleted`);
   }
 
   updatePhoto = () => { // Should think about a way of implementing
     const { updatePhoto } = this.props;
   }
 
-  submitData = () => {
-    const { changePass, updateName, updateEmail } = this.props;
-    const { email, password, newPassword, name } = this.state;
+  updateUserData = async () => {
+    const { email, password, name, selectedUser } = this.state;
     let shouldShowBanner = true;
+    const updatedData = {}
     if(email.trim()) {
-      updateEmail(email);
+      updatedData.email = email;
       shouldShowBanner = true;
     }
-    if(password.trim() && newPassword.trim()) {
-      changePass(password, newPassword);
+    if(password.trim()) {
+      updatedData.password = password;
       shouldShowBanner = true;
     }
     if(name.trim()) {
-      updateName(name);
+      updatedData.name = name;
       shouldShowBanner = true;
     }
+    const send_to_server = generate_request({...updatedData, uid: selectedUser});
+    const answer = await fetch(`/manageusers/edit`, send_to_server);
+    const answer_json = await answer.json();
     if(shouldShowBanner) {
-      this.showBanner();
+      this.showBanner(`User info was updated`);
     }
   }
 
   toggleUserActiveState = async () => {
-    const { toggleUserActiveState } = this.props;
     const { selectedUser, activeState } = this.state;
-    await toggleUserActiveState(selectedUser);
+    const send_to_server = generate_request({uid: selectedUser});
+    const answer = await fetch(`/manageusers/deactivate`, send_to_server);
+    const answer_json = await answer.json();
     const bannerText = activeState ? 'disabled' : 'enabled';
     this.showBanner(`User was ${bannerText}`);
     this.setState({ ...this.state, activeState: !activeState  })
   }
 
   handleSelected = async (uid, e) => {
-    const { getUserActiveState } = this.props;
-    const { selectedUser } = this.state;
-    const activeState = await getUserActiveState(uid);
-    this.setState({ ...this.state, selectedUser: uid, activeState })
+    const send_to_server = generate_request({uid});
+    const data = await fetch(`/manageusers/activestatus`, send_to_server);
+    const answer = await data.json();
+    this.setState({ ...this.state, selectedUser: uid, activeState: !answer.disabled})
   }
 
-  addNewUser = () => {
+  addNewUser = async () => {
     const { email, password } = this.state;
     this.toggleAddModal();
-    this.props.addNewUser(email, password);
+    const send_to_server = generate_request({email, password});
+    const answer = await fetch(`/manageusers/add`, send_to_server);
+    const answer_json = await answer.json();
     this.showBanner(`User was added`);
   }
+
+  // Toggles
 
   toggleAddModal = () => {
     const { showAddModal } = this.state;
@@ -118,6 +126,8 @@ class AdminPanel extends Component {
     const { showDeleteModal } = this.state;
     this.setState({...this.state, showDeleteModal: !showDeleteModal});
   }
+
+  // End
 
   getUsersData = () => {
     const { user, dbRef } = this.props;
@@ -140,12 +150,12 @@ class AdminPanel extends Component {
           }}
           whenResolved={ snapshot => {
             const value = snapshot.val();
-            const renderElms = _.map(value, (currentUserData, idx) => {
-              const isSelected = this.state.selectedUser === idx ? 'selected' : '';
+            const renderElms = map(value, (currentUserData, uid) => {
+              const isSelected = this.state.selectedUser === uid ? 'selected' : '';
               return (
                 <tr
-                  key={idx}
-                  onClick={this.handleSelected.bind(this, idx)}
+                  key={uid}
+                  onClick={this.handleSelected.bind(this, uid)}
                   className={isSelected}>
                   <td className={'row-cell'}>
                     <div>
@@ -194,7 +204,6 @@ class AdminPanel extends Component {
       showEditModal,
       showDeleteModal
     } = this.state;
-    console.log(showAddModal)
     const { user } = this.props;
     const { displayName, email, emailVerified, photoURL, uid, providerData } = user;
     return (
@@ -246,21 +255,26 @@ class AdminPanel extends Component {
               <ModalContainer onClose={this.toggleEditModal}>
                 <ModalDialog onClose={this.toggleEditModal} className="modal-dialog">
                   <h1>Enter Credentials</h1>
-                  <p>Enter email and password for a new user</p>
+                  <p>Enter credentials you want to change</p>
                   <input
                     type='email'
                     placeholder='Email'
-                    onChange={this.mailChangeHandler}
+                    onChange={this.handleMailChange}
+                  />
+                  <input
+                    type='text'
+                    placeholder='Display Name'
+                    onChange={this.handleNameChange}
                   />
                   <input
                     type='password'
                     placeholder='Password'
-                    onChange={this.passChangeHandler}
+                    onChange={this.handlePassChange}
                   />
                   <button
-                    onClick={this.addNewUser}
+                    onClick={this.updateUserData}
                     style={{width: '131px'}}
-                  >Add New User</button>
+                  >Edit</button>
                 </ModalDialog>
               </ModalContainer>
             }
@@ -268,22 +282,16 @@ class AdminPanel extends Component {
               showDeleteModal &&
               <ModalContainer onClose={this.toggleDeleteModal}>
                 <ModalDialog onClose={this.toggleDeleteModal} className="modal-dialog">
-                  <h1>Enter Credentials</h1>
-                  <p>Enter email and password for a new user</p>
-                  <input
-                    type='email'
-                    placeholder='Email'
-                    onChange={this.mailChangeHandler}
-                  />
-                  <input
-                    type='password'
-                    placeholder='Password'
-                    onChange={this.passChangeHandler}
-                  />
+                  <h1>Are you sure you want to delete this user?</h1>
+                  <p>Warning: this action cannot be undone</p>
                   <button
-                    onClick={this.addNewUser}
+                    onClick={this.deleteAccount}
                     style={{width: '131px'}}
-                  >Add New User</button>
+                  >Yes</button>
+                  <button
+                    onClick={this.toggleDeleteModal}
+                    style={{width: '131px'}}
+                  >No</button>
                 </ModalDialog>
               </ModalContainer>
             }
