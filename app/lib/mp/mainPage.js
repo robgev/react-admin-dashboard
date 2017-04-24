@@ -12,8 +12,7 @@ import ResForm from './reservationForm';
 import Header from '../ur/components/Header';
 import Footer from '../ur/components/Footer';
 import injectTapEventPlugin from 'react-tap-event-plugin';
-
-require('../firebaseAPI.js');
+import {getRooms} from '../firebaseAPI';
 
 function mapStateToProps(state) {
     return {loggedIn: state.loggedIn}
@@ -34,6 +33,20 @@ class MainPage extends React.Component {
         reservationData: {},
         events: []
       };
+    }
+
+    componentWillMount(){
+      getRooms().then((rooms)=>{
+        rooms = rooms.val();
+        rooms[0] = {
+            name: 'All',
+            class: 'c',
+            index: 0,
+            descr: 'All rooms',
+            color: 'black'
+        }
+        console.log(rooms)
+      });
     }
 
     render() {
