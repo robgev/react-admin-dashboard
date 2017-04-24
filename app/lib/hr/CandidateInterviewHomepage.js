@@ -20,12 +20,12 @@ class CandidateInterviewHomepage extends React.PureComponent {
   constructor(props){
     super(props);
     this.state = {
-      questions: props.candidates[this.props.match.params.candidateId].questions
+      questions: props.candidates[props.match.params.candidateId].questions
     };
   };
   render() {
     return(
-      <div>
+      <div style={styles.container}>
         {
           this.state.questions.map(question => {
             return(
@@ -56,6 +56,23 @@ class CandidateInterviewHomepage extends React.PureComponent {
         />
       </div>
     )
+  }
+}
+
+const styles = {
+  container: {
+    display: 'flex',
+    height: '90vh',
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexDirection: 'column',
+    width: '80%',
+    margin: '0 auto',
+  },
+  centered: {
+    display: 'flex',
+    justifyContent: 'center',
+    textAlign: 'center',
   }
 }
 

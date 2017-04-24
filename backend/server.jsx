@@ -39,6 +39,51 @@ const store = createStore(
   allReducers
 );
 
+const handleRoutesWithParams = (req, res) => {
+  global.navigator = {
+    userAgent: req.headers['user-agent']
+  };
+  // This context object contains the results of the render
+  const context = {}
+  const muiTheme = getMuiTheme({}, {userAgent: req.headers['user-agent'] || 'all'});
+  const g = url.parse(req.url).pathname;
+  console.log('candidateId:', req.params.candidateId);
+  const html = renderToString(
+    <Provider store={store}>
+      <MuiThemeProvider muiTheme={muiTheme}>
+        <StaticRouter location={req.url} context={context}>
+          <App />
+        </StaticRouter>
+      </MuiThemeProvider>
+    </Provider>
+  )
+  if (context.url) {
+    res.writeHead(302, {
+      Location: context.url
+    })
+    res.end()
+  } else {
+      res.setHeader('Content-Type', 'text/html');
+      res.end(`
+  <!DOCTYPE html>
+  <html>
+    <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1"/>
+      <link href="https://fonts.googleapis.com/css?family=Roboto:400" rel="stylesheet">
+      <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+      <title>ApolloBytes Internal Management</title>
+      <link rel="preload" href="/bundle.js" as="script"/>
+    </head>
+    <body>
+      <div id="app">${html}</div>
+       <script src="/bundle.js"></script>
+    </body>
+  </html>
+  `   );
+  }
+}
+
 app.use(express.static('public'));
 app.use((req, res, next) => {
   global.navigator = {
@@ -93,50 +138,9 @@ app.use((req, res, next) => {
 
 app.use(favicon('public/images/favicon.ico'));
 
-app.get('/management/interview/:candidateId', (req, res) => {
-  global.navigator = {
-    userAgent: req.headers['user-agent']
-  };
-  // This context object contains the results of the render
-  const context = {}
-  const muiTheme = getMuiTheme({}, {userAgent: req.headers['user-agent'] || 'all'});
-  const g = url.parse(req.url).pathname;
-  console.log('candidateId:', req.params.candidateId);
-  const html = renderToString(
-    <Provider store={store}>
-      <MuiThemeProvider muiTheme={muiTheme}>
-        <StaticRouter location={req.url} context={context}>
-          <App />
-        </StaticRouter>
-      </MuiThemeProvider>
-    </Provider>
-  )
-  if (context.url) {
-    res.writeHead(302, {
-      Location: context.url
-    })
-    res.end()
-  } else {
-      res.setHeader('Content-Type', 'text/html');
-      res.end(`
-  <!DOCTYPE html>
-  <html>
-    <head>
-      <meta charset="utf-8">
-      <meta name="viewport" content="width=device-width, initial-scale=1"/>
-      <link href="https://fonts.googleapis.com/css?family=Roboto:400" rel="stylesheet">
-      <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-      <title>ApolloBytes Internal Management</title>
-      <link rel="preload" href="/bundle.js" as="script"/>
-    </head>
-    <body>
-      <div id="app">${html}</div>
-       <script src="/bundle.js"></script>
-    </body>
-  </html>
-  `   );
-  }
-});
+app.get('/management/candidateInterview/:candidateId', handleRoutesWithParams);
+
+app.get('/management/interview/:candidateId', handleRoutesWithParams);
 
 app.use('/manageusers', admin_router);
 

@@ -24,20 +24,21 @@ function mapStateToProps(state) {
 };
 
 class CustomQuestions extends React.PureComponent {
-  constructor(){
-    super();
+  constructor(props){
+    super(props);
     this.state = {
-      allPositions: {},
+      allPositions: props.positions,
       newPositonName: '',
       selectedPosition: '-1',
       newQuestion: '',
-      allQuestions: {},
+      allQuestions: props.questions,
       selectedQuestion: '-1',
       isEditScreenOpen: false
     };
   };
 
   componentWillReceiveProps(props) {
+    console.log(props)
     this.setState({
       allPositions: props.positions,
       allQuestions: props.questions
@@ -114,7 +115,7 @@ class CustomQuestions extends React.PureComponent {
       }
     });
     return(
-      <div className='hrHomei'>
+      <div className='hrHome'>
       <div className='hrHomeCustom'>
         <div className='hrPosition'>
           <div className='hrPositionAdd'>
@@ -135,15 +136,15 @@ class CustomQuestions extends React.PureComponent {
               onTouchTap={() => this.deletePosition()}
             />
           </div>
-        <DropDownMenu
-        className='hrPositionDropdown'
-          value={this.state.selectedPosition}
-          onChange={(e, i, selectedPosition) => this.setState({selectedPosition})}
-        >
-          <MenuItem value='-1' primaryText='All questions' />
-          {RenderPositions}
-        </DropDownMenu>
-      </div>
+          <DropDownMenu
+            className='hrPositionDropdown'
+            value={this.state.selectedPosition}
+            onChange={(e, i, selectedPosition) => this.setState({selectedPosition})}
+          >
+            <MenuItem value='-1' primaryText='All questions' />
+            {RenderPositions}
+          </DropDownMenu>
+        </div>
         <div className='hrQuestion'>
         <FlatButton
           label='add question'

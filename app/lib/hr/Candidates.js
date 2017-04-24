@@ -6,9 +6,7 @@ import {map, forEach, sortBy} from 'lodash';
 import LoadingScreen from '../ur/components/Loadingscreen';
 import {Link} from 'react-router-dom';
 import {addCandidateFirebase, editCandidateFirebase, deleteCandidateFirebase} from '../firebaseAPI';
-import {setInitialPositions} from '../../actions/positions.action';
 import {addCandidate, deleteCandidate, setInitial} from '../../actions/candidate.action';
-import {setInitialQuestions} from '../../actions/questions.action';
 
 import {Table, TableBody, TableHeader, TableHeaderColumn,
          TableRow, TableRowColumn} from 'material-ui/Table';
@@ -45,18 +43,6 @@ class Candidates extends React.PureComponent {
       candidates = candidates.val();
       if (candidates){
         this.props.setInitial(candidates);
-      }
-    });
-    firebase.database().ref('positions').once('value').then(snapshot => {
-      const positions = snapshot.val();
-      if (positions){
-        this.props.setInitialPositions(positions);
-      }
-    });
-    firebase.database().ref('questions').once('value').then(snapshot => {
-      const questions = snapshot.val();
-      if(questions){
-        this.props.setInitialQuestions(questions);
       }
     });
   };
@@ -265,4 +251,4 @@ class Candidates extends React.PureComponent {
   };
 };
 
-export default connect(mapStateToProps, {setInitialPositions, addCandidate, deleteCandidate, setInitial, setInitialQuestions})(Candidates);
+export default connect(mapStateToProps, {addCandidate, deleteCandidate, setInitial})(Candidates);

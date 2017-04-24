@@ -3,6 +3,7 @@ import {connect} from 'react-redux';
 import {map, filter, find, findIndex} from 'lodash';
 import {Table, TableBody, TableHeader, TableHeaderColumn,
   TableRow, TableRowColumn} from 'material-ui/Table';
+import Divider from 'material-ui/Divider';
 import {addQuestionToCandidate} from '../firebaseAPI';
 import FlatButton from 'material-ui/FlatButton';
 import {addCandidateQuestions} from '../../actions/candidate.action';
@@ -31,87 +32,107 @@ class MakeInterviewList extends React.PureComponent {
       return this.props.questions[question.questionId];
     });
     return(
-      <div style={{display: 'flex'}}>
-        <div
-          style={{width: '50%'}}
-        >
-          <Table adjustForCheckbox multiSelectable>
-            <TableHeader>
-              <TableRow>
-                <TableHeaderColumn>
-                  Questions
-                </TableHeaderColumn>
-              </TableRow>
-            </TableHeader>
-            <TableBody deselectOnClickaway={false}>
-              {
-                this.allQuestions.map(question => {
-                  return(
-                    <TableRow
-                      key={question.id}
-                      selected={!!find(this.state.candidateQuestions, {questionId: question.id})}
-                      onTouchTap={() => {
-                        if(!find(this.state.candidateQuestions, {questionId: question.id})){
-                          const candidateQuestions = [...this.state.candidateQuestions,
-                          {answer: '', questionId: question.id}];
-                          this.setState({candidateQuestions});
-                        } else {
-                          let candidateQuestions = this.state.candidateQuestions.slice();
-                          const index = findIndex(candidateQuestions, {questionId: question.id});
-                          candidateQuestions.splice(index, 1);
-                          this.setState({candidateQuestions});
-                        }
-                      }}
-                    >
-                      <TableRowColumn>
-                        {question.questionText}
-                      </TableRowColumn>
-                    </TableRow>
-                  );
-                })
-              }
-            </TableBody>
-          </Table>
+      <div style={styles.container}>
+        <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column'}}>
+          <div style={{width: '100%'}} >
+            <Table adjustForCheckbox multiSelectable>
+              <TableHeader>
+                <TableRow>
+                  <TableHeaderColumn>
+                    Questions
+                  </TableHeaderColumn>
+                </TableRow>
+              </TableHeader>
+              <TableBody deselectOnClickaway={false}>
+                {
+                  this.allQuestions.map(question => {
+                    return(
+                      <TableRow
+                        key={question.id}
+                        selected={!!find(this.state.candidateQuestions, {questionId: question.id})}
+                        onTouchTap={() => {
+                          if(!find(this.state.candidateQuestions, {questionId: question.id})){
+                            const candidateQuestions = [...this.state.candidateQuestions,
+                            {answer: '', questionId: question.id}];
+                            this.setState({candidateQuestions});
+                          } else {
+                            let candidateQuestions = this.state.candidateQuestions.slice();
+                            const index = findIndex(candidateQuestions, {questionId: question.id});
+                            candidateQuestions.splice(index, 1);
+                            this.setState({candidateQuestions});
+                          }
+                        }}
+                      >
+                        <TableRowColumn>
+                          {question.questionText}
+                        </TableRowColumn>
+                      </TableRow>
+                    );
+                  })
+                }
+              </TableBody>
+            </Table>
+          </div>
+          <Divider />
+          <div style={{width: '100%'}} >
+            <Table
+              bodyStyle={styles.centered}
+              headerStyle={styles.centered}
+              selectable={false}
+            >
+              <TableHeader displaySelectAll={false} style={styles.centered}>
+                <TableRow style={{border: 'none'}}>
+                  <TableHeaderColumn>
+                    Selected Questions
+                  </TableHeaderColumn>
+                </TableRow>
+              </TableHeader>
+              <TableBody displayRowCheckbox={false}>
+                {
+                  selectedQuestions.map(question => {
+                    return(
+                      <TableRow
+                        key={question.id}
+                      >
+                        <TableRowColumn>
+                          {question.questionText}
+                        </TableRowColumn>
+                      </TableRow>
+                    )
+                  })
+                }
+              </TableBody>
+            </Table>
+          </div>
         </div>
-        <div
-          style={{width: '50%'}}
-        >
-          <Table selectable={false}>
-            <TableHeader>
-              <TableRow>
-                <TableHeaderColumn>
-                  Selected Questions
-                </TableHeaderColumn>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {
-                selectedQuestions.map(question => {
-                  return(
-                    <TableRow
-                      key={question.id}
-                    >
-                      <TableRowColumn>
-                        {question.questionText}
-                      </TableRowColumn>
-                    </TableRow>
-                  )
-                })
-              }
-            </TableBody>
-          </Table>
-          <FlatButton
-            label='save'
-            onTouchTap={() => {
-              addQuestionToCandidate(this.selectedCandidate.id, this.state.candidateQuestions)
-                .then(this.props.addCandidateQuestions(this.selectedCandidate.id, this.state.candidateQuestions))
-            }}
-            containerElement={<Link to='/management' />}
-          />
-        </div>
+        <FlatButton
+          label='save'
+          onTouchTap={() => {
+            addQuestionToCandidate(this.selectedCandidate.id, this.state.candidateQuestions)
+              .then(this.props.addCandidateQuestions(this.selectedCandidate.id, this.state.candidateQuestions))
+          }}
+          containerElement={<Link to='/management' />}
+        />
       </div>
     );
   };
 };
+
+const styles = {
+  container: {
+    display: 'flex',
+    height: '90vh',
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexDirection: 'column',
+    width: '80%',
+    margin: '0 auto',
+  },
+  centered: {
+    display: 'flex',
+    justifyContent: 'center',
+    textAlign: 'center',
+  }
+}
 
 export default connect(mapStateToProps, {addCandidateQuestions})(MakeInterviewList);
