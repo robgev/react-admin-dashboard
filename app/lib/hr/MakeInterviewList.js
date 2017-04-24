@@ -6,6 +6,7 @@ import {Table, TableBody, TableHeader, TableHeaderColumn,
 import {addQuestionToCandidate} from '../firebaseAPI';
 import FlatButton from 'material-ui/FlatButton';
 import {addCandidateQuestions} from '../../actions/candidate.action';
+import {Link} from 'react-router-dom';
 
 function mapStateToProps(state) {
   return (
@@ -20,7 +21,7 @@ class MakeInterviewList extends React.PureComponent {
   constructor(props){
     super(props);
     this.state = {
-      candidateQuestions: []
+      candidateQuestions: this.props.candidates[this.props.match.params.candidateId].questions
     }
   };
   selectedCandidate = this.props.candidates[this.props.match.params.candidateId];
@@ -48,6 +49,7 @@ class MakeInterviewList extends React.PureComponent {
                   return(
                     <TableRow
                       key={question.id}
+                      selected={this.state.candidateQuestions.includes(question.id)}
                       onTouchTap={() => {
                         if(!this.state.candidateQuestions.includes(question.id)){
                           const candidateQuestions = [...this.state.candidateQuestions, question.id];
@@ -109,6 +111,7 @@ class MakeInterviewList extends React.PureComponent {
               addQuestionToCandidate(this.selectedCandidate.id, this.state.candidateQuestions)
                 .then(this.props.addCandidateQuestions(this.selectedCandidate.id, this.state.candidateQuestions))
             }}
+            containerElement={<Link to='/management' />}
           />
         </div>
       </div>
