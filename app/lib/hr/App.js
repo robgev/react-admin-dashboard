@@ -25,12 +25,12 @@ class ResourceManager extends React.PureComponent {
         <FlatButton
           label='candidates'
           containerElement={<Link to={url} />}
-          linkButton primary
+          primary
         />
         <FlatButton
           label='questions'
           containerElement={<Link to={url + '/questions'} />}
-          linkButton primary
+          primary
         />
         <Switch>
           <Route path={url + '/questions'} component={CustomQuestions} />

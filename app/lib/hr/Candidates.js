@@ -8,6 +8,7 @@ import {Link} from 'react-router-dom';
 import {addCandidateFirebase, editCandidateFirebase, deleteCandidateFirebase} from '../firebaseAPI';
 import {setInitialPositions} from '../../actions/positions.action';
 import {addCandidate, deleteCandidate, setInitial} from '../../actions/candidate.action';
+import {setInitialQuestions} from '../../actions/questions.action';
 
 import {Table, TableBody, TableHeader, TableHeaderColumn,
          TableRow, TableRowColumn} from 'material-ui/Table';
@@ -48,10 +49,16 @@ class Candidates extends React.PureComponent {
     });
     firebase.database().ref('positions').once('value').then(snapshot => {
       const positions = snapshot.val();
-      if(positions){
+      if (positions){
         this.props.setInitialPositions(positions);
       }
-    })
+    });
+    firebase.database().ref('questions').once('value').then(snapshot => {
+      const questions = snapshot.val();
+      if(questions){
+        this.props.setInitialQuestions(questions);
+      }
+    });
   };
 
   componentWillReceiveProps(props) {
@@ -236,7 +243,7 @@ class Candidates extends React.PureComponent {
           disabled={this.state.selected === '-1' || this.state.selected === 'new'}
           style={{marginLeft: '20px'}}
           label='questionlist'
-          containerElement={<Link to={'/interview/' + this.state.selected} />}
+          containerElement={<Link to={'/management/interview/' + this.state.selected} />}
         />
         <CandidateTable />
         {
@@ -251,4 +258,4 @@ class Candidates extends React.PureComponent {
   };
 };
 
-export default connect(mapStateToProps, {setInitialPositions, addCandidate, deleteCandidate, setInitial})(Candidates);
+export default connect(mapStateToProps, {setInitialPositions, addCandidate, deleteCandidate, setInitial, setInitialQuestions})(Candidates);

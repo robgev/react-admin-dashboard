@@ -305,10 +305,10 @@ export const addQuestionFirebase = (info) => {
 };
 
 export const editQuestionFirebase = (question) => {
-  firebase.database().ref('/questions/' + key).set({
+  firebase.database().ref('/questions/' + question.id).set({
     id: question.id,
     positionId: question.positionId,
-    questionText: info.questionText
+    questionText: question.questionText
   });
   return question.id;
 }
@@ -318,9 +318,9 @@ export const deleteQuestionFirebase = (id) => {
 };
 
 export const addQuestionToCandidate = (candidateId, questionIds) => {
-  return firebase.database().ref('/candidates/' + id).set({
-    questions: questionIds
-  });
+  const updates = {};
+  updates[`/candidates/${candidateId}/questions`] = questionIds;
+  return firebase.database().ref().update(updates);
 };
 
 export const getUser = () => {

@@ -30,4 +30,4 @@ const editQuestion = (changedQuestion) => {
   }
 };
 
-export {setInitialQuestions, addQuestion, deleteQuestion}
+export {setInitialQuestions, addQuestion, deleteQuestion, editQuestion}

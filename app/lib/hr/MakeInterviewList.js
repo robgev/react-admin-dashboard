@@ -10,7 +10,7 @@ import {addCandidateQuestions} from '../../actions/candidate.action';
 function mapStateToProps(state) {
   return (
     {
-      questions: state.quesitons,
+      questions: state.questions,
       candidates: state.candidates
     }
   );
@@ -23,32 +23,41 @@ class MakeInterviewList extends React.PureComponent {
       candidateQuestions: []
     }
   };
+  selectedCandidate = this.props.candidates[this.props.match.params.candidateId];
+  allQuestions = filter(this.props.questions, {positionId: this.selectedCandidate.profession});
   render() {
-    const selectedCandidate = this.props.candidates[this.props.match.params.candidateId];
-    const allQuestions = filter(this.props.questions, {positionId: this.state.candidate.profession});
     const selectedQuestions = this.state.candidateQuestions.map(questionId => {
-      return this.props.questions.questionId;
+      return this.props.questions[questionId];
     });
     return(
-      <div>
+      <div style={{display: 'flex'}}>
         <div
           style={{width: '50%'}}
         >
-          <Table>
+          <Table adjustForCheckbox multiSelectable>
             <TableHeader>
-              <TableHeaderColumn>
-                Questions
-              </TableHeaderColumn>
+              <TableRow>
+                <TableHeaderColumn>
+                  Questions
+                </TableHeaderColumn>
+              </TableRow>
             </TableHeader>
             <TableBody>
               {
-                allQuestions.map(question => {
+                this.allQuestions.map(question => {
                   return(
                     <TableRow
                       key={question.id}
                       onTouchTap={() => {
-                        const candidateQuestions = [...this.state.candidateQuestions, question.id];
-                        this.setState({candidateQuestions});
+                        if(!this.state.candidateQuestions.includes(question.id)){
+                          const candidateQuestions = [...this.state.candidateQuestions, question.id];
+                          this.setState({candidateQuestions});
+                        } else {
+                          let candidateQuestions = this.state.candidateQuestions.slice();
+                          const index = candidateQuestions.indexOf(question.id);
+                          candidateQuestions.splice(index, 1);
+                          this.setState({candidateQuestions});
+                        }
                       }}
                     >
                       <TableRowColumn>
@@ -66,26 +75,30 @@ class MakeInterviewList extends React.PureComponent {
         >
           <Table>
             <TableHeader>
-              <TableHeaderColumn>
-                Selected Questions
-              </TableHeaderColumn>
+              <TableRow>
+                <TableHeaderColumn>
+                  Selected Questions
+                </TableHeaderColumn>
+              </TableRow>
             </TableHeader>
             <TableBody>
               {
                 selectedQuestions.map(question => {
-                  <TableRow
-                    key={question.id}
-                    onTouchTap={() => {
-                      let candidateQuestions = this.state.candidateQuestions.slice();
-                      const index = candidateQuestions.indexOf(question.id);
-                      candidateQuestions.splice(index, 1);
-                      this.setState({candidateQuestions});
-                    }}
-                  >
-                    <TableRowColumn>
-                      {question.questionText}
-                    </TableRowColumn>
-                  </TableRow>
+                  return(
+                    <TableRow
+                      key={question.id}
+                      onTouchTap={() => {
+                        let candidateQuestions = this.state.candidateQuestions.slice();
+                        const index = candidateQuestions.indexOf(question.id);
+                        candidateQuestions.splice(index, 1);
+                        this.setState({candidateQuestions});
+                      }}
+                    >
+                      <TableRowColumn>
+                        {question.questionText}
+                      </TableRowColumn>
+                    </TableRow>
+                  )
                 })
               }
             </TableBody>
@@ -93,8 +106,8 @@ class MakeInterviewList extends React.PureComponent {
           <FlatButton
             label='save'
             onTouchTap={() => {
-              addQuestionToCandidate(selectedCandidate.id, this.state.candidateQuestions)
-                .then(this.props.addCandidateQuestions(selectedCandidate.id, this.state.candidateQuestions))
+              addQuestionToCandidate(this.selectedCandidate.id, this.state.candidateQuestions)
+                .then(this.props.addCandidateQuestions(this.selectedCandidate.id, this.state.candidateQuestions))
             }}
           />
         </div>
