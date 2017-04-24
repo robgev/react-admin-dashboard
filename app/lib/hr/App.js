@@ -34,10 +34,9 @@ class ResourceManager extends React.PureComponent {
         />
         <Switch>
           <Route path={url + '/questions'} component={CustomQuestions} />
-          <Route path={url + '/candidatequestions/:candidateId'} component={MakeInterviewList} />
+          <Route path={url + '/interview/:candidateId'} component={MakeInterviewList} />
           <Route path={url + '/'} component={Candidates} />
         </Switch>
-        <CustomQuestions />
         <Footer />
       </div>
     )

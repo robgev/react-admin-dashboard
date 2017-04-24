@@ -236,7 +236,7 @@ class Candidates extends React.PureComponent {
           disabled={this.state.selected === '-1' || this.state.selected === 'new'}
           style={{marginLeft: '20px'}}
           label='questionlist'
-          containerElement={<Link to={'/candidatequestions/' + this.state.selected} />}
+          containerElement={<Link to={'/interview/' + this.state.selected} />}
         />
         <CandidateTable />
         {
