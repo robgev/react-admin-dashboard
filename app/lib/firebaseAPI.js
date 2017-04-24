@@ -317,6 +317,12 @@ export const deleteQuestionFirebase = (id) => {
   return firebase.database().ref('/questions/' + id).remove();
 };
 
+export const addQuestionToCandidate = (candidateId, questionIds) => {
+  return firebase.database().ref('/candidates/' + id).set({
+    questions: questionIds
+  });
+};
+
 export const getUser = () => {
   return firebase.auth().currentUser;
 }

@@ -32,4 +32,14 @@ const setInitial = (candidates) => {
   }
 }
 
-export {addCandidate, deleteCandidate, setInitial};
+const addCandidateQuestions = (id, questionIds) => {
+  return {
+    type: "ADD_QUESTIONS_TO_CANDIDATE",
+    payload: {
+      candidateID: id,
+      questions: questionIds
+    }
+  }
+}
+
+export {addCandidate, deleteCandidate, setInitial, addCandidateQuestions};
