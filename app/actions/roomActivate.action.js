@@ -4,3 +4,10 @@ export const roomActivate = (payload) => {
       payload
     }
 }
+
+export const initialRooms = (rooms) => {
+  return {
+    type: 'SET_INITIAL_ROOMS',
+    rooms
+  }
+}

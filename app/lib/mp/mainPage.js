@@ -1,5 +1,4 @@
 import React from 'react';
-import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import AppBar from 'material-ui/AppBar';
@@ -13,6 +12,7 @@ import Header from '../ur/components/Header';
 import Footer from '../ur/components/Footer';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 import {getRooms} from '../firebaseAPI';
+import {initialRooms} from '../../actions/roomActivate.action';
 
 function mapStateToProps(state) {
     return {loggedIn: state.loggedIn}
@@ -45,7 +45,7 @@ class MainPage extends React.Component {
             descr: 'All rooms',
             color: 'black'
         }
-        console.log(rooms)
+        this.props.initialRooms(rooms)
       });
     }
 
@@ -96,4 +96,4 @@ class MainPage extends React.Component {
     }
 }
 
-export default connect(mapStateToProps)(MainPage);
+export default connect(mapStateToProps, {initialRooms})(MainPage);
