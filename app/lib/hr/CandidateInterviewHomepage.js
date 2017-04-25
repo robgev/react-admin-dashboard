@@ -66,7 +66,7 @@ const styles = {
     justifyContent: 'center',
     alignItems: 'center',
     flexDirection: 'column',
-    width: '80%',
+    width: '70%',
     margin: '0 auto',
   },
   centered: {

@@ -100,8 +100,9 @@ class CustomQuestions extends React.PureComponent {
             {backgroundColor: '#224C75'} : {backgroundColor: 'rgb(216, 226, 242)'};
         return(
           <Paper
+            className='hrPaperQuestions'
             key={question.id}
-            style={{...isSelected, cursor: 'pointer'}}
+            style={{...isSelected, cursor: 'pointer',   transition: '1s ease-in-out'}}
             onTouchTap={() => {
               this.state.selectedQuestion !== question.id ?
                 this.setState({selectedQuestion: question.id}) :

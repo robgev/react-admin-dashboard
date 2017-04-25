@@ -124,6 +124,7 @@ export default class CandidateChangePopup extends React.PureComponent {
         open={true}
         onRequestClose={closeDialogueBox}
       >
+       <div className='hrEditCandidateDialog'>
         <TextField
           name='name'
           fullWidth={true}
@@ -134,6 +135,8 @@ export default class CandidateChangePopup extends React.PureComponent {
         <RenderProfessions />
         <RenderLevels />
         <RenderStatuses />
+
+        <div className='hrCandidateEditPopup'>
         <DatePicker
           hintText='Select Interview Date'
           mode='landscape'
@@ -155,7 +158,9 @@ export default class CandidateChangePopup extends React.PureComponent {
             this.setState({date})
           }}
         />
-      </Dialog>
+        </div>
+      </div>
+    </Dialog>
     );
   }
 }
