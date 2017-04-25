@@ -333,6 +333,10 @@ export const getUser = () => {
   return firebase.auth().currentUser;
 }
 
+export const getRooms = () => {
+  return firebase.database().ref('/rooms').once('value');
+}
+
 export default {
   handleSignIn,
   handleSignOut,
