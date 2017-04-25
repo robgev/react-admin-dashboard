@@ -18,6 +18,10 @@ const timeChecker = (t0, t1, t2, t3) => {
   return (timeCheck0 && timeCheck1 && timeCheck2 && timeCheck3);
 }
 
+const buttonStyle = {
+  width: 125
+}
+
 export default
 class ReservationPopup extends React.Component {
 
@@ -119,16 +123,22 @@ class ReservationPopup extends React.Component {
               onChange={this.descChangeHandler}
             />
             <div className="popup-buttons">
-              <RaisedButton
+
+                <RaisedButton
+                buttonStyle={buttonStyle}
                 label="Reserve"
                 primary={true}
                 onClick={this.reserve}
-              />
-              <RaisedButton
+                />
+
+
+                <RaisedButton
+                buttonStyle={buttonStyle}
                 label="Close"
                 primary={false}
                 onClick={ this.props.close }
-              />
+                />
+              
             </div>
             {
               this.state.err ? <ErrorPopup
