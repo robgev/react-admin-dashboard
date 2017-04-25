@@ -61,8 +61,8 @@ class ReservationPopup extends React.Component {
 
   reserve = () => {
     const date = this.date.state.date.toString().split(' ').slice(0, 4).join(' ');
-    const startTime = new Date(date.toString() +" "+this.startTime.state.time.toString().split(' ').slice(4, 7).join(' ').toString());
-    const endTime = new Date(date.toString()+" "+this.endTime.state.time.toString().split(' ').slice(4, 7).join(' ').toString());
+    const startTime = new Date(date.toString() +' '+this.startTime.state.time.toString().split(' ').slice(4, 7).join(' ').toString());
+    const endTime = new Date(date.toString()+' '+this.endTime.state.time.toString().split(' ').slice(4, 7).join(' ').toString());
 
     let eventStartTime;
     let eventEndTime;
@@ -101,32 +101,32 @@ class ReservationPopup extends React.Component {
           <ModalDialog>
             <DatePicker
               ref={(time) => { this.date = time; }}
-              hintText="Date"
-              mode="landscape"
+              hintText='Date'
+              mode='landscape'
               defaultDate={ this.state.date }
               onChange={(_, newDate)=>{this.dateChangeHandler(newDate)}}
             />
             <TimePicker
               ref={(time) => { this.startTime = time; }}
-              hintText="12hr Format"
+              hintText='12hr Format'
               defaultTime={ new Date(this.initialDate[2], this.initialDate[1]-1, this.initialDate[0], this.initialStart[0], this.initialStart[1])}
             />
             <TimePicker
               ref={(time) => { this.endTime = time; }}
-              hintText="12hr Format"
+              hintText='12hr Format'
               defaultTime={ new Date(this.initialDate[2], this.initialDate[1]-1, this.initialDate[0], this.initialEnd[0], this.initialEnd[1])}
             />
             <TextField
-              floatingLabelText="Event description and side notes"
+              floatingLabelText='Event description and side notes'
               multiLine={true}
               rows={3}
               onChange={this.descChangeHandler}
             />
-            <div className="popup-buttons">
+            <div className='popup-buttons'>
 
                 <RaisedButton
                 buttonStyle={buttonStyle}
-                label="Reserve"
+                label='Reserve'
                 primary={true}
                 onClick={this.reserve}
                 />
@@ -134,11 +134,11 @@ class ReservationPopup extends React.Component {
 
                 <RaisedButton
                 buttonStyle={buttonStyle}
-                label="Close"
+                label='Close'
                 primary={false}
                 onClick={ this.props.close }
                 />
-              
+
             </div>
             {
               this.state.err ? <ErrorPopup

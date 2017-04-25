@@ -18,13 +18,13 @@ class ResForm extends Component {
     }
     render() {
       return (
-        <div className="resform">
+        <div className='resform'>
             <p>{`Date: ${this.props.date}`}</p>
             <p>{`Starting time: ${this.props.startTime ? moment(this.props.startTime).format('hh:mm a') : ''}`}</p>
             <p>{`End time: ${this.props.endTime ? moment(this.props.endTime).format('hh:mm a') : ''}`}</p>
             <MuiThemeProvider>
               <RaisedButton
-                label="Reserve"
+                label='Reserve'
                 primary={true}
                 fullWidth={true}
                 style = {buttonStyle}

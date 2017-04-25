@@ -58,7 +58,7 @@ class MainPage extends React.Component {
                   signOut={this.props.signOut}
                 />
                 <MuiThemeProvider>
-                    <AppBar style={appBarStyle} title="Rooms" iconElementLeft={< IconButton ></IconButton>}/>
+                    <AppBar style={appBarStyle} title='Rooms' iconElementLeft={< IconButton ></IconButton>}/>
                 </MuiThemeProvider>
                 <div className='mainpage'>
                     <RoomList/>
@@ -79,7 +79,7 @@ class MainPage extends React.Component {
                         this.setState({events});
                       }}
                     />
-                    <div className ="room-whole-details">
+                    <div className ='room-whole-details'>
                       <RoomInfo/>
                       <ResForm
                         startTime={ this.state.startTime }

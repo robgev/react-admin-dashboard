@@ -56,7 +56,7 @@ class LoginForm extends React.Component {
             border: 'none'
         }
         return (
-            <div className="loginPage">
+            <div className='loginPage'>
                 <div className='form'>
                     <div className='logintitle'>
                         <h1>Login</h1>
@@ -65,19 +65,19 @@ class LoginForm extends React.Component {
                         <div>
                             <label className='loginlabel'>Email</label>
                             <MuiThemeProvider muiTheme={getMuiTheme(darkBaseTheme)}>
-                                <TextField hintText="Email field" style={main} floatingLabelStyle={floatinglabelstyle} inputStyle ={inpstyle} floatingLabelText="Email" type="email" onChange={(e) => this.handleChange('mail', e.target.value)}/>
+                                <TextField hintText='Email field' style={main} floatingLabelStyle={floatinglabelstyle} inputStyle ={inpstyle} floatingLabelText='Email' type='email' onChange={(e) => this.handleChange('mail', e.target.value)}/>
                             </MuiThemeProvider>
                         </div>
                         <div>
                             <label className='loginlabel'>Password</label>
                             <MuiThemeProvider muiTheme={getMuiTheme(darkBaseTheme)}>
-                                <TextField hintText="Email field" style={main} floatingLabelStyle={floatinglabelstyle} inputStyle ={inpstyle} floatingLabelText="Password" type="password" ref={(pass) => {
+                                <TextField hintText='Email field' style={main} floatingLabelStyle={floatinglabelstyle} inputStyle ={inpstyle} floatingLabelText='Password' type='password' ref={(pass) => {
                                     this.pass = pass
                                 }} onChange={(e) => this.handleChange('pass', e.target.value)}/>
                             </MuiThemeProvider>
                         </div>
                         <div>
-                            <button type="submit" className='loginbutton'>Submit</button>
+                            <button type='submit' className='loginbutton'>Submit</button>
                         </div>
                     </form>
                 </div>

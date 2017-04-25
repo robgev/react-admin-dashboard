@@ -1,6 +1,10 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 
+function mapStateToProps(state) {
+    return {room: state.activeRoom}
+}
+
 class RoomInfo extends Component {
     render() {
         if (this.props.room) {
@@ -23,8 +27,5 @@ class RoomInfo extends Component {
     }
 }
 
-function mapStateToProps(state) {
-    return {room: state.activeRoom}
-}
 
 export default connect(mapStateToProps)(RoomInfo);
