@@ -77,6 +77,7 @@ class Calendar extends React.Component {
     }
 
     componentDidMount() {
+        document.getElementsByClassName('rbc-month-view')[0].setAttribute('style', 'z-index: 1');
         const userInterval = setInterval(()=>{
             const user = getUser();
             if (user != null){
@@ -155,7 +156,7 @@ class Calendar extends React.Component {
                 <BigCalendar selectable= { this.props.room.index === 0 ? false : 'ignoreEvents'}
                   events={[...this.state.events, this.state.reservationSlot]}
                   step={30}
-                  defaultView='week'
+                  defaultView='month'
                   onSelectSlot={(slotInfo) => {
                     let startTime = slotInfo.start.toLocaleString();
                     let endTime = slotInfo.end.toLocaleString();
