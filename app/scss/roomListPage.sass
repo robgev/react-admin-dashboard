@@ -5,6 +5,7 @@
   height: calc(90vh - 64px)
   display: flex
   overflow-x: hidden
+  background-color: $backgroundColor
 
   .calendar
     width: 100%
@@ -13,11 +14,12 @@
   padding: 18px
   font-weight: 500
   font-size: 40px
-  color: $appbarColor
+  color: $secondaryColor
 
 .room-description
   padding-left: 20px
   font-size: 18px
+  color: $textColor
 
 .room-image-container
   width: 400px
@@ -82,31 +84,31 @@
 //colors
 
 .green
-  background-color: lightgreen
+  background-color: $greenDark
   border-radius: 20px
   height: 24px !important
   width: 15px !important
 
 .orange
-  background-color: orange
+  background-color: $orangeDark
   border-radius: 20px
   height: 24px !important
   width: 15px !important
 
 .yellow
-  background-color: yellow
+  background-color: $yellowDark
   border-radius: 20px
   height: 24px !important
   width: 15px !important
 
 .blue
-  background-color: $appbarColor
+  background-color: $blueDark
   border-radius: 10px
   height: 24px !important
   width: 15px !important
 
 .brown
-  background-color: brown
+  background-color: $purpleDark
   border-radius: 20px
   height: 24px !important
   width: 15px !important
@@ -115,16 +117,16 @@
   background-color: $green
 
 .o:hover
-  background-color: $orange
+  background-color: $orangeLight
 
 .y:hover
-  background-color: $yellow
+  background-color: $yellowLight
 
 .b:hover
-  background-color: $blue
+  background-color: $blueLight
 
 .c:hover
-  background-color: $brown
+  background-color: $purpleLight
 
 .selected
-  background-color: lightblue !important
+  background-color: $optionSelectedColor !important
