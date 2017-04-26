@@ -13,12 +13,12 @@ import {
 // Import our compnents
 import User from './ur/User';
 import auth from './firebaseAPI';
-import SigninBox from './ur/Signin';
+import SigninBox from './ur/SignIn';
 import AdminPanel from './ur/Admin';
-import MainPage from './mp/mainPage';
+import MainPage from './mp/MainPage';
 import ResourceManager from './hr/App';
-import NotFound from './ur/components/Notfound';
-import LoadingScreen  from './ur/components/Loadingscreen';
+import NotFound from './ur/components/NotFound';
+import LoadingScreen  from './ur/components/LoadingScreen';
 
 //This App component is wrapped by MuiThemeProvider at the end.
 // This is done to allow server side rendering.

@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import ReservationPopup from './reservationPopup';
+import ReservationPopup from './ReservationPopup';
 import RaisedButton from 'material-ui/RaisedButton';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import moment from 'moment';

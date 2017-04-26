@@ -2,7 +2,7 @@
 
 const path = require('path');
 const express = require('express');
-const admin_router = express.Router();
+const adminRouter = express.Router();
 const body_parser = require('body-parser');
 const admin = require('firebase-admin');
 const json_parser = body_parser.json();
@@ -11,9 +11,9 @@ const firebaseAPI  = require('../frontend/lib/firebaseAPI').default
 
 const serviceAccount = require('./serviceAccountKey.json');
 
-admin_router.use(json_parser, form_parser);
+adminRouter.use(json_parser, form_parser);
 
-admin_router.post('/activestatus', async (req, res) => {
+adminRouter.post('/activestatus', async (req, res) => {
   const {uid} = req.body
   try {
     const userData = await admin.auth().getUser(uid)
@@ -24,7 +24,7 @@ admin_router.post('/activestatus', async (req, res) => {
   }
 })
 
-admin_router.post('/deactivate', async (req, res) => {
+adminRouter.post('/deactivate', async (req, res) => {
   const {uid} = req.body
   try {
     const userData = await admin.auth().getUser(uid)
@@ -39,7 +39,7 @@ admin_router.post('/deactivate', async (req, res) => {
   }
 })
 
-admin_router.post('/edit', async (req, res) => {
+adminRouter.post('/edit', async (req, res) => {
   const {uid, email, password, displayName} = req.body;
   const updatedData = {}
   if (email) { updatedData.email = email } // Checks if email is in body to change
@@ -55,7 +55,7 @@ admin_router.post('/edit', async (req, res) => {
   }
 })
 
-admin_router.post('/add', async (req, res) => {
+adminRouter.post('/add', async (req, res) => {
   const {email, password} = req.body;
   const name = email.split('@')[0];
   const newUserData = {
@@ -83,7 +83,7 @@ admin_router.post('/add', async (req, res) => {
   }
 })
 
-admin_router.post('/delete', async (req, res) => {
+adminRouter.post('/delete', async (req, res) => {
   const {uid} = req.body;
   try {
     await admin.auth().deleteUser(uid)
@@ -101,4 +101,4 @@ admin.initializeApp({
   databaseURL: 'https://apollobytes-internal.firebaseio.com'
 });
 
-module.exports = admin_router;
+module.exports = adminRouter;

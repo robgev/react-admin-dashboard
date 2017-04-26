@@ -10,9 +10,9 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
-import NotFound from '../frontend/lib/ur/components/Notfound';
+import NotFound from '../frontend/lib/ur/components/NotFound';
 import { allReducers } from '../frontend/reducers/index';
-import admin_router from './admin_routes'
+import adminRouter from './adminRoutes'
 
 const debug = process.env.NODE_ENV === 'debug' ? true : false;
 const favicon = require('serve-favicon');
@@ -142,7 +142,7 @@ app.get('/management/candidateInterview/:candidateId', handleRoutesWithParams);
 
 app.get('/management/interview/:candidateId', handleRoutesWithParams);
 
-app.use('/manageusers', admin_router);
+app.use('/manageusers', adminRouter);
 
 // No other handler picked it up yet, so this is our 404 handler
 app.use((req, res, next) => {

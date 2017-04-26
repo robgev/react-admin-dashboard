@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 import firebase from 'firebase';
 import moment from 'moment';
 import {map, forEach, sortBy} from 'lodash';
-import LoadingScreen from '../ur/components/Loadingscreen';
+import LoadingScreen from '../ur/components/LoadingScreen';
 import {Link} from 'react-router-dom';
 import {addCandidateFirebase, editCandidateFirebase, deleteCandidateFirebase} from '../firebaseAPI';
 import {addCandidate, deleteCandidate, setInitial} from '../../actions/candidate.action';

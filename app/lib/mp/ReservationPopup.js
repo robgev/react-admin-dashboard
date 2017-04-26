@@ -7,7 +7,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 import { saveEvent } from '../firebaseAPI.js';
 import moment from 'moment';
 import {ModalContainer, ModalDialog} from 'react-modal-dialog';
-import ErrorPopup from './errorPopup';
+import ErrorPopup from './ErrorPopup';
 
 const timeChecker = (t0, t1, t2, t3) => {
   const timeCheck0 = !moment(t0).isBetween(t2, t3);
