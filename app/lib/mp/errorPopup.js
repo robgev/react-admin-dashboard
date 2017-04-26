@@ -18,7 +18,7 @@ class ErrorPopup extends React.Component {
             </h1>
             <br />
             <RaisedButton
-              label="Close"
+              label='Close'
               primary={false}
               onClick={ this.props.close }
             />

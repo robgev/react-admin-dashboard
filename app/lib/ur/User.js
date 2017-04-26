@@ -97,7 +97,7 @@ class User extends Component {
     const { user, admin } = this.props;
     const { displayName, email, emailVerified, photoURL, uid, providerData } = user;
     return (
-      <div className="userContainer full-width">
+      <div className='userContainer full-width'>
         <Header
           user={user}
           admin={admin}
@@ -105,19 +105,19 @@ class User extends Component {
         />
         {
           showBanner ?
-          <div className="banner">
+          <div className='banner'>
             Saved Sucessfully
           </div>
           : null
         }
-        <div className="user-body">
-          <div className="image">
+        <div className='user-body'>
+          <div className='image'>
             <img src={photoURL} />
             <button onClick={this.delAccModalShow}>Delete Account</button>
               {
                 showAccDeleteModal &&
                 <ModalContainer onClose={this.delAccModalClose}>
-                  <ModalDialog onClose={this.delAccModalClose} className="modal-dialog">
+                  <ModalDialog onClose={this.delAccModalClose} className='modal-dialog'>
                     <h1>Confirm account deletion</h1>
                     <p>We need your password to delete your account</p>
                     <input
@@ -127,39 +127,39 @@ class User extends Component {
                     />
                     <button
                       onClick={this.deleteAccount}
-                      className="deleteBtn">Delete my account</button>
+                      className='deleteBtn'>Delete my account</button>
                   </ModalDialog>
                 </ModalContainer>
               }
           </div>
-          <div className="editableData">
-            <div className="form-group">
-              <label htmlFor="displayName">Change display name:</label>
+          <div className='editableData'>
+            <div className='form-group'>
+              <label htmlFor='displayName'>Change display name:</label>
               <input
                 value={this.state.name}
                 type='text'
-                id="displayName"
+                id='displayName'
                 onChange={this.handleNameChange}
                 placeholder={displayName}
               />
             </div>
-            <div className="form-group">
-              <label htmlFor="email">Change e-mail:</label>
+            <div className='form-group'>
+              <label htmlFor='email'>Change e-mail:</label>
               <input
                 value={this.state.email}
                 type='email'
-                id="email"
+                id='email'
                 onChange={this.handleMailChange}
                 placeholder={email}
               />
             </div>
-            <div className="form-group">
-              <label htmlFor="password">Change password:</label>
-              <div className="form-password">
+            <div className='form-group'>
+              <label htmlFor='password'>Change password:</label>
+              <div className='form-password'>
                 <input
                   value={ showAccDeleteModal ? '' : this.state.password}
                   type='password'
-                  id="password"
+                  id='password'
                   onChange={this.handlePassChange}
                   placeholder='Old Password'
                 />

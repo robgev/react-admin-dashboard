@@ -26,16 +26,16 @@ export default ({ user, signOut, admin }) => {
   return (
     <div style={topMenuStyle}>
       <div style={containerStyle}>
-        <img src="/images/logo.svg" style={logoStyle}></img>
+        <img src='/images/logo.svg' style={logoStyle}></img>
         <ul style={topMenuListStyle}>
           {listItems}
         </ul>
-        <div className="user-info">
+        <div className='user-info'>
           {
             admin ? <p style={adminInfo}>Admin View</p> : null
           }
           <p>{`Hello, ${displayName}`}</p>
-          <img src={photoURL} className="user-pic" />
+          <img src={photoURL} className='user-pic' />
           <button onClick={signOut}>Sign Out</button>
         </div>
       </div>

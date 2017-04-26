@@ -4,11 +4,11 @@ import moment from 'moment';
 export { firebase };
 
 const firebaseConf = {
-  apiKey: "AIzaSyAyTbFTm6al2lHZ0xctrC_HEaG_oL63X_Q",
-  authDomain: "apollobytes-internal.firebaseapp.com",
-  databaseURL: "https://apollobytes-internal.firebaseio.com",
-  storageBucket: "apollobytes-internal.appspot.com",
-  messagingSenderId: "514298207210"
+  apiKey: 'AIzaSyAyTbFTm6al2lHZ0xctrC_HEaG_oL63X_Q',
+  authDomain: 'apollobytes-internal.firebaseapp.com',
+  databaseURL: 'https://apollobytes-internal.firebaseio.com',
+  storageBucket: 'apollobytes-internal.appspot.com',
+  messagingSenderId: '514298207210'
 };
 firebase.initializeApp(firebaseConf);
 
@@ -108,9 +108,9 @@ firebase.auth().onAuthStateChanged(user => {
       const dataWritten = snapshot.val(); // Checking if user data is already in db
       if(!dataWritten) {
         dbRef.set({
-          username: email.split("@")[0],
+          username: email.split('@')[0],
           password: userPassword,
-          created: moment().format("MMM D, YYYY"),
+          created: moment().format('MMM D, YYYY'),
           email: email,
           isAdmin : false,
           active : false,

@@ -163,7 +163,7 @@ class Calendar extends React.Component {
                 }} onSelectEvent= {(event)=>{
                   this.setState({showPopup: !this.state.showPopup, event});
                 }} eventPropGetter={this.eventStyleGetter}/> {this.state.showPopup
-                    ? <div className="reservationPopup">
+                    ? <div className='reservationPopup'>
                             <div className='popupWindowDescr'>
                                 <div className='event-title'>
                                     Event title: {this.state.event.title}
@@ -181,7 +181,7 @@ class Calendar extends React.Component {
                                       {
                                         this.state.email === this.state.event.user ?
                                         <RaisedButton
-                                          label="Delete"
+                                          label='Delete'
                                           primary={true}
                                           onClick={()=>{
                                             firebase.database().ref('events/'+this.state.event.room).child(this.state.event.key).remove().then(()=>{
@@ -193,7 +193,7 @@ class Calendar extends React.Component {
                                         <div></div>
                                       }
                                     <RaisedButton
-                                      label="Close"
+                                      label='Close'
                                       primary={false}
                                       onClick={()=>{
                                         this.setState({showPopup: false})
