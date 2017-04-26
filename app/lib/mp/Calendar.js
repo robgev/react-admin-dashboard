@@ -4,7 +4,7 @@ import moment from 'moment';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import RaisedButton from 'material-ui/RaisedButton';
 import {connect} from 'react-redux';
-import {getUser, firebase, saveEvent} from '../firebaseAPI';
+import {getUser, firebase} from '../firebaseAPI';
 
 BigCalendar.momentLocalizer(moment);
 

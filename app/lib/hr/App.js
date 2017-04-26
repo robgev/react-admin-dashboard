@@ -1,18 +1,15 @@
 import React from 'react';
 import firebase from 'firebase';
-import ReactDOM from 'react-dom';
 import {connect} from 'react-redux';
 import Candidates from './Candidates';
 import CustomQuestions from './CustomQuestions';
 import MakeInterviewList from './MakeInterviewList';
-import injectTapEventPlugin from 'react-tap-event-plugin';
 import {setInitialPositions} from '../../actions/positions.action';
 import {setInitialQuestions} from '../../actions/questions.action';
 import CandidateInterviewHomepage from './CandidateInterviewHomepage';
 import Header from '../ur/components/Header';
 import Footer from '../ur/components/Footer';
 import {Switch, Route, Link} from 'react-router-dom';
-import {Tabs, Tab} from 'material-ui/Tabs';
 import FlatButton from 'material-ui/FlatButton';
 
 function mapStateToProps(state) {

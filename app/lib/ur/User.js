@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { Route, Link } from 'react-router-dom';
 import {ModalContainer, ModalDialog} from 'react-modal-dialog';
 import Footer from './components/Footer';
 import Header from './components/Header';

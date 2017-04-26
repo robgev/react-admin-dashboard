@@ -3,14 +3,12 @@ import {connect} from 'react-redux';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import AppBar from 'material-ui/AppBar';
 import IconButton from 'material-ui/IconButton';
-import LoginForm from './LoginForm';
 import RoomList from './RoomList';
 import Calendar from './Calendar';
 import RoomInfo from './RoomInfo';
 import ResForm from './ReservationForm';
 import Header from '../ur/components/Header';
 import Footer from '../ur/components/Footer';
-import injectTapEventPlugin from 'react-tap-event-plugin';
 import {getRooms} from '../firebaseAPI';
 import {initialRooms} from '../../actions/roomActivate.action';
 
