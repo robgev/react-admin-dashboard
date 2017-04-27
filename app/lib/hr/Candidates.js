@@ -140,7 +140,7 @@ class Candidates extends React.PureComponent {
             {candidate.level}
           </TableRowColumn>
           <TableRowColumn>
-            {moment(candidate.date).format('Do MMMM YYYY, h:mm a')}
+            {moment(new Date(candidate.date)).format('Do MMMM YYYY, h:mm a')}
           </TableRowColumn>
           <TableRowColumn>
             {candidate.status}
