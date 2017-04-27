@@ -1,9 +1,14 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import firebase from 'firebase';
-import moment from 'moment';
-import {map, forEach, sortBy} from 'lodash';
 import {Link} from 'react-router-dom';
+import {map, forEach, sortBy} from 'lodash';
+
+import firebase from 'firebase';
+
+import moment from 'moment';
+
+import CandidateChangePopup from './CandidateChangePopup';
+
 import {addCandidateFirebase, editCandidateFirebase, deleteCandidateFirebase} from '../firebaseAPI';
 import {addCandidate, deleteCandidate, setInitial} from '../../actions/candidate.action';
 
@@ -12,7 +17,6 @@ import {Table, TableBody, TableHeader, TableHeaderColumn,
 import FlatButton from 'material-ui/FlatButton';
 import TextField from 'material-ui/TextField';
 
-import CandidateChangePopup from './CandidateChangePopup';
 
 function mapStateToProps(state) {
   return (

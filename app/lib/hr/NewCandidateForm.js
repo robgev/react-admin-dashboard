@@ -1,8 +1,9 @@
 import React from 'react';
+import injectTapEventPlugin from 'react-tap-event-plugin';
+
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
 import {orange500, blue500} from 'material-ui/styles/colors';
-import injectTapEventPlugin from 'react-tap-event-plugin';
 import DatePicker from 'material-ui/DatePicker';
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';

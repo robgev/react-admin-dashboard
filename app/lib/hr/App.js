@@ -1,15 +1,19 @@
 import React from 'react';
-import firebase from 'firebase';
 import {connect} from 'react-redux';
+import {Switch, Route, Link} from 'react-router-dom';
+import firebase from 'firebase';
+
+import Header from '../ur/components/Header';
+import Footer from '../ur/components/Footer';
+
 import Candidates from './Candidates';
 import CustomQuestions from './CustomQuestions';
 import MakeInterviewList from './MakeInterviewList';
+import CandidateInterviewHomepage from './CandidateInterviewHomepage';
+
 import {setInitialPositions} from '../../actions/positions.action';
 import {setInitialQuestions} from '../../actions/questions.action';
-import CandidateInterviewHomepage from './CandidateInterviewHomepage';
-import Header from '../ur/components/Header';
-import Footer from '../ur/components/Footer';
-import {Switch, Route, Link} from 'react-router-dom';
+
 import FlatButton from 'material-ui/FlatButton';
 
 function mapStateToProps(state) {

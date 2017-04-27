@@ -1,4 +1,6 @@
 import React from 'react';
+import {map} from 'lodash';
+
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 import TextField from 'material-ui/TextField';
@@ -6,7 +8,6 @@ import DropDownMenu from 'material-ui/DropDownMenu';
 import MenuItem from 'material-ui/MenuItem';
 import DatePicker from 'material-ui/DatePicker';
 import TimePicker from 'material-ui/TimePicker';
-import {map} from 'lodash';
 
 export default class CandidateChangePopup extends React.PureComponent {
   constructor(props) {

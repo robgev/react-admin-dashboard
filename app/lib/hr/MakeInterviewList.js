@@ -1,13 +1,17 @@
 import React from 'react';
 import {connect} from 'react-redux';
+import {Link} from 'react-router-dom';
+
 import {map, filter, find, findIndex} from 'lodash';
+import {addQuestionToCandidate} from '../firebaseAPI';
+
 import {Table, TableBody, TableHeader, TableHeaderColumn,
   TableRow, TableRowColumn} from 'material-ui/Table';
 import Divider from 'material-ui/Divider';
-import {addQuestionToCandidate} from '../firebaseAPI';
 import FlatButton from 'material-ui/FlatButton';
+
 import {addCandidateQuestions} from '../../actions/candidate.action';
-import {Link} from 'react-router-dom';
+
 
 function mapStateToProps(state) {
   return (
