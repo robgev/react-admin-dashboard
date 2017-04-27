@@ -37,8 +37,8 @@ class MakeInterviewList extends React.PureComponent {
     });
     return(
       <div style={styles.container}>
-        <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column'}}>
-          <div style={{width: '100%'}} >
+        <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'row'}}>
+          <div>
             <Table adjustForCheckbox multiSelectable>
               <TableHeader>
                 <TableRow>
@@ -78,7 +78,7 @@ class MakeInterviewList extends React.PureComponent {
             </Table>
           </div>
           <Divider />
-          <div style={{width: '100%'}} >
+          <div >
             <Table
               bodyStyle={styles.centered}
               headerStyle={styles.centered}
