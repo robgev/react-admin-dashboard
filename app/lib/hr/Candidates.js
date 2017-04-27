@@ -103,6 +103,8 @@ class Candidates extends React.PureComponent {
   render() {
     const selectedCandidate = this.state.candidates[this.state.selected];
     const header =  ['Name', 'Profession', 'Level', 'Date', 'Status'];
+    const isDisabled = this.state.selected === '-1' || this.state.selected === 'new';
+    console.log(isDisabled)
     let filteredCandidates = [];
     forEach(this.state.candidates, candidate => {
       const fits = header.some(i => {
@@ -241,17 +243,25 @@ class Candidates extends React.PureComponent {
         />
         <FlatButton
           primary
-          disabled={this.state.selected === '-1' || this.state.selected === 'new'}
+          disabled={isDisabled}
           style={{marginLeft: '20px'}}
           label='questionlist'
-          containerElement={<Link to={'/management/interview/' + this.state.selected} />}
+          containerElement={
+            isDisabled ?
+            <div></div> :
+            <Link to={'/management/interview/' + this.state.selected} />
+          }
         />
         <FlatButton
           primary
-          disabled={this.state.selected === '-1' || this.state.selected === 'new'}
+          disabled={isDisabled}
           style={{marginLeft: '20px'}}
           label='interview'
-          containerElement={<Link to={'/management/candidateInterview/' + this.state.selected} />}
+          containerElement={
+            isDisabled ?
+            <div></div> :
+            <Link to={'/management/candidateInterview/' + this.state.selected} />
+          }
         />
         </div>
         </div>
