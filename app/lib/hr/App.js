@@ -15,6 +15,7 @@ import {setInitialPositions} from '../../actions/positions.action';
 import {setInitialQuestions} from '../../actions/questions.action';
 
 import FlatButton from 'material-ui/FlatButton';
+import {Tabs, Tab} from 'material-ui/Tabs';
 
 function mapStateToProps(state) {
   return (
@@ -45,23 +46,26 @@ class ResourceManager extends React.PureComponent {
     const {url} = this.props.match.match;
     return(
       <div>
-        <div className={'hrUIButtons'}>
-          <FlatButton
-            label='candidates'
-            containerElement={<Link to={url} />}
-            primary
-          />
-          <FlatButton
-            label='questions'
-            containerElement={<Link to={url + '/questions'} />}
-            primary
-          />
-        </div>
         <Header
           user={this.props.user}
           admin={this.props.admin}
           signOut={this.props.signOut}
         />
+        <Tabs className='hrTabs'>
+
+        <Tab
+        label='candidates'
+        containerElement={<Link to={url} />}
+        primary
+        />
+
+        <Tab
+        label='questions'
+        containerElement={<Link to={url + '/questions'} />}
+        primary
+        />
+        </Tabs>
+
         <Switch>
           <Route path={url + '/questions'} component={CustomQuestions} />
           <Route path={url + '/interview/:candidateId'} component={MakeInterviewList} />

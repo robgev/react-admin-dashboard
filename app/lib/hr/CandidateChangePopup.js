@@ -2,7 +2,7 @@ import React from 'react';
 import {map} from 'lodash';
 
 import Dialog from 'material-ui/Dialog';
-import FlatButton from 'material-ui/FlatButton';
+import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 import DropDownMenu from 'material-ui/DropDownMenu';
 import MenuItem from 'material-ui/MenuItem';
@@ -91,12 +91,11 @@ export default class CandidateChangePopup extends React.PureComponent {
       )
     }
     const actions = [
-      <FlatButton
+      <RaisedButton
         label='Cancel'
-        primary={true}
         onTouchTap={closeDialogueBox}
       />,
-      <FlatButton
+      <RaisedButton
         label='Save'
         primary={true}
         onTouchTap={
