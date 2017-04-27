@@ -56,13 +56,11 @@ class ResourceManager extends React.PureComponent {
         <Tab
         label='candidates'
         containerElement={<Link to={url} />}
-        primary
         />
 
         <Tab
         label='questions'
         containerElement={<Link to={url + '/questions'} />}
-        primary
         />
         </Tabs>
 

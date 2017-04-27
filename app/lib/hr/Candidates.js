@@ -104,7 +104,6 @@ class Candidates extends React.PureComponent {
     const selectedCandidate = this.state.candidates[this.state.selected];
     const header =  ['Name', 'Profession', 'Level', 'Date', 'Status'];
     const isDisabled = this.state.selected === '-1' || this.state.selected === 'new';
-    console.log(isDisabled)
     let filteredCandidates = [];
     forEach(this.state.candidates, candidate => {
       const fits = header.some(i => {
