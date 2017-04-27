@@ -8,7 +8,7 @@ import {addQuestionToCandidate} from '../firebaseAPI';
 import {Table, TableBody, TableHeader, TableHeaderColumn,
   TableRow, TableRowColumn} from 'material-ui/Table';
 import Divider from 'material-ui/Divider';
-import FlatButton from 'material-ui/FlatButton';
+import RaisedButton from 'material-ui/RaisedButton';
 
 import {addCandidateQuestions} from '../../actions/candidate.action';
 
@@ -109,8 +109,9 @@ class MakeInterviewList extends React.PureComponent {
             </Table>
           </div>
         </div>
-        <FlatButton
+        <RaisedButton
           label='save'
+          primary={true}
           onTouchTap={() => {
             addQuestionToCandidate(this.selectedCandidate.id, this.state.candidateQuestions)
               .then(this.props.addCandidateQuestions(this.selectedCandidate.id, this.state.candidateQuestions))
