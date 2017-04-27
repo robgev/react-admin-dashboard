@@ -198,11 +198,13 @@ class Candidates extends React.PureComponent {
 
     return(
       <div className='hrHome'>
+      <div className='hrForButtonsandFilter'>
         <TextField
           floatingLabelText='Filter'
           value={this.state.filter}
           onChange={(e) => this.setState({filter: e.target.value})}
         />
+        <div className='hrCandidatesButtons'>
         <FlatButton
           primary
           style={{marginLeft: '20px'}}
@@ -240,6 +242,8 @@ class Candidates extends React.PureComponent {
           label='interview'
           containerElement={<Link to={'/management/candidateInterview/' + this.state.selected} />}
         />
+        </div>
+        </div>
         <CandidateTable />
         {
           (() => {
