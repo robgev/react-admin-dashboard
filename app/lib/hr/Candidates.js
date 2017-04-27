@@ -36,7 +36,10 @@ class Candidates extends React.PureComponent {
       filter: '',
       interview: false,
       editScreen: false,
-      sortValue: ''
+      sortValue: {
+        value: '',
+        up: false
+      }
     };
   };
 
@@ -81,7 +84,7 @@ class Candidates extends React.PureComponent {
         return 1;
       }
     };
-    switch (this.state.sortValue) {
+    switch (this.state.sortValue.value) {
       case 'Name':
         return sortBy(candidates, i => i.name);
       case 'Profession':
@@ -110,6 +113,7 @@ class Candidates extends React.PureComponent {
       }
     });
     filteredCandidates = this.filterListElements(filteredCandidates);
+    this.state.sortValue.up ? filteredCandidates.reverse() : null;
     const RenderCandidates = filteredCandidates.map(candidate => {
       const isSelected = candidate.id === this.state.selected ?
           {backgroundColor: '#E0E0E0'} : {};
@@ -164,7 +168,14 @@ class Candidates extends React.PureComponent {
                     <FlatButton
                       style={{color: 'white'}}
                       label={column}
-                      onTouchTap={() => this.setState({sortValue: column})}
+                      onTouchTap={() => {
+                        const sortValue = {
+                          ...this.state.sortValue,
+                          value: column
+                        };
+                        this.setState({sortValue});
+                      }
+                    }
                     />
                   </TableHeaderColumn>
                 ))
