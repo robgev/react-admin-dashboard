@@ -109,7 +109,7 @@ class Candidates extends React.PureComponent {
       const fits = header.some(i => {
         return candidate[i.toLowerCase()].toString().toLowerCase().includes(this.state.filter)
       });
-      if (fits) {
+      if (fits || this.props.positions[candidate.profession].positionName.toLowerCase().includes(this.state.filter)) {
         filteredCandidates.push(candidate);
       }
     });
