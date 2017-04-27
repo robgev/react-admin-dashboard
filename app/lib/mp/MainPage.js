@@ -11,13 +11,14 @@ import Header from '../ur/components/Header';
 import Footer from '../ur/components/Footer';
 import {getRooms} from '../firebaseAPI';
 import {initialRooms} from '../../actions/roomActivate.action';
+import colors from '../colors';
 
 function mapStateToProps(state) {
     return {loggedIn: state.loggedIn}
 }
 
 const appBarStyle = {
-    backgroundColor: '#266cb2',
+    backgroundColor: colors.blueDark,
     zIndex: 5
 }
 

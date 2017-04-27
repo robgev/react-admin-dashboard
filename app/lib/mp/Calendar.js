@@ -5,6 +5,7 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import RaisedButton from 'material-ui/RaisedButton';
 import {connect} from 'react-redux';
 import {getUser, firebase} from '../firebaseAPI';
+import colors from '../colors.js';
 
 BigCalendar.momentLocalizer(moment);
 
@@ -54,7 +55,7 @@ class Calendar extends React.Component {
             'title': 'Your Reservation',
             'start': start,
             'end': end,
-            'color': 'red'
+            'color': colors.red
         };
         this.setState({reservationSlot});
     }
@@ -62,21 +63,22 @@ class Calendar extends React.Component {
     colorChooser = (n) => {
         switch (n) {
             case 1:
-                return '#266CB2';
+                return colors.blueDark;
             case 2:
-                return '#90EE90';
+                return colors.greenDark;
             case 3:
-                return '#FFFF00';
+                return colors.yellowDark;
             case 4:
-                return '#FFA500';
+                return colors.orange;
             case 5:
-                return '#A52A2A';
+                return colors.purpleDark;
             default:
-                return '#266CB2';
+                return colors.blueDark;
         }
     }
 
     componentDidMount() {
+      console.log(colors)
         const userInterval = setInterval(()=>{
             const user = getUser();
             if (user != null){

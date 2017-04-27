@@ -1,6 +1,7 @@
 import React from 'react';
 import {ModalContainer, ModalDialog} from 'react-modal-dialog';
 import RaisedButton from 'material-ui/RaisedButton';
+import colors from '../colors'
 
 export default
 class ErrorPopup extends React.Component {
@@ -13,7 +14,7 @@ class ErrorPopup extends React.Component {
             justifyContent: 'center',
             flexDirection: 'column'
           }}>
-            <h1 style={{color: '#F44336'}}>
+            <h1 style={{color: colors.red}}>
               {this.props.msg}
             </h1>
             <br />

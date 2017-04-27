@@ -5,7 +5,8 @@ import darkBaseTheme from 'material-ui/styles/baseThemes/darkBaseTheme';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import TextField from 'material-ui/TextField';
-import { firebase } from '../firebaseAPI.js';
+import {firebase} from '../firebaseAPI.js';
+import colors from '../colors';
 
 class LoginForm extends React.Component {
     constructor(props) {
@@ -49,10 +50,10 @@ class LoginForm extends React.Component {
             padding: '7px 5px',
             margin: '20px 0',
             display: 'block',
-            backgroundColor: '#fff',
+            backgroundColor: colors.backgroundColor,
             fontSize: 18,
             borderRadius: 5,
-            boxShadow: '3px 5px 3px #042d4e',
+            boxShadow: '3px 5px 3px colors.blueDark',
             border: 'none'
         }
         return (

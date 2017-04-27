@@ -52,3 +52,5 @@ const colors = {
     'optionFocusedColor': '#F9F9F9',
     'selectValueBgColor': '#F7F7F7'
 };
+
+export default colors;
