@@ -18,7 +18,7 @@ export default class CandidateChangePopup extends React.PureComponent {
       profession: candidate.profession,
       status: candidate.status,
       isNew: candidate.isNew || false,
-      date: new Date(candidate.date),
+      date: null,
       level: candidate.level
     }
   }
@@ -100,12 +100,13 @@ export default class CandidateChangePopup extends React.PureComponent {
         primary={true}
         onTouchTap={
           () => {
+            const currentDate = this.state.date || new Date(candidate.date);
             const id = this.props.id === '-1' ? false : this.props.id;
             const changedCandidate = {
               name: this.state.name,
               profession: this.state.profession,
               status: this.state.status,
-              date: this.state.date.toString(),
+              date: currentDate.toString(),
               level: this.state.level,
               id: id
             };
@@ -138,11 +139,12 @@ export default class CandidateChangePopup extends React.PureComponent {
 
         <div className='hrCandidateEditPopup'>
         <DatePicker
+          hideCalendarDate={true}
           hintText='Select Interview Date'
           mode='landscape'
           value={this.state.date}
           onChange={(e, newDate) => {
-            const o = this.state.date;
+            const o = this.state.date || new Date(candidate.date);
             const n = newDate;
             const date = new Date(n.getFullYear(), n.getMonth(), n.getDate(), o.getHours(), o.getMinutes());
             this.setState({date})
