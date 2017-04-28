@@ -51,11 +51,12 @@ class MainPage extends React.Component {
       this.props.initialRooms(rooms);
     });
   };
-
+  
   render() {
     return (
       <div>
         <Header
+          id={2}
           user={this.props.user}
           admin={this.props.admin}
           signOut={this.props.signOut}

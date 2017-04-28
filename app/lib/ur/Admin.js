@@ -1,19 +1,17 @@
-import React, { Component } from 'react';
-import Footer from './components/Footer';
-import Header from './components/Header';
-import LoadingScreen from './components/LoadingScreen';
-import {ModalContainer, ModalDialog} from 'react-modal-dialog';
 import {map} from 'lodash';
+import React, { Component } from 'react';
+
+import DialogAction from './components/DialogAction';
+import LoadingScreen from './components/LoadingScreen';
 import { generate_request } from '../utils';
+import Header from './components/Header';
+import Footer from './components/Footer';
 
 export default
 class AdminPanel extends Component {
   constructor() {
     super();
     this.state = {
-      email: '',
-      name: '',
-      password: '',
       showBanner: false,
       selectedUser: '',
       bannerText: '',
@@ -31,21 +29,6 @@ class AdminPanel extends Component {
     }, 3000)
   }
 
-  handleMailChange = e => {
-    const email = e.target.value;
-    this.setState({...this.state, email});
-  }
-
-  handleNameChange = e => {
-    const name = e.target.value;
-    this.setState({...this.state, name});
-  }
-
-  handlePassChange = e => {
-    const password = e.target.value;
-    this.setState({...this.state, password});
-  }
-
   deleteAccount = async () => {
     const { selectedUser } = this.state;
     this.toggleDeleteModal();
@@ -60,8 +43,8 @@ class AdminPanel extends Component {
   }
 
   updateUserData = async () => {
-    const { email, password, name, selectedUser } = this.state;
-    let shouldShowBanner = true;
+    const { selectedUser } = this.state;
+    let shouldShowBanner = false;
     const updatedData = {}
     if(email.trim()) {
       updatedData.email = email;
@@ -101,96 +84,53 @@ class AdminPanel extends Component {
   }
 
   addNewUser = async () => {
-    const { email, password } = this.state;
-    this.toggleAddModal();
     const send_to_server = generate_request({email, password});
     const answer = await fetch(`/manageusers/add`, send_to_server);
     const answer_json = await answer.json();
     this.showBanner(`User was added`);
   }
 
-  // Toggles
-
-  toggleAddModal = () => {
-    const { showAddModal } = this.state;
-    this.setState({...this.state, showAddModal: !showAddModal});
-  }
-
-  toggleEditModal = () => {
-    const { showEditModal } = this.state;
-    this.setState({...this.state, showEditModal: !showEditModal});
-  }
-
-  toggleDeleteModal = () => {
-    const { showDeleteModal } = this.state;
-    this.setState({...this.state, showDeleteModal: !showDeleteModal});
-  }
-
-  // End
-
-  getUsersData = () => {
-    const { user, dbRef } = this.props;
-    const promise = dbRef.once('value');
+  constructTable = (snapshot) => {
+    const value = snapshot.val();
+    const renderElms = map(value, (currentUserData, uid) => {
+      const isSelected = this.state.selectedUser === uid ? 'selected' : '';
+      return (
+        <tr
+          key={uid}
+          onClick={this.handleSelected.bind(this, uid)}
+          className={isSelected}>
+          <td className={'row-cell'}>
+            <div>
+              {currentUserData.username}
+            </div>
+          </td>
+          <td className={'row-cell'}>
+            <div>
+              {currentUserData.created}
+            </div>
+          </td>
+          <td className={'row-cell'}>
+            <div>
+              {currentUserData.email}
+            </div>
+          </td>
+          <td className={'row-cell'}>
+            <div>
+              {currentUserData.password}
+            </div>
+          </td>
+          <td className={'row-cell'}>
+            <div>
+              {currentUserData.isAdmin ? 'true' : 'false'}
+            </div>
+          </td>
+        </tr>
+      );
+    })
     return (
-        <LoadingScreen
-          promise={ promise }
-          whenPending= { () => {
-            return (
-              <tbody>
-                <tr>
-                  <td colSpan='5'>
-                    <div className='loading-screen users'>
-                      <img src='/images/loadingSmall.gif' />
-                    </div>
-                  </td>
-                </tr>
-              </tbody>
-            )
-          }}
-          whenResolved={ snapshot => {
-            const value = snapshot.val();
-            const renderElms = map(value, (currentUserData, uid) => {
-              const isSelected = this.state.selectedUser === uid ? 'selected' : '';
-              return (
-                <tr
-                  key={uid}
-                  onClick={this.handleSelected.bind(this, uid)}
-                  className={isSelected}>
-                  <td className={'row-cell'}>
-                    <div>
-                      {currentUserData.username}
-                    </div>
-                  </td>
-                  <td className={'row-cell'}>
-                    <div>
-                      {currentUserData.created}
-                    </div>
-                  </td>
-                  <td className={'row-cell'}>
-                    <div>
-                      {currentUserData.email}
-                    </div>
-                  </td>
-                  <td className={'row-cell'}>
-                    <div>
-                      {currentUserData.password}
-                    </div>
-                  </td>
-                  <td className={'row-cell'}>
-                    <div>
-                      {currentUserData.isAdmin ? 'true' : 'false'}
-                    </div>
-                  </td>
-                </tr>
-              );
-            })
-            return (
-              <tbody>
-                {renderElms}
-              </tbody>
-            );
-          }}
-        />
+      <tbody>
+        {renderElms}
+      </tbody>
     );
   }
 
@@ -203,97 +143,58 @@ class AdminPanel extends Component {
       showEditModal,
       showDeleteModal
     } = this.state;
-    const { user } = this.props;
+    const { user, dbRef } = this.props;
+    const promise = dbRef.once('value');
     const { displayName, email, emailVerified, photoURL, uid, providerData } = user;
     return (
       <div className='adminContainer full-width'>
         <Header
+          id={3}
           user={user}
           admin={true}
           signOut={this.props.signOut}
         />
       <div className='admin-body'>
-          <div className='buttons'>
+        <div className='buttons'>
             {
               showBanner &&
               <div className='success'>{bannerText}</div>
             }
-            <button onClick={this.toggleUserActiveState}>
-              {
-                activeState ? 'Deactivate' : 'Activate'
-              }
-            </button>
-            <button onClick={this.toggleAddModal}>Add</button>
-            <button onClick={this.toggleEditModal}>Edit</button>
-            <button onClick={this.toggleDeleteModal}>Delete</button>
-            {
-              showAddModal &&
-              <ModalContainer onClose={this.toggleAddModal}>
-                <ModalDialog onClose={this.toggleAddModal} className='modal-dialog'>
-                  <h1>Enter Credentials</h1>
-                  <p>Enter email and password for a new user</p>
-                  <input
-                    type='email'
-                    placeholder='Email'
-                    onChange={this.handleMailChange}
-                  />
-                  <input
-                    type='password'
-                    placeholder='Password'
-                    onChange={this.handlePassChange}
-                  />
-                  <button
-                    onClick={this.addNewUser}
-                    style={{width: '131px'}}
-                  >Add New User</button>
-                </ModalDialog>
-              </ModalContainer>
-            }
-            {
-              showEditModal &&
-              <ModalContainer onClose={this.toggleEditModal}>
-                <ModalDialog onClose={this.toggleEditModal} className='modal-dialog'>
-                  <h1>Enter Credentials</h1>
-                  <p>Enter credentials you want to change</p>
-                  <input
-                    type='email'
-                    placeholder='Email'
-                    onChange={this.handleMailChange}
-                  />
-                  <input
-                    type='text'
-                    placeholder='Display Name'
-                    onChange={this.handleNameChange}
-                  />
-                  <input
-                    type='password'
-                    placeholder='Password'
-                    onChange={this.handlePassChange}
-                  />
-                  <button
-                    onClick={this.updateUserData}
-                    style={{width: '131px'}}
-                  >Edit</button>
-                </ModalDialog>
-              </ModalContainer>
-            }
-            {
-              showDeleteModal &&
-              <ModalContainer onClose={this.toggleDeleteModal}>
-                <ModalDialog onClose={this.toggleDeleteModal} className='modal-dialog'>
-                  <h1>Are you sure you want to delete this user?</h1>
-                  <p>Warning: this action cannot be undone</p>
-                  <button
-                    onClick={this.deleteAccount}
-                    style={{width: '131px'}}
-                  >Yes</button>
-                  <button
-                    onClick={this.toggleDeleteModal}
-                    style={{width: '131px'}}
-                  >No</button>
-                </ModalDialog>
-              </ModalContainer>
-            }
+            <DialogAction
+              email
+              password
+              buttonText='Add'
+              modalAction={this.addNewUser}
+              modalButtonText='Add New User'
+              headerText='Enter Credentials'
+              noticeText='Enter email and password for a new user'
+            />
+            <DialogAction
+              email
+              password
+              displayName
+              buttonText='Edit'
+              modalAction={this.updateUserData}
+              modalButtonText='Edit'
+              headerText='Enter Credentials'
+              noticeText='Enter the credentials you want to change'
+            />
+            <DialogAction
+              warningButton
+              buttonText='Delete'
+              modalAction={this.deleteAccount}
+              modalButtonText='Delete'
+              headerText='Are you sure you want to delete this user?'
+              noticeText='Warning: this action cannot be undone'
+            />
+            <DialogAction
+              warningButton
+              buttonText='Deactivate'
+              modalAction={this.toggleUserActiveState}
+              modalButtonText={activeState ? 'Deactivate' : 'Activate'}
+              headerText='Are you sure you want to delete this user?'
+              noticeText='Warning: this action cannot be undone'
+            />
           </div>
           <div className='table-body'>
             <div className='toolbar'>
@@ -340,23 +241,26 @@ class AdminPanel extends Component {
                     </th>
                   </tr>
                 </thead>
-                { this.getUsersData() }
+                <LoadingScreen
+                  promise={ promise }
+                  whenPending= { () => {
+                    return (
+                      <tbody>
+                        <tr>
+                          <td colSpan='5'>
+                            <div className='loading-screen users'>
+                              <img src='/images/loadingSmall.gif' />
+                            </div>
+                          </td>
+                        </tr>
+                      </tbody>
+                    )
+                  }}
+                  whenResolved={ snapshot => {
+                    return this.constructTable(snapshot)
+                  }}
+                />
               </table>
-              <div className='pagination'>
-                Rows per page:
-                <div className='pagination-dropdown'>
-                  50
-                </div>
-                1-3 of 3
-                <div className='pagination-buttons'>
-                  <button>
-                    <i className='material-icons'>chevron_left</i>
-                  </button>
-                  <button>
-                    <i className='material-icons'>chevron_right</i>
-                  </button>
-                </div>
-              </div>
             </div>
           </div>
         </div>

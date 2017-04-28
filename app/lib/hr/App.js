@@ -46,12 +46,13 @@ class ResourceManager extends React.PureComponent {
     return(
       <div>
         <Header
+          id={1}
           user={this.props.user}
           admin={this.props.admin}
           signOut={this.props.signOut}
         />
         <Tabs
-          
+
         >
           <Tab
             label='candidates'

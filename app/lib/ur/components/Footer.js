@@ -1,5 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import {Toolbar, ToolbarGroup, ToolbarSeparator, ToolbarTitle} from 'material-ui/Toolbar';
+
+import colors from '../../colors';
 
 const ui = {
   home:  {resource: '/',      link:'home',  iconName: 'home' },
@@ -20,30 +23,36 @@ export default () => {
   });
 
   return (
-    <div style={footer}>
-      <img src='/images/logo.svg' style={logoStyle}></img>
-      <div className={'centerV full-width'}>
+    <Toolbar style={footer}>
+      <ToolbarGroup>
+        <img src='/images/logo.svg' style={logoStyle} />
         <ul style={footerItemsContainer}>
           <li style={footerListItemStyle}>
             <a
               className={'divisor'}
               style={linkStyle}
-              href='https://bitbucket.org/apollobytes/ab-internal-ur'
+              href='https://bitbucket.org/apollobytes/ab-internal'
               target='_blank'
             >{'Source Code'}</a>
           </li>
           {listItems}
         </ul>
+      </ToolbarGroup>
+      <ToolbarGroup>
         <div style={copyright} className={'push-right'}>
           <p style={copyrightStyle}>{'© 2017 ApolloBytes - All rights reserved'}</p>
         </div>
-      </div>
-    </div>
+      </ToolbarGroup>
+    </Toolbar>
   );
 };
 
+const dividerStyle = {
+  backgroundColor: colors.grayLight
+}
+
 const copyright = {
-  width: '80%',
+  width: '100%',
   marginLeft: 'auto',
   textAlign: 'right',
 }
@@ -84,7 +93,7 @@ const footer = {
   display: 'flex',
   padding: '0 3%',
   width: '100%',
-  backgroundColor: '#3E424E',
+  backgroundColor: colors.primaryColor,
   color: 'white',
   height: '5vh',
   minHeight: '35px',
