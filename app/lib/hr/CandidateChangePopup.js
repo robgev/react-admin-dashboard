@@ -120,6 +120,7 @@ export default class CandidateChangePopup extends React.PureComponent {
     return (
       <Dialog
         title='Change canidate info'
+        contentStyle={{width: '600px', height: 'auto'}}
         actions={actions}
         modal={false}
         open={true}
