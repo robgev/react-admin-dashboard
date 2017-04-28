@@ -51,19 +51,18 @@ class ResourceManager extends React.PureComponent {
           admin={this.props.admin}
           signOut={this.props.signOut}
         />
-        <Tabs className='hrTabs'>
-
-        <Tab
-        label='candidates'
-        containerElement={<Link to={url} />}
-        />
-
-        <Tab
-        label='questions'
-        containerElement={<Link to={url + '/questions'} />}
-        />
+        <Tabs
+          className='hrTabs'
+        >
+          <Tab
+            label='candidates'
+            containerElement={<Link to={url} />}
+          />
+          <Tab
+            label='questions'
+            containerElement={<Link to={url + '/questions'} />}
+          />
         </Tabs>
-
         <Switch>
           <Route path={url + '/questions'} component={CustomQuestions} />
           <Route path={url + '/interview/:candidateId'} component={MakeInterviewList} />
