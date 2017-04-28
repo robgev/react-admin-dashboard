@@ -1,10 +1,11 @@
 import React from 'react';
+
 import {ModalContainer, ModalDialog} from 'react-modal-dialog';
 import RaisedButton from 'material-ui/RaisedButton';
-import colors from '../colors'
 
-export default
-class ErrorPopup extends React.Component {
+import colors from '../colors';
+
+export default class ErrorPopup extends React.Component {
   render(){
     return(
       <ModalContainer>
@@ -21,7 +22,7 @@ class ErrorPopup extends React.Component {
             <RaisedButton
               label='Close'
               primary={false}
-              onClick={ this.props.close }
+              onClick={this.props.close}
             />
           </div>
         </ModalDialog>
