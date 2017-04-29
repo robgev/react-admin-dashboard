@@ -283,11 +283,13 @@ export const deleteCandidateFirebase = (id) => {
 
 export const addPositionFirebase = (positionName) => {
   const key = firebase.database().ref().child('positions').push().key;
-  firebase.database().ref('/positions/' + key).set({
-    id: key,
-    positionName: positionName
-  });
-  return key;
+  return {
+    key,
+    promise: firebase.database().ref('/positions/' + key).set({
+      id: key,
+      positionName
+    })
+  };
 };
 
 export const deletePositionFirebase = (id) => {

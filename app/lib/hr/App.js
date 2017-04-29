@@ -8,6 +8,7 @@ import Footer from '../ur/components/Footer';
 
 import Candidates from './Candidates';
 import CustomQuestions from './CustomQuestions';
+import CustomPositions from './CustomPositions';
 import MakeInterviewList from './MakeInterviewList';
 import CandidateInterviewHomepage from './CandidateInterviewHomepage';
 
@@ -62,9 +63,14 @@ class ResourceManager extends React.PureComponent {
             label='questions'
             containerElement={<Link to={url + '/questions'} />}
           />
+          <Tab
+            label='positions'
+            containerElement={<Link to={url + '/positions'} />}
+          />
         </Tabs>
         <Switch>
           <Route path={url + '/questions'} component={CustomQuestions} />
+          <Route path={url + '/positions'} component={CustomPositions} />
           <Route path={url + '/interview/:candidateId'} component={MakeInterviewList} />
           <Route path={url + '/candidateInterview/:candidateId'} component={CandidateInterviewHomepage} />
           <Route path={url + '/'} component={Candidates} />
