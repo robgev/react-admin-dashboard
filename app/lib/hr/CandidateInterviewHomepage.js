@@ -1,9 +1,12 @@
 import React from 'react';
-import {findIndex} from 'lodash';
 import {connect} from 'react-redux';
 import {Link} from 'react-router-dom';
+
+import {findIndex} from 'lodash';
+
 import TextField from 'material-ui/TextField';
 import FlatButton from 'material-ui/FlatButton';
+
 import {addQuestionAnswers} from '../firebaseAPI';
 import {addCandidateQuestions} from '../../actions/candidate.action';
 
@@ -66,7 +69,7 @@ const styles = {
     justifyContent: 'center',
     alignItems: 'center',
     flexDirection: 'column',
-    width: '80%',
+    width: '70%',
     margin: '0 auto',
   },
   centered: {

@@ -13,12 +13,12 @@ import {
 // Import our compnents
 import User from './ur/User';
 import auth from './firebaseAPI';
-import SigninBox from './ur/Signin';
+import SigninBox from './ur/SignIn';
 import AdminPanel from './ur/Admin';
-import MainPage from './mp/mainPage';
+import MainPage from './mp/MainPage';
 import ResourceManager from './hr/App';
-import NotFound from './ur/components/Notfound';
-import LoadingScreen  from './ur/components/Loadingscreen';
+import NotFound from './ur/components/NotFound';
+import LoadingScreen  from './ur/components/LoadingScreen';
 
 //This App component is wrapped by MuiThemeProvider at the end.
 // This is done to allow server side rendering.
@@ -38,7 +38,7 @@ class App extends Component {
       if (currentUser) {
         const { displayName, email, emailVerified, photoURL, uid, providerData } = currentUser;
         if (displayName === null) {
-          const newName = email.split("@")[0];
+          const newName = email.split('@')[0];
           currentUser.updateProfile({
             displayName: newName,
           })
@@ -46,9 +46,9 @@ class App extends Component {
           .catch(error => console.log)
 
         }
-        if (photoURL === null || photoURL === "/profile.svg") {
+        if (photoURL === null || photoURL === '/profile.svg') {
           currentUser.updateProfile({
-            photoURL: "/images/profile.svg",
+            photoURL: '/images/profile.svg',
           })
           .then(() => this.setState({...this.state, currentUser}))
           .catch(error => console.log)
@@ -71,15 +71,15 @@ class App extends Component {
           <div className='router-wrapper'>
             <Switch>
               <Route
-                exact path="/"
+                exact path='/'
                 render={() =>
                 currentUser ?
-                    <Redirect to="/user"/>
-                  : <Redirect to="/signin"/>
+                    <Redirect to='/user'/>
+                  : <Redirect to='/signin'/>
                 }
               />
               <Route
-                path="/signin"
+                path='/signin'
                 render={ props =>
                   !currentUser ?
                   <SigninBox
@@ -88,11 +88,11 @@ class App extends Component {
                     passwordReset={auth.sendPasswordReset}
                     {...props}
                   /> :
-                  <Redirect to="/user"/>
+                  <Redirect to='/user'/>
                  }
               />
               <Route
-                path="/room"
+                path='/room'
                 render={ props => {
                   if(currentUser) {
                     return(
@@ -100,8 +100,8 @@ class App extends Component {
                         promise={ promise }
                         whenPending= { () => {
                           return (
-                            <div className="loading-screen">
-                              <img src="/images/loading.gif" />
+                            <div className='loading-screen'>
+                              <img src='/images/loading.gif' />
                             </div>
                           );
                         }}
@@ -121,13 +121,13 @@ class App extends Component {
                   }
                   else {
                     return (
-                      <Redirect to="/signin"/>
+                      <Redirect to='/signin'/>
                     );
                   }
                 }}
               />
               <Route
-                path="/management"
+                path='/management'
                 render={ props => {
                   if(currentUser) {
                     return(
@@ -135,8 +135,8 @@ class App extends Component {
                         promise={ promise }
                         whenPending= { () => {
                           return (
-                            <div className="loading-screen">
-                              <img src="/images/loading.gif" />
+                            <div className='loading-screen'>
+                              <img src='/images/loading.gif' />
                             </div>
                           );
                         }}
@@ -157,13 +157,13 @@ class App extends Component {
                   }
                   else {
                     return (
-                      <Redirect to="/signin"/>
+                      <Redirect to='/signin'/>
                     );
                   }
                 }}
               />
               <Route
-                path="/user"
+                path='/user'
                 render={ props => {
                   if(currentUser) {
                     return(
@@ -171,8 +171,8 @@ class App extends Component {
                         promise={ promise }
                         whenPending= { () => {
                           return (
-                            <div className="loading-screen">
-                              <img src="/images/loading.gif" />
+                            <div className='loading-screen'>
+                              <img src='/images/loading.gif' />
                             </div>
                           );
                         }}
@@ -198,13 +198,13 @@ class App extends Component {
                   }
                   else {
                     return (
-                      <Redirect to="/signin"/>
+                      <Redirect to='/signin'/>
                     );
                   }
                 }}
               />
               <Route
-                path="/admin"
+                path='/admin'
                 render={ props => {
                     if(currentUser) {
                       return(
@@ -212,8 +212,8 @@ class App extends Component {
                           promise={ promise }
                           whenPending= { () => {
                             return (
-                              <div className="loading-screen">
-                                <img src="/images/loading.gif" />
+                              <div className='loading-screen'>
+                                <img src='/images/loading.gif' />
                               </div>
                             );
                           }}
@@ -247,7 +247,7 @@ class App extends Component {
                     }
                     else {
                       return (
-                        <Redirect to="/signin"/>
+                        <Redirect to='/signin'/>
                       );
                     }
                   }

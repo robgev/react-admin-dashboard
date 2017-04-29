@@ -6,7 +6,7 @@
   padding: 0
   display: flex
   font-family: Sans-serif
-  background: $bgColor
+  background: $backgroundColor
 
 .form
   margin: auto
@@ -15,10 +15,10 @@
   display: flex
   flex-direction: column
   align-content: center
-  box-shadow: 3px 4px 4px $shadowColor
+  box-shadow: 3px 4px 4px $secondaryColor
   opacity: 0.8
-  background: $formBgColor
-  border: 2px solid $shadowColor
+  background: $primaryColor
+  border: 2px solid $secondaryColor
   border-radius: 9px
 
 .formcontent
@@ -31,7 +31,7 @@
   display: block
   font-size: 18px
   border-radius: 5px
-  box-shadow: 3px 5px 3px $shadowColor
+  box-shadow: 3px 5px 3px $secondaryColor
   border: none
 
 .loginbutton
@@ -41,20 +41,20 @@
   font-size: 20px
   border: none
   border-radius: 5px
-  box-shadow: 3px 5px 3px $shadowColor
-  background: $shadowColor
-  color: white
+  box-shadow: 3px 5px 3px $secondaryColor
+  background: $secondaryColor
+  color: $altColor
 
 .loginlabel
-  color: white
+  color: $altColor
   font-size: 1.56em
 
 .logintitle
   margin-bottom: 10px
   padding: 20px
-  color:  white
+  color:  $altColor
   text-align: center
   font-size: 1.2em
   font-weight: 300
-  background: linear-gradient($formBgColor, $formBgColor1)
+  background: linear-gradient($primaryColor, $secondaryColor)
   border-radius: 9px 9px 0 0

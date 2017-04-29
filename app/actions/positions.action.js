@@ -1,24 +1,21 @@
 const setInitialPositions = (positions) => {
   return {
     type: "SET_INITIAL_POSITIONS",
-    positions: positions
+    positions
   }
 };
 
-const addPosition = (newPosition) => {
+const addPosition = (position) => {
   return {
     type: "ADD_NEW_POSITION",
-    payload: {
-      positionName: newPosition.positionName,
-      id: newPosition.id
-    }
+    position
   }
 };
 
 const deletePosition = (id) => {
   return {
     type: "DELETE_POSITION",
-    id: id
+    id
   }
 }
 

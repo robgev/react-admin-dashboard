@@ -21,15 +21,15 @@ export default () => {
 
   return (
     <div style={footer}>
-      <img src="/images/logo.svg" style={logoStyle}></img>
+      <img src='/images/logo.svg' style={logoStyle}></img>
       <div className={'centerV full-width'}>
         <ul style={footerItemsContainer}>
           <li style={footerListItemStyle}>
             <a
               className={'divisor'}
               style={linkStyle}
-              href="https://bitbucket.org/apollobytes/ab-internal-ur"
-              target="_blank"
+              href='https://bitbucket.org/apollobytes/ab-internal-ur'
+              target='_blank'
             >{'Source Code'}</a>
           </li>
           {listItems}

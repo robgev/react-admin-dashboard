@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
-import { Route, Link } from 'react-router-dom';
 import Footer from './components/Footer';
 import Header from './components/Header';
-import LoadingScreen from './components/Loadingscreen';
+import LoadingScreen from './components/LoadingScreen';
 import {ModalContainer, ModalDialog} from 'react-modal-dialog';
 import {map} from 'lodash';
 import { generate_request } from '../utils';
@@ -139,9 +138,9 @@ class AdminPanel extends Component {
             return (
               <tbody>
                 <tr>
-                  <td colSpan="5">
-                    <div className="loading-screen users">
-                      <img src="/images/loadingSmall.gif" />
+                  <td colSpan='5'>
+                    <div className='loading-screen users'>
+                      <img src='/images/loadingSmall.gif' />
                     </div>
                   </td>
                 </tr>
@@ -207,17 +206,17 @@ class AdminPanel extends Component {
     const { user } = this.props;
     const { displayName, email, emailVerified, photoURL, uid, providerData } = user;
     return (
-      <div className="adminContainer full-width">
+      <div className='adminContainer full-width'>
         <Header
           user={user}
           admin={true}
           signOut={this.props.signOut}
         />
-        <div className="admin-body">
-          <div className="buttons">
+      <div className='admin-body'>
+          <div className='buttons'>
             {
               showBanner &&
-              <div className="success">{bannerText}</div>
+              <div className='success'>{bannerText}</div>
             }
             <button onClick={this.toggleUserActiveState}>
               {
@@ -230,7 +229,7 @@ class AdminPanel extends Component {
             {
               showAddModal &&
               <ModalContainer onClose={this.toggleAddModal}>
-                <ModalDialog onClose={this.toggleAddModal} className="modal-dialog">
+                <ModalDialog onClose={this.toggleAddModal} className='modal-dialog'>
                   <h1>Enter Credentials</h1>
                   <p>Enter email and password for a new user</p>
                   <input
@@ -253,7 +252,7 @@ class AdminPanel extends Component {
             {
               showEditModal &&
               <ModalContainer onClose={this.toggleEditModal}>
-                <ModalDialog onClose={this.toggleEditModal} className="modal-dialog">
+                <ModalDialog onClose={this.toggleEditModal} className='modal-dialog'>
                   <h1>Enter Credentials</h1>
                   <p>Enter credentials you want to change</p>
                   <input
@@ -281,7 +280,7 @@ class AdminPanel extends Component {
             {
               showDeleteModal &&
               <ModalContainer onClose={this.toggleDeleteModal}>
-                <ModalDialog onClose={this.toggleDeleteModal} className="modal-dialog">
+                <ModalDialog onClose={this.toggleDeleteModal} className='modal-dialog'>
                   <h1>Are you sure you want to delete this user?</h1>
                   <p>Warning: this action cannot be undone</p>
                   <button
@@ -296,65 +295,65 @@ class AdminPanel extends Component {
               </ModalContainer>
             }
           </div>
-          <div className="table-body">
-            <div className="toolbar">
-              <i className="material-icons">search</i>
+          <div className='table-body'>
+            <div className='toolbar'>
+              <i className='material-icons'>search</i>
               <input
                 type='text'
                 className='search'
                 placeholder=' Search by email address or user UID '
               />
             </div>
-            <div className="table-container">
+            <div className='table-container'>
               <table>
                 <thead>
                   <tr>
                     <th>
                       <div>
                         Name
-                        <i className="material-icons">arrow_downward</i>
+                        <i className='material-icons'>arrow_downward</i>
                       </div>
                     </th>
                     <th>
                       <div>
                         Created
-                        <i className="material-icons">arrow_downward</i>
+                        <i className='material-icons'>arrow_downward</i>
                       </div>
                     </th>
                     <th>
                       <div>
                         Email
-                        <i className="material-icons">arrow_downward</i>
+                        <i className='material-icons'>arrow_downward</i>
                       </div>
                     </th>
                     <th>
                       <div>
                         Password
-                        <i className="material-icons">arrow_downward</i>
+                        <i className='material-icons'>arrow_downward</i>
                       </div>
                     </th>
                     <th>
                       <div>
                         Is Admin
-                        <i className="material-icons">arrow_downward</i>
+                        <i className='material-icons'>arrow_downward</i>
                       </div>
                     </th>
                   </tr>
                 </thead>
                 { this.getUsersData() }
               </table>
-              <div className="pagination">
+              <div className='pagination'>
                 Rows per page:
-                <div className="pagination-dropdown">
+                <div className='pagination-dropdown'>
                   50
                 </div>
                 1-3 of 3
-                <div className="pagination-buttons">
+                <div className='pagination-buttons'>
                   <button>
-                    <i className="material-icons">chevron_left</i>
+                    <i className='material-icons'>chevron_left</i>
                   </button>
                   <button>
-                    <i className="material-icons">chevron_right</i>
+                    <i className='material-icons'>chevron_right</i>
                   </button>
                 </div>
               </div>

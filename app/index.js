@@ -8,7 +8,7 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import { BrowserRouter as Router } from 'react-router-dom';
 
 import './scss/main.sass';
-import './lib/ur/main.scss';
+import './scss/main.scss';
 import './scss/hrHome.sass';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import App from './lib/App';

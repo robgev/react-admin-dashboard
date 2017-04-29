@@ -61,25 +61,25 @@ class SigninBox extends Component {
   render() {
     const { email, password, showBanner, showModal } = this.state;
     return (
-      <div className="signin-wrapper">
+      <div className='signin-wrapper'>
         {
           showBanner &&
-          <div className="banner">
+          <div className='banner'>
             Email sent successfully
           </div>
         }
-        <div className="signin">
+        <div className='signin'>
           <h2>Apollo Bytes SignIn</h2>
           <div className='wrapper'>
             <input type='email' placeholder='Email'  onChange={this.mailChangeHandler} />
             <input type='password' placeholder='Password'  onChange={this.passChangeHandler} />
             <button onClick={this.handleSignIn}>Sign In</button>
             <button onClick={this.handleSignUp}>Sign Up</button>
-            <a className="forgot" onClick={this.modalShow}>Forgot Password?</a>
+            <a className='forgot' onClick={this.modalShow}>Forgot Password?</a>
             {
               showModal &&
               <ModalContainer onClose={this.handleModalClose}>
-                <ModalDialog onClose={this.handleModalClose} className="modal-dialog">
+                <ModalDialog onClose={this.handleModalClose} className='modal-dialog'>
                   <h1>Enter your email</h1>
                   <p>We will sent you an email with a reset link</p>
                   <input type='email' placeholder='Email'  onChange={this.mailChangeHandler} />

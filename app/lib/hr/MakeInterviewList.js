@@ -1,13 +1,17 @@
 import React from 'react';
 import {connect} from 'react-redux';
+import {Link} from 'react-router-dom';
+
 import {map, filter, find, findIndex} from 'lodash';
+import {addQuestionToCandidate} from '../firebaseAPI';
+
 import {Table, TableBody, TableHeader, TableHeaderColumn,
   TableRow, TableRowColumn} from 'material-ui/Table';
 import Divider from 'material-ui/Divider';
-import {addQuestionToCandidate} from '../firebaseAPI';
-import FlatButton from 'material-ui/FlatButton';
+import RaisedButton from 'material-ui/RaisedButton';
+
 import {addCandidateQuestions} from '../../actions/candidate.action';
-import {Link} from 'react-router-dom';
+
 
 function mapStateToProps(state) {
   return (
@@ -33,8 +37,8 @@ class MakeInterviewList extends React.PureComponent {
     });
     return(
       <div style={styles.container}>
-        <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column'}}>
-          <div style={{width: '100%'}} >
+        <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'row'}}>
+          <div>
             <Table adjustForCheckbox multiSelectable>
               <TableHeader>
                 <TableRow>
@@ -74,7 +78,7 @@ class MakeInterviewList extends React.PureComponent {
             </Table>
           </div>
           <Divider />
-          <div style={{width: '100%'}} >
+          <div >
             <Table
               bodyStyle={styles.centered}
               headerStyle={styles.centered}
@@ -105,8 +109,9 @@ class MakeInterviewList extends React.PureComponent {
             </Table>
           </div>
         </div>
-        <FlatButton
+        <RaisedButton
           label='save'
+          primary={true}
           onTouchTap={() => {
             addQuestionToCandidate(this.selectedCandidate.id, this.state.candidateQuestions)
               .then(this.props.addCandidateQuestions(this.selectedCandidate.id, this.state.candidateQuestions))

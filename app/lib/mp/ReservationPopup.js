@@ -1,13 +1,17 @@
 import React from 'react';
-import TimePicker from 'material-ui/TimePicker';
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import DatePicker from 'material-ui/DatePicker';
-import TextField from 'material-ui/TextField';
-import RaisedButton from 'material-ui/RaisedButton';
-import { saveEvent } from '../firebaseAPI.js';
+
+import {saveEvent} from '../firebaseAPI.js';
 import moment from 'moment';
+
 import {ModalContainer, ModalDialog} from 'react-modal-dialog';
-import ErrorPopup from './errorPopup';
+
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import RaisedButton from 'material-ui/RaisedButton';
+import DatePicker from 'material-ui/DatePicker';
+import TimePicker from 'material-ui/TimePicker';
+import TextField from 'material-ui/TextField';
+
+import ErrorPopup from './ErrorPopup';
 
 const timeChecker = (t0, t1, t2, t3) => {
   const timeCheck0 = !moment(t0).isBetween(t2, t3);
@@ -16,15 +20,13 @@ const timeChecker = (t0, t1, t2, t3) => {
   const timeCheck3 = !moment(t3).isBetween(t0, t1);
 
   return (timeCheck0 && timeCheck1 && timeCheck2 && timeCheck3);
-}
+};
 
 const buttonStyle = {
   width: 125
-}
+};
 
-export default
-class ReservationPopup extends React.Component {
-
+export default class ReservationPopup extends React.Component {
   constructor(){
     super();
     this.state = {
@@ -36,18 +38,18 @@ class ReservationPopup extends React.Component {
       date: null,
       events: [],
       err: false
-    }
-  }
+    };
+  };
 
   dateChangeHandler = (newDate) => {
     let date = newDate.toUTCString();
     date = new Date(date.split(' ').slice(0, 4).join(' '));
     this.setState({date});
-  }
+  };
 
   descChangeHandler = (e) => {
     this.setState({description: e.target.value});
-  }
+  };
 
   componentWillMount(){
     this.initialDate = this.props.date.split('/');
@@ -57,7 +59,7 @@ class ReservationPopup extends React.Component {
       date: new Date(this.initialDate[2], this.initialDate[1]-1, this.initialDate[0]),
       events: this.props.events
     });
-  }
+  };
 
   reserve = () => {
     const date = this.date.state.date.toString().split(' ').slice(0, 4).join(' ');
@@ -88,11 +90,12 @@ class ReservationPopup extends React.Component {
       endDate: endTime.toString(),
       description: this.state.description,
       email: this.state.email
-    }
+    };
+
     saveEvent(data).then(()=>{
       this.props.close();
     });
-  }
+  };
 
   render(){
     return(
@@ -123,30 +126,27 @@ class ReservationPopup extends React.Component {
               onChange={this.descChangeHandler}
             />
             <div className='popup-buttons'>
-
                 <RaisedButton
                 buttonStyle={buttonStyle}
                 label='Reserve'
                 primary={true}
                 onClick={this.reserve}
                 />
-
-
                 <RaisedButton
                 buttonStyle={buttonStyle}
                 label='Close'
                 primary={false}
                 onClick={ this.props.close }
                 />
-
             </div>
             {
-              this.state.err ? <ErrorPopup
+              !this.state.err ? null :
+              <ErrorPopup
                 msg='The time you selected is not free'
                 close={()=>{
                   this.setState({err: false});
                 }}
-              /> : <div></div>
+              />
             }
           </ModalDialog>
         </ModalContainer>

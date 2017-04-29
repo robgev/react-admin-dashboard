@@ -1,12 +1,15 @@
 import React from 'react';
 import {connect} from 'react-redux';
+import {map} from 'lodash';
+
 import firebase from 'firebase';
+
 import {setInitialPositions, addPosition,
   deletePosition} from '../../actions/positions.action';
 import {setInitialQuestions, addQuestion, deleteQuestion, editQuestion} from '../../actions/questions.action';
 import {addPositionFirebase, deletePositionFirebase,
   addQuestionFirebase, deleteQuestionFirebase, editQuestionFirebase} from '../firebaseAPI';
-import {map} from 'lodash';
+
 import TextField from 'material-ui/TextField';
 import FlatButton from 'material-ui/FlatButton';
 import Paper from 'material-ui/Paper';
@@ -100,8 +103,9 @@ class CustomQuestions extends React.PureComponent {
             {backgroundColor: '#224C75'} : {backgroundColor: 'rgb(216, 226, 242)'};
         return(
           <Paper
+            className='hrPaperQuestions'
             key={question.id}
-            style={{...isSelected, cursor: 'pointer'}}
+            style={{...isSelected, cursor: 'pointer',   transition: '1s ease-in-out'}}
             onTouchTap={() => {
               this.state.selectedQuestion !== question.id ?
                 this.setState({selectedQuestion: question.id}) :

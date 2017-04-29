@@ -1,10 +1,14 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import firebase from 'firebase';
-import moment from 'moment';
-import {map, forEach, sortBy} from 'lodash';
-import LoadingScreen from '../ur/components/Loadingscreen';
 import {Link} from 'react-router-dom';
+import {map, forEach, sortBy} from 'lodash';
+
+import firebase from 'firebase';
+
+import moment from 'moment';
+
+import CandidateChangePopup from './CandidateChangePopup';
+
 import {addCandidateFirebase, editCandidateFirebase, deleteCandidateFirebase} from '../firebaseAPI';
 import {addCandidate, deleteCandidate, setInitial} from '../../actions/candidate.action';
 
@@ -13,8 +17,6 @@ import {Table, TableBody, TableHeader, TableHeaderColumn,
 import FlatButton from 'material-ui/FlatButton';
 import TextField from 'material-ui/TextField';
 
-import CandidateChangePopup from './CandidateChangePopup';
-import CandidateInterviewHomepage from './CandidateInterviewHomepage';
 
 function mapStateToProps(state) {
   return (
@@ -34,7 +36,10 @@ class Candidates extends React.PureComponent {
       filter: '',
       interview: false,
       editScreen: false,
-      sortValue: ''
+      sortValue: {
+        value: '',
+        up: false
+      }
     };
   };
 
@@ -79,7 +84,7 @@ class Candidates extends React.PureComponent {
         return 1;
       }
     };
-    switch (this.state.sortValue) {
+    switch (this.state.sortValue.value) {
       case 'Name':
         return sortBy(candidates, i => i.name);
       case 'Profession':
@@ -98,16 +103,18 @@ class Candidates extends React.PureComponent {
   render() {
     const selectedCandidate = this.state.candidates[this.state.selected];
     const header =  ['Name', 'Profession', 'Level', 'Date', 'Status'];
+    const isDisabled = this.state.selected === '-1' || this.state.selected === 'new';
     let filteredCandidates = [];
     forEach(this.state.candidates, candidate => {
       const fits = header.some(i => {
         return candidate[i.toLowerCase()].toString().toLowerCase().includes(this.state.filter)
       });
-      if (fits) {
+      if (fits || this.props.positions[candidate.profession].positionName.toLowerCase().includes(this.state.filter)) {
         filteredCandidates.push(candidate);
       }
     });
     filteredCandidates = this.filterListElements(filteredCandidates);
+    this.state.sortValue.up ? filteredCandidates.reverse() : null;
     const RenderCandidates = filteredCandidates.map(candidate => {
       const isSelected = candidate.id === this.state.selected ?
           {backgroundColor: '#E0E0E0'} : {};
@@ -133,7 +140,7 @@ class Candidates extends React.PureComponent {
             {candidate.level}
           </TableRowColumn>
           <TableRowColumn>
-            {moment(candidate.date).format('Do MMMM YYYY, h:mm a')}
+            {moment(new Date(candidate.date)).format('Do MMMM YYYY, h:mm a')}
           </TableRowColumn>
           <TableRowColumn>
             {candidate.status}
@@ -162,7 +169,14 @@ class Candidates extends React.PureComponent {
                     <FlatButton
                       style={{color: 'white'}}
                       label={column}
-                      onTouchTap={() => this.setState({sortValue: column})}
+                      onTouchTap={() => {
+                        const sortValue = {
+                          ...this.state.sortValue,
+                          value: column
+                        };
+                        this.setState({sortValue});
+                      }
+                    }
                     />
                   </TableHeaderColumn>
                 ))
@@ -196,11 +210,13 @@ class Candidates extends React.PureComponent {
 
     return(
       <div className='hrHome'>
+      <div className='hrForButtonsandFilter'>
         <TextField
           floatingLabelText='Filter'
           value={this.state.filter}
           onChange={(e) => this.setState({filter: e.target.value})}
         />
+        <div className='hrCandidatesButtons'>
         <FlatButton
           primary
           style={{marginLeft: '20px'}}
@@ -226,18 +242,28 @@ class Candidates extends React.PureComponent {
         />
         <FlatButton
           primary
-          disabled={this.state.selected === '-1' || this.state.selected === 'new'}
+          disabled={isDisabled}
           style={{marginLeft: '20px'}}
           label='questionlist'
-          containerElement={<Link to={'/management/interview/' + this.state.selected} />}
+          containerElement={
+            isDisabled ?
+            <div></div> :
+            <Link to={'/management/interview/' + this.state.selected} />
+          }
         />
         <FlatButton
           primary
-          disabled={this.state.selected === '-1' || this.state.selected === 'new'}
+          disabled={isDisabled}
           style={{marginLeft: '20px'}}
           label='interview'
-          containerElement={<Link to={'/management/candidateInterview/' + this.state.selected} />}
+          containerElement={
+            isDisabled ?
+            <div></div> :
+            <Link to={'/management/candidateInterview/' + this.state.selected} />
+          }
         />
+        </div>
+        </div>
         <CandidateTable />
         {
           (() => {

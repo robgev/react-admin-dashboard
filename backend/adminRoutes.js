@@ -2,29 +2,29 @@
 
 const path = require('path');
 const express = require('express');
-const admin_router = express.Router();
+const adminRouter = express.Router();
 const body_parser = require('body-parser');
 const admin = require('firebase-admin');
 const json_parser = body_parser.json();
 const form_parser = body_parser.urlencoded({extended: true});
 const firebaseAPI  = require('../frontend/lib/firebaseAPI').default
 
-const serviceAccount = require("./serviceAccountKey.json");
+const serviceAccount = require('./serviceAccountKey.json');
 
-admin_router.use(json_parser, form_parser);
+adminRouter.use(json_parser, form_parser);
 
-admin_router.post('/activestatus', async (req, res) => {
+adminRouter.post('/activestatus', async (req, res) => {
   const {uid} = req.body
   try {
     const userData = await admin.auth().getUser(uid)
     res.end(JSON.stringify({status: 'ok', disabled: userData.disabled}))
   } catch(error) {
-    console.log("Error fetching user data:", error);
+    console.log('Error fetching user data:', error);
     res.end(JSON.stringify({status: 'error', message: 'something went wrong'}))
   }
 })
 
-admin_router.post('/deactivate', async (req, res) => {
+adminRouter.post('/deactivate', async (req, res) => {
   const {uid} = req.body
   try {
     const userData = await admin.auth().getUser(uid)
@@ -39,7 +39,7 @@ admin_router.post('/deactivate', async (req, res) => {
   }
 })
 
-admin_router.post('/edit', async (req, res) => {
+adminRouter.post('/edit', async (req, res) => {
   const {uid, email, password, displayName} = req.body;
   const updatedData = {}
   if (email) { updatedData.email = email } // Checks if email is in body to change
@@ -55,15 +55,15 @@ admin_router.post('/edit', async (req, res) => {
   }
 })
 
-admin_router.post('/add', async (req, res) => {
+adminRouter.post('/add', async (req, res) => {
   const {email, password} = req.body;
-  const name = email.split("@")[0];
+  const name = email.split('@')[0];
   const newUserData = {
     email,
     emailVerified: false,
     password,
     displayName: name,
-    photoURL: "/images/profile.svg",
+    photoURL: '/images/profile.svg',
     disabled: false
   }
   try {
@@ -72,7 +72,7 @@ admin_router.post('/add', async (req, res) => {
       email,
       password,
       username: name,
-      created: moment().format("MMM D, YYYY"),
+      created: moment().format('MMM D, YYYY'),
       isAdmin : false,
     }
     firebaseAPI.addNewUser(userData.uid, newUserObject)
@@ -83,7 +83,7 @@ admin_router.post('/add', async (req, res) => {
   }
 })
 
-admin_router.post('/delete', async (req, res) => {
+adminRouter.post('/delete', async (req, res) => {
   const {uid} = req.body;
   try {
     await admin.auth().deleteUser(uid)
@@ -98,7 +98,7 @@ admin_router.post('/delete', async (req, res) => {
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
-  databaseURL: "https://apollobytes-internal.firebaseio.com"
+  databaseURL: 'https://apollobytes-internal.firebaseio.com'
 });
 
-module.exports = admin_router;
+module.exports = adminRouter;
