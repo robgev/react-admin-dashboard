@@ -9,13 +9,15 @@ import moment from 'moment';
 
 import CandidateChangePopup from './CandidateChangePopup';
 
+import {addCandidate, deleteCandidate} from '../../actions/candidate.action';
 import {addCandidateFirebase, editCandidateFirebase, deleteCandidateFirebase} from '../firebaseAPI';
-import {addCandidate, deleteCandidate, setInitial} from '../../actions/candidate.action';
 
+import Dialog from 'material-ui/Dialog';
+import TextField from 'material-ui/TextField';
+import FlatButton from 'material-ui/FlatButton';
+import RaisedButton from 'material-ui/RaisedButton';
 import {Table, TableBody, TableHeader, TableHeaderColumn,
          TableRow, TableRowColumn} from 'material-ui/Table';
-import FlatButton from 'material-ui/FlatButton';
-import TextField from 'material-ui/TextField';
 
 
 function mapStateToProps(state) {
@@ -28,10 +30,10 @@ function mapStateToProps(state) {
 }
 
 class Candidates extends React.PureComponent {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
-      candidates: {},
+      candidates: props.candidates,
       selected: '-1',
       filter: '',
       interview: false,
@@ -39,21 +41,13 @@ class Candidates extends React.PureComponent {
       sortValue: {
         value: '',
         up: false
-      }
+      },
+      delete: false
     };
   };
 
-  componentWillMount() {
-    firebase.database().ref('candidates').once('value').then(candidates => {
-      candidates = candidates.val();
-      if (candidates){
-        this.props.setInitial(candidates);
-      }
-    });
-  };
-
-  componentWillReceiveProps(props) {
-    this.setState({candidates: props.candidates});
+  componentWillReceiveProps({candidates}) {
+    this.setState({candidates});
   };
 
   saveCandidate = (candidate, isNew) => {
@@ -70,9 +64,10 @@ class Candidates extends React.PureComponent {
     }
   };
 
-  deleteCandidate = (id) => {
-    deleteCandidateFirebase(id).then(() => {
-      this.props.deleteCandidate(id);
+  deleteCandidate = () => {
+    const {selected} = this.state;
+    deleteCandidateFirebase(selected).then(() => {
+      this.props.deleteCandidate(selected);
       this.setState({selected: '-1'});
     });
   };
@@ -238,7 +233,7 @@ class Candidates extends React.PureComponent {
           disabled={this.state.selected === '-1' || this.state.selected === 'new'}
           style={{marginLeft: '20px'}}
           label='delete'
-          onTouchTap={() => this.deleteCandidate(this.state.selected)}
+          onTouchTap={() => this.setState({delete: true})}
         />
         <FlatButton
           primary
@@ -265,16 +260,30 @@ class Candidates extends React.PureComponent {
         </div>
         </div>
         <CandidateTable />
-        {
-          (() => {
-            if (this.state.editScreen) {
-              return <CandidateChange />
-            }
-          })()
-        }
+        {this.state.editScreen ? <CandidateChange /> : null}
+        {this.state.delete ?
+          <Dialog
+            open
+            title='Confirm Candidate Delete'
+            actions={[
+              <RaisedButton
+                label='cancel'
+                onTouchTap={() => this.setState({delete: false})}
+              />,
+              <RaisedButton
+                label='confirm'
+                buttonStyle={{backgroundColor: 'red'}}
+                onTouchTap={() => {this.deleteCandidate(), this.setState({delete: false})}}
+              />
+            ]}
+            onRequestClose={() => this.setState({delete: false})}
+          >
+            You are about to delete the candidate {selectedCandidate.name}, are you sure?
+          </Dialog>
+        : null}
       </div>
     );
   };
 };
 
-export default connect(mapStateToProps, {addCandidate, deleteCandidate, setInitial})(Candidates);
+export default connect(mapStateToProps, {addCandidate, deleteCandidate})(Candidates);

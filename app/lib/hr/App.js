@@ -12,20 +12,12 @@ import CustomPositions from './CustomPositions';
 import MakeInterviewList from './MakeInterviewList';
 import CandidateInterviewHomepage from './CandidateInterviewHomepage';
 
+import {setInitial} from '../../actions/candidate.action';
 import {setInitialPositions} from '../../actions/positions.action';
 import {setInitialQuestions} from '../../actions/questions.action';
 
 import FlatButton from 'material-ui/FlatButton';
 import {Tabs, Tab} from 'material-ui/Tabs';
-
-function mapStateToProps(state) {
-  return (
-    {
-      positions: state.positions,
-      questions: state.questions
-    }
-  )
-};
 
 class ResourceManager extends React.PureComponent {
   componentWillMount() {
@@ -39,6 +31,12 @@ class ResourceManager extends React.PureComponent {
       const questions = snapshot.val();
       if(questions){
         this.props.setInitialQuestions(questions);
+      }
+    });
+    firebase.database().ref('candidates').once('value').then(candidates => {
+      candidates = candidates.val();
+      if (candidates){
+        this.props.setInitial(candidates);
       }
     });
   };
@@ -81,4 +79,4 @@ class ResourceManager extends React.PureComponent {
   }
 }
 
-export default connect(mapStateToProps, {setInitialPositions, setInitialQuestions})(ResourceManager);
+export default connect(null, {setInitialPositions, setInitialQuestions, setInitial})(ResourceManager);

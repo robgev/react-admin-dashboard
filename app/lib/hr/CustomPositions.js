@@ -102,8 +102,8 @@ class CustomPositions extends React.PureComponent{
                 onTouchTap={() => this.setState({delete: false})}
               />,
               <RaisedButton
-                primary
                 label='confirm'
+                buttonStyle={{backgroundColor: 'red'}}
                 onTouchTap={() => this.deletePosition()}
               />
             ]}
