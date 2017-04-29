@@ -1,5 +1,7 @@
 import React, {Component} from 'react';
 
+import {connect} from 'react-redux';
+
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import RaisedButton from 'material-ui/RaisedButton';
 import ReservationPopup from './ReservationPopup';
@@ -10,7 +12,11 @@ const buttonStyle = {
   marginRight: 200
 };
 
-export default class ResForm extends Component {
+function mapStateToProps({activeRoom: room}) {
+  return {room}
+};
+
+class ResForm extends Component {
   constructor(){
     super();
     this.state = {
@@ -52,3 +58,5 @@ export default class ResForm extends Component {
     );
   }
 }
+
+export default connect(mapStateToProps)(ResForm);
