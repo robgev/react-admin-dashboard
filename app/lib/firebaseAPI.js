@@ -294,6 +294,12 @@ export const deletePositionFirebase = (id) => {
   return firebase.database().ref('/positions/' + id).remove();
 };
 
+export const editPositionFirebase = (position) => {
+  const updates = {};
+  updates['/positions/' + position.id] = position;
+  return firebase.database().ref().update(updates);
+}
+
 export const addQuestionFirebase = (info) => {
   const key = firebase.database().ref().child('questions').push().key;
   firebase.database().ref('/questions/' + key).set({
