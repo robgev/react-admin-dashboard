@@ -1,6 +1,7 @@
 import React from 'react';
 
 import {saveEvent} from '../firebaseAPI.js';
+import {connect} from 'react-redux';
 import moment from 'moment';
 
 import {ModalContainer, ModalDialog} from 'react-modal-dialog';
@@ -10,6 +11,10 @@ import RaisedButton from 'material-ui/RaisedButton';
 import DatePicker from 'material-ui/DatePicker';
 import TimePicker from 'material-ui/TimePicker';
 import TextField from 'material-ui/TextField';
+
+function mapStateToProps({activeRoom: room}) {
+  return {room}
+};
 
 import ErrorPopup from './ErrorPopup';
 
@@ -26,7 +31,7 @@ const buttonStyle = {
   width: 125
 };
 
-export default class ReservationPopup extends React.Component {
+class ReservationPopup extends React.Component {
   constructor(){
     super();
     this.state = {
@@ -85,7 +90,7 @@ export default class ReservationPopup extends React.Component {
     }
 
     const data = {
-      roomNumber: this.state.roomNumber,
+      roomNumber: this.props.room.index,
       startDate: startTime.toString(),
       endDate: endTime.toString(),
       description: this.state.description,
@@ -154,3 +159,5 @@ export default class ReservationPopup extends React.Component {
     )
   }
 }
+
+export default connect(mapStateToProps)(ReservationPopup);

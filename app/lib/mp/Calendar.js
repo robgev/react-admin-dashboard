@@ -30,6 +30,28 @@ class Calendar extends React.Component {
     };
   };
 
+  getAllEvents = () => {
+    firebase.database().ref('/events/').once('value').then((allRoomsEvents) => {
+          allRoomsEvents = allRoomsEvents.val();
+          let events = [];
+          for (let i in allRoomsEvents){
+              for (let idx in allRoomsEvents[i]){
+                  events.push({
+                      'title': allRoomsEvents[i][idx].description,
+                      'start': new Date(allRoomsEvents[i][idx].startDate),
+                      'end': new Date(allRoomsEvents[i][idx].endDate),
+                      'color': this.colorChooser(Number(i)),
+                      'user': allRoomsEvents[i][idx].user,
+                      'key': idx,
+                      'room': i
+                  });
+              }
+          }
+          const reservationSlot = {};
+          this.setState({events, reservationSlot});
+      });
+  }
+
   eventStyleGetter = (event) => {
     const style = {
       backgroundColor: event.color,
@@ -88,50 +110,15 @@ class Calendar extends React.Component {
         clearInterval(userInterval);
       }
     }, 500);
-    firebase.database().ref('/events/').once('value').then((allRoomsEvents) => {
-      allRoomsEvents = allRoomsEvents.val();
-      let events = [];
-      for (let i in allRoomsEvents) {
-        for (let idx in allRoomsEvents[i]) {
-          events.push({
-            'title': allRoomsEvents[i][idx].description,
-            'start': new Date(allRoomsEvents[i][idx].startDate),
-            'end': new Date(allRoomsEvents[i][idx].endDate),
-            'color': this.colorChooser(Number(i)),
-            'user': allRoomsEvents[i][idx].user,
-            'key': idx,
-            'room': i
-          });
-        }
-      }
-      const reservationSlot = {};
-      this.setState({events, reservationSlot});
-    });
+    this.getAllEvents();
   };
 
   componentWillReceiveProps(nextProps){
     if (nextProps.room.index === this.state.roomN)
       return;
     if (nextProps.room.index === 0){
-      firebase.database().ref('/events/').once('value').then((allRoomsEvents) => {
-        allRoomsEvents = allRoomsEvents.val();
-        let events = [];
-        for (let i in allRoomsEvents){
-          for (let idx in allRoomsEvents[i]){
-            events.push({
-              'title': allRoomsEvents[i][idx].description,
-              'start': new Date(allRoomsEvents[i][idx].startDate),
-              'end': new Date(allRoomsEvents[i][idx].endDate),
-              'color': this.colorChooser(Number(i)),
-              'user': allRoomsEvents[i][idx].user,
-              'key': idx,
-              'room': i
-            });
-          }
-        }
-        const reservationSlot = {};
-        this.setState({events, reservationSlot, roomN: nextProps.room.index});
-      });
+      this.getAllEvents();
+      this.setState({roomN: nextProps.room.index});
     }
     else {
       firebase.database().ref('/events/' + nextProps.room.index).on('value', (eventList) => {
