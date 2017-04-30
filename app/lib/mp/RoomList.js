@@ -57,7 +57,7 @@ class RoomList extends Component {
   render() {
     return (
       <MuiThemeProvider>
-        <div>
+        <div className = 'room-list-container'>
           <Paper style={paperstyle}>
             <Menu value={this.state.value}>
               {this.renderingMenuItems()}

@@ -32,24 +32,24 @@ class Calendar extends React.Component {
 
   getAllEvents = () => {
     firebase.database().ref('/events/').once('value').then((allRoomsEvents) => {
-          allRoomsEvents = allRoomsEvents.val();
-          let events = [];
-          for (let i in allRoomsEvents){
-              for (let idx in allRoomsEvents[i]){
-                  events.push({
-                      'title': allRoomsEvents[i][idx].description,
-                      'start': new Date(allRoomsEvents[i][idx].startDate),
-                      'end': new Date(allRoomsEvents[i][idx].endDate),
-                      'color': this.colorChooser(Number(i)),
-                      'user': allRoomsEvents[i][idx].user,
-                      'key': idx,
-                      'room': i
-                  });
-              }
-          }
-          const reservationSlot = {};
-          this.setState({events, reservationSlot});
-      });
+      allRoomsEvents = allRoomsEvents.val();
+      let events = [];
+      for (let i in allRoomsEvents){
+        for (let idx in allRoomsEvents[i]){
+          events.push({
+            'title': allRoomsEvents[i][idx].description,
+            'start': new Date(allRoomsEvents[i][idx].startDate),
+            'end': new Date(allRoomsEvents[i][idx].endDate),
+            'color': this.colorChooser(Number(i)),
+            'user': allRoomsEvents[i][idx].user,
+            'key': idx,
+            'room': i
+          });
+        }
+      }
+      const reservationSlot = {};
+      this.setState({events, reservationSlot});
+    });
   }
 
   eventStyleGetter = (event) => {
@@ -57,7 +57,7 @@ class Calendar extends React.Component {
       backgroundColor: event.color,
       opacity: 0.8,
       color: 'black',
-      border: '0px',
+      border: 0,
       display: 'block'
     };
       return {style: style};
@@ -91,7 +91,7 @@ class Calendar extends React.Component {
       case 2:
         return colors.greenDark;
       case 3:
-        return colors.yellowDark;
+        return colors.yellow;
       case 4:
         return colors.orange;
       case 5:
@@ -125,15 +125,15 @@ class Calendar extends React.Component {
         eventList = eventList.val();
         let events = [];
         for (let i in eventList){
-            events.push({
-              'title': eventList[i].description,
-              'start': new Date(eventList[i].startDate),
-              'end': new Date(eventList[i].endDate),
-              'color': this.colorChooser(Number(nextProps.room.index)),
-              'user': eventList[i].user,
-              'key': i,
-              'room': nextProps.room.index
-            });
+          events.push({
+            'title': eventList[i].description,
+            'start': new Date(eventList[i].startDate),
+            'end': new Date(eventList[i].endDate),
+            'color': this.colorChooser(Number(nextProps.room.index)),
+            'user': eventList[i].user,
+            'key': i,
+            'room': nextProps.room.index
+          });
         }
         const reservationSlot = {};
         this.props.getEvents(events);
