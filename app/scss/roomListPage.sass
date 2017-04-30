@@ -3,10 +3,10 @@
 .mainpage
   width: 100%
   height: calc(90vh - 64px)
-  display: flex
   overflow-x: hidden
   background-color: $backgroundColor
   color: $textColor
+  display: flex
 
   .calendar
     width: 100%
@@ -18,9 +18,10 @@
   color: $secondaryColor
 
 .room-description
-  padding-left: 20px
   width: 320px
+  padding-left: 20px
   font-size: 17px
+
 
 .room-image-container
   width: 400px
@@ -29,21 +30,26 @@
     width: 300px
     margin: 20px
 
+.popup-buttons2
+  margin-top: 15px
+  display: flex
+  justify-content: center
+
 @media (max-width: 1100px) and (min-width: 820px)
   .mainpage
     display: flex
     flex-wrap: wrap
 
     .calendar
-      order: 1
       height: calc(50.5vh - 164px)
       overflow-y: scroll
+      order: 1
 
     .room-whole-details
-      display: flex
-      height: 40vh
       width: 70vw
+      height: 40vh
       margin-bottom: 20px
+      display: flex
 
     .room-description
       width: 100%
@@ -64,9 +70,9 @@
 @media (max-width: 820px)
   .mainpage
     height: calc(90.5vh-64px)
+    overflow-x: hidden
     display: flex
     flex-wrap: wrap
-    overflow-x: hidden
 
     .calendar
       order: 1
