@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
-import {ModalContainer, ModalDialog} from 'react-modal-dialog';
+import TextField from 'material-ui/TextField';
+import FlatButton from 'material-ui/FlatButton';
+
+import DialogAction from './components/DialogAction';
 
 export default
 class SigninBox extends Component {
@@ -71,25 +74,47 @@ class SigninBox extends Component {
         <div className='signin'>
           <h2>Apollo Bytes SignIn</h2>
           <div className='wrapper'>
-            <input type='email' placeholder='Email'  onChange={this.mailChangeHandler} />
-            <input type='password' placeholder='Password'  onChange={this.passChangeHandler} />
-            <button onClick={this.handleSignIn}>Sign In</button>
-            <button onClick={this.handleSignUp}>Sign Up</button>
-            <a className='forgot' onClick={this.modalShow}>Forgot Password?</a>
-            {
-              showModal &&
-              <ModalContainer onClose={this.handleModalClose}>
-                <ModalDialog onClose={this.handleModalClose} className='modal-dialog'>
-                  <h1>Enter your email</h1>
-                  <p>We will sent you an email with a reset link</p>
-                  <input type='email' placeholder='Email'  onChange={this.mailChangeHandler} />
-                  <button onClick={this.passwordReset}>Send</button>
-                </ModalDialog>
-              </ModalContainer>
-            }
+            <TextField
+              type='email'
+              style={inputStyle}
+              value={this.state.email}
+              floatingLabelText='Email'
+              onChange={this.mailChangeHandler}
+            />
+            <TextField
+              type='password'
+              style={inputStyle}
+              value={this.state.password}
+              floatingLabelText='Password'
+              onChange={this.passChangeHandler}
+            />
+            <div className='buttons'>
+              <FlatButton
+                label='Sign In'
+                onTouchTap={this.handleSignIn}
+              />
+              <FlatButton
+                label='Sign Up'
+                onTouchTap={this.handleSignUp}
+              />
+              <DialogAction
+                flat
+                email
+                primary
+                buttonText='Forgot Password?'
+                modalAction={this.passwordReset}
+                modalButtonText='Send'
+                headerText='Enter your email'
+                noticeText='We will send you an email with a reset link'
+              />
+            </div>
           </div>
         </div>
       </div>
     );
   }
 };
+
+const inputStyle = {
+  width: '100%',
+}

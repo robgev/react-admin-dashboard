@@ -1,8 +1,10 @@
 import {map} from 'lodash';
 import React, { Component } from 'react';
+import {Table, TableBody, TableFooter, TableHeader, TableHeaderColumn, TableRow, TableRowColumn}
+  from 'material-ui/Table';
 
-import DialogAction from './components/DialogAction';
 import LoadingScreen from './components/LoadingScreen';
+import DialogAction from './components/DialogAction';
 import { generate_request } from '../utils';
 import Header from './components/Header';
 import Footer from './components/Footer';
@@ -12,14 +14,24 @@ class AdminPanel extends Component {
   constructor() {
     super();
     this.state = {
-      showBanner: false,
-      selectedUser: '',
+      dbData: null,
       bannerText: '',
+      selectedUser: '',
+      showBanner: false,
       activeState: true,
-      showDeleteModal: false,
       showAddModal: false,
       showEditModal: false,
+      showDeleteModal: false,
     }
+  }
+
+  componentDidMount() {
+    const { dbRef } = this.props;
+    const dbRequest = dbRef.once('value')
+    dbRequest.then(snapshot => {
+      const dbData = snapshot.val();
+      this.setState({...this.state, dbData})
+    })
   }
 
   showBanner = (bannerText) => {
@@ -42,7 +54,7 @@ class AdminPanel extends Component {
     const { updatePhoto } = this.props;
   }
 
-  updateUserData = async () => {
+  updateUserData = async (email, password, name) => {
     const { selectedUser } = this.state;
     let shouldShowBanner = false;
     const updatedData = {}
@@ -83,16 +95,16 @@ class AdminPanel extends Component {
     this.setState({ ...this.state, selectedUser: uid, activeState: !answer.disabled})
   }
 
-  addNewUser = async () => {
+  addNewUser = async (email, password) => {
     const send_to_server = generate_request({email, password});
     const answer = await fetch(`/manageusers/add`, send_to_server);
     const answer_json = await answer.json();
     this.showBanner(`User was added`);
   }
 
-  constructTable = (snapshot) => {
-    const value = snapshot.val();
-    const renderElms = map(value, (currentUserData, uid) => {
+  constructTable = () => {
+    const {dbData} = this.state;
+    const renderElms = map(dbData, (currentUserData, uid) => {
       const isSelected = this.state.selectedUser === uid ? 'selected' : '';
       return (
         <tr
@@ -140,11 +152,11 @@ class AdminPanel extends Component {
       bannerText,
       activeState,
       showAddModal,
+      selectedUser,
       showEditModal,
-      showDeleteModal
+      showDeleteModal,
     } = this.state;
-    const { user, dbRef } = this.props;
-    const promise = dbRef.once('value');
+    const { user } = this.props
     const { displayName, email, emailVerified, photoURL, uid, providerData } = user;
     return (
       <div className='adminContainer full-width'>
@@ -167,6 +179,7 @@ class AdminPanel extends Component {
               modalAction={this.addNewUser}
               modalButtonText='Add New User'
               headerText='Enter Credentials'
+              buttonStyle={{...(!selectedUser ? {disabled: true} : {primary: true})}}
               noticeText='Enter email and password for a new user'
             />
             <DialogAction
@@ -174,26 +187,29 @@ class AdminPanel extends Component {
               password
               displayName
               buttonText='Edit'
-              modalAction={this.updateUserData}
               modalButtonText='Edit'
               headerText='Enter Credentials'
+              modalAction={this.updateUserData}
               noticeText='Enter the credentials you want to change'
+              buttonStyle={{...(!selectedUser ? {disabled: true} : {primary: true})}}
             />
             <DialogAction
               warningButton
               buttonText='Delete'
-              modalAction={this.deleteAccount}
               modalButtonText='Delete'
-              headerText='Are you sure you want to delete this user?'
+              modalAction={this.deleteAccount}
               noticeText='Warning: this action cannot be undone'
+              headerText='Are you sure you want to delete this user?'
+              buttonStyle={{...(!selectedUser ? {disabled: true} : {secondary: true})}}
             />
             <DialogAction
               warningButton
-              buttonText='Deactivate'
               modalAction={this.toggleUserActiveState}
+              buttonText={activeState ? 'Deactivate' : 'Activate'}
+              noticeText='Notice: You can activate the user later'
               modalButtonText={activeState ? 'Deactivate' : 'Activate'}
-              headerText='Are you sure you want to delete this user?'
-              noticeText='Warning: this action cannot be undone'
+              headerText='Are you sure you want to deactivate this user?'
+              buttonStyle={{...(!selectedUser ? {disabled: true} : null)}}
             />
           </div>
           <div className='table-body'>
@@ -241,25 +257,7 @@ class AdminPanel extends Component {
                     </th>
                   </tr>
                 </thead>
-                <LoadingScreen
-                  promise={ promise }
-                  whenPending= { () => {
-                    return (
-                      <tbody>
-                        <tr>
-                          <td colSpan='5'>
-                            <div className='loading-screen users'>
-                              <img src='/images/loadingSmall.gif' />
-                            </div>
-                          </td>
-                        </tr>
-                      </tbody>
-                    )
-                  }}
-                  whenResolved={ snapshot => {
-                    return this.constructTable(snapshot)
-                  }}
-                />
+                {this.constructTable()}
               </table>
             </div>
           </div>

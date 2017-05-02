@@ -2,6 +2,7 @@ import React, {PureComponent} from 'react';
 
 import Dialog from 'material-ui/Dialog';
 import TextField from 'material-ui/TextField';
+import FlatButton from 'material-ui/FlatButton';
 import RaisedButton from 'material-ui/RaisedButton';
 
 import colors from '../../colors';
@@ -9,9 +10,9 @@ import colors from '../../colors';
 export default
 class DialogAction extends PureComponent {
   state = {
-    open: false,
-    email: '',
     name: '',
+    email: '',
+    open: false,
     password: '',
   };
 
@@ -38,19 +39,39 @@ class DialogAction extends PureComponent {
     this.setState({...this.state, open: false});
   };
 
-  render() {
+  touchTapHandler = () => {
     const {
+      name,
       email,
       password,
+    } = this.state;
+    const {
+      modalAction,
+    } = this.props;
+    modalAction(email, password, name);
+    this.handleClose();
+  }
+
+  render() {
+    const {
+      flat,
+      email,
+      primary,
+      disabled,
+      password,
+      secondary,
       headerText,
       buttonText,
       noticeText,
-      modalAction,
+      buttonStyle,
       displayName,
       warningButton,
       modalButtonText,
     } = this.props;
-    const buttonStyle = warningButton ? {secondary: true} : {primary: true};
+    const actionButtonStyle = warningButton ? {secondary: true} : {primary: true};
+    const defaultStyle = buttonStyle || null;
+    const isPrimaryStyle = primary ? {primary: true} : defaultStyle;
+    const modalOpeningButtonStyle = secondary ? {secondary: true} : isPrimaryStyle;
     const actions = [
       <RaisedButton
         label="Cancel"
@@ -60,19 +81,28 @@ class DialogAction extends PureComponent {
       <RaisedButton
         style={margined}
         label={modalButtonText}
-        onTouchTap={modalAction}
-        {...buttonStyle}
+        onTouchTap={this.touchTapHandler}
+        {...actionButtonStyle}
       />,
     ];
 
     return (
       <div>
-        <RaisedButton
-          primary
-          style={margined}
-          label={buttonText}
-          onTouchTap={this.handleOpen}
-        />
+        { flat ?
+          <FlatButton
+            style={margined}
+            label={buttonText}
+            onTouchTap={this.handleOpen}
+            {...modalOpeningButtonStyle}
+          />
+          :
+          <RaisedButton
+            style={margined}
+            label={buttonText}
+            onTouchTap={this.handleOpen}
+            {...modalOpeningButtonStyle}
+          />
+        }
         <Dialog
           title={headerText}
           actions={actions}
@@ -85,7 +115,7 @@ class DialogAction extends PureComponent {
             <TextField
               type='email'
               style={margined}
-              value={this.state.value}
+              value={this.state.email}
               floatingLabelText='Email'
               onChange={this.handleMailChange}
             />
@@ -94,7 +124,7 @@ class DialogAction extends PureComponent {
             <TextField
               type='text'
               style={margined}
-              value={this.state.value}
+              value={this.state.name}
               floatingLabelText='Display Name'
               onChange={this.handleNameChange}
             />
@@ -103,7 +133,7 @@ class DialogAction extends PureComponent {
             <TextField
               type='password'
               style={margined}
-              value={this.state.value}
+              value={this.state.password}
               floatingLabelText='Password'
               onChange={this.handlePassChange}
             />

@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
-import {ModalContainer, ModalDialog} from 'react-modal-dialog';
+import TextField from 'material-ui/TextField';
+import RaisedButton from 'material-ui/RaisedButton';
+
 import Footer from './components/Footer';
 import Header from './components/Header';
+import DialogAction from './components/DialogAction';
 
 export default
 class User extends Component {
@@ -113,65 +116,61 @@ class User extends Component {
         <div className='user-body'>
           <div className='image'>
             <img src={photoURL} />
-            <button onClick={this.delAccModalShow}>Delete Account</button>
-              {
-                showAccDeleteModal &&
-                <ModalContainer onClose={this.delAccModalClose}>
-                  <ModalDialog onClose={this.delAccModalClose} className='modal-dialog'>
-                    <h1>Confirm account deletion</h1>
-                    <p>We need your password to delete your account</p>
-                    <input
-                      type='password'
-                      onChange={this.handlePassChange}
-                      placeholder='Password'
-                    />
-                    <button
-                      onClick={this.deleteAccount}
-                      className='deleteBtn'>Delete my account</button>
-                  </ModalDialog>
-                </ModalContainer>
-              }
+            <DialogAction
+              secondary
+              warningButton
+              modalButtonText='Delete'
+              modalAction={this.deleteAccount}
+              buttonText='Delete Current User'
+              headerText='Are you sure you want to delete your account?'
+              noticeText='Warning: this action cannot be undone'
+            />
           </div>
           <div className='editableData'>
             <div className='form-group'>
-              <label htmlFor='displayName'>Change display name:</label>
-              <input
-                value={this.state.name}
+              <TextField
                 type='text'
                 id='displayName'
+                style={{width: '100%'}}
+                value={this.state.name}
                 onChange={this.handleNameChange}
-                placeholder={displayName}
+                floatingLabelText='Change display name'
               />
             </div>
             <div className='form-group'>
-              <label htmlFor='email'>Change e-mail:</label>
-              <input
-                value={this.state.email}
-                type='email'
+              <TextField
                 id='email'
+                type='email'
+                style={{width: '100%'}}
+                value={this.state.email}
                 onChange={this.handleMailChange}
-                placeholder={email}
+                floatingLabelText='Change e-mail'
               />
             </div>
             <div className='form-group'>
-              <label htmlFor='password'>Change password:</label>
-              <div className='form-password'>
-                <input
-                  value={ showAccDeleteModal ? '' : this.state.password}
-                  type='password'
-                  id='password'
-                  onChange={this.handlePassChange}
-                  placeholder='Old Password'
-                />
-                <input
-                  value={this.state.newPassword}
-                  type='password'
-                  onChange={this.handleNewPassChange}
-                  placeholder='New Password'
-                />
-              </div>
+              <TextField
+                id='password'
+                type='password'
+                style={{width: '100%'}}
+                onChange={this.handlePassChange}
+                floatingLabelText='Current Password'
+                value={ showAccDeleteModal ? '' : this.state.password}
+              />
             </div>
-            <button onClick={this.submitData}>Save</button>
+            <div className='form-group'>
+              <TextField
+                type='password'
+                style={{width: '100%'}}
+                floatingLabelText='New Password'
+                value={this.state.newPassword}
+                onChange={this.handleNewPassChange}
+              />
+            </div>
+            <RaisedButton
+              primary
+              label={'Save'}
+              onTouchTap={this.submitData}
+            />
           </div>
         </div>
         <Footer />
