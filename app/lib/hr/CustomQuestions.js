@@ -182,7 +182,10 @@ class CustomQuestions extends React.PureComponent {
                   selectedPosition={this.state.selectedPosition}
                   question={this.state.allQuestions[this.state.selectedQuestion]}
                   saveQuestion={(question) => this.editQuestion(question)}
-                  addNewQuestion={(questionText) => this.addQuestion(questionText)}
+                  addNewQuestion={(questionText) => {
+                    this.addQuestion(questionText);
+                    this.setState({selectedQuestion: '-1'})
+                  }}
                 />
               );
             }

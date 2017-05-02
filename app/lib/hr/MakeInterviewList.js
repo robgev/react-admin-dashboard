@@ -26,7 +26,8 @@ class MakeInterviewList extends React.PureComponent {
   constructor(props){
     super(props);
     this.state = {
-      candidateQuestions: this.props.candidates[this.props.match.params.candidateId].questions || []
+      candidateQuestions: this.props.candidates[this.props.match.params.candidateId].questions || [],
+      allSelected: false
     }
   };
   selectedCandidate = this.props.candidates[this.props.match.params.candidateId];
@@ -39,9 +40,24 @@ class MakeInterviewList extends React.PureComponent {
       <div style={styles.container}>
         <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'row'}}>
           <div>
-            <Table adjustForCheckbox multiSelectable>
+            <Table
+              multiSelectable
+              allRowsSelected={this.state.allSelected}
+            >
               <TableHeader>
-                <TableRow>
+                <TableRow
+                  onTouchTap={() => {
+                    if(this.state.allSelected) {
+                      this.setState({candidateQuestions: [], allSelected: false});
+                    } else {
+                      let candidateQuestions = [];
+                      this.allQuestions.map(question => {
+                        candidateQuestions.push({answer: '', questionId: question.id});
+                      });
+                      this.setState({candidateQuestions, allSelected: true});
+                    }
+                  }}
+                >
                   <TableHeaderColumn>
                     Questions
                   </TableHeaderColumn>
