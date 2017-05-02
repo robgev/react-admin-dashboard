@@ -9,7 +9,7 @@ import ReservationPopup from './ReservationPopup';
 import moment from 'moment';
 
 const buttonStyle = {
-  marginRight: 200
+  margin: '20px 200px 0 0',
 };
 
 function mapStateToProps({activeRoom: room}) {

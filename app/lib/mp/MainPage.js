@@ -23,7 +23,6 @@ function mapStateToProps(state) {
 };
 
 const appBarStyle = {
-  backgroundColor: colors.blueDark,
   zIndex: 5
 };
 
@@ -44,12 +43,12 @@ class MainPage extends React.Component {
       rooms = rooms.val();
       rooms[0] = {
         name: 'All',
-        class: 'c',
+        class: 'a',
         index: 0,
         descr: 'All rooms',
         color: 'black'
       };
-      this.props.initialRooms(rooms)
+      this.props.initialRooms(rooms);
     });
   };
 

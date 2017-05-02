@@ -9,12 +9,18 @@ import moment from 'moment';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import RaisedButton from 'material-ui/RaisedButton';
 
+import {ModalContainer, ModalDialog} from 'react-modal-dialog';
+
 import colors from '../colors.js';
 
 BigCalendar.momentLocalizer(moment);
 
 function mapStateToProps(state) {
   return {room: state.activeRoom}
+};
+
+const buttonStyle = {
+  width: 122
 };
 
 class Calendar extends React.Component {
@@ -32,24 +38,24 @@ class Calendar extends React.Component {
 
   getAllEvents = () => {
     firebase.database().ref('/events/').once('value').then((allRoomsEvents) => {
-          allRoomsEvents = allRoomsEvents.val();
-          let events = [];
-          for (let i in allRoomsEvents){
-              for (let idx in allRoomsEvents[i]){
-                  events.push({
-                      'title': allRoomsEvents[i][idx].description,
-                      'start': new Date(allRoomsEvents[i][idx].startDate),
-                      'end': new Date(allRoomsEvents[i][idx].endDate),
-                      'color': this.colorChooser(Number(i)),
-                      'user': allRoomsEvents[i][idx].user,
-                      'key': idx,
-                      'room': i
-                  });
-              }
-          }
-          const reservationSlot = {};
-          this.setState({events, reservationSlot});
-      });
+      allRoomsEvents = allRoomsEvents.val();
+      let events = [];
+      for (let i in allRoomsEvents){
+        for (let idx in allRoomsEvents[i]){
+          events.push({
+            'title': allRoomsEvents[i][idx].description,
+            'start': new Date(allRoomsEvents[i][idx].startDate),
+            'end': new Date(allRoomsEvents[i][idx].endDate),
+            'color': this.colorChooser(Number(i)),
+            'user': allRoomsEvents[i][idx].user,
+            'key': idx,
+            'room': i
+          });
+        }
+      }
+      const reservationSlot = {};
+      this.setState({events, reservationSlot});
+    });
   }
 
   eventStyleGetter = (event) => {
@@ -57,7 +63,7 @@ class Calendar extends React.Component {
       backgroundColor: event.color,
       opacity: 0.8,
       color: 'black',
-      border: '0px',
+      border: 0,
       display: 'block'
     };
       return {style: style};
@@ -91,7 +97,7 @@ class Calendar extends React.Component {
       case 2:
         return colors.greenDark;
       case 3:
-        return colors.yellowDark;
+        return colors.yellow;
       case 4:
         return colors.orange;
       case 5:
@@ -125,15 +131,15 @@ class Calendar extends React.Component {
         eventList = eventList.val();
         let events = [];
         for (let i in eventList){
-            events.push({
-              'title': eventList[i].description,
-              'start': new Date(eventList[i].startDate),
-              'end': new Date(eventList[i].endDate),
-              'color': this.colorChooser(Number(nextProps.room.index)),
-              'user': eventList[i].user,
-              'key': i,
-              'room': nextProps.room.index
-            });
+          events.push({
+            'title': eventList[i].description,
+            'start': new Date(eventList[i].startDate),
+            'end': new Date(eventList[i].endDate),
+            'color': this.colorChooser(Number(nextProps.room.index)),
+            'user': eventList[i].user,
+            'key': i,
+            'room': nextProps.room.index
+          });
         }
         const reservationSlot = {};
         this.props.getEvents(events);
@@ -160,45 +166,48 @@ class Calendar extends React.Component {
           }}
           eventPropGetter={this.eventStyleGetter}
         />
-        {!this.state.showPopup ? null :
-          <div className='reservationPopup'>
-            <div className='popupWindowDescr'>
-              <div className='event-title'>
-                Event title: {this.state.event.title}
-              </div>
-              <br/>
-              <div>
-                Duration
-              </div>
-              {this.state.event.start.toLocaleDateString() + ' '}
-              from {this.state.event.start.toLocaleTimeString() + ' '}
-              to {this.state.event.end.toLocaleTimeString()}
-              <div className = 'descr-button'>
-                <MuiThemeProvider>
-                  <div>
-                    {this.state.email !== this.state.event.user ? null :
+        {
+          !this.state.showPopup ? null :
+          <ModalContainer>
+            <ModalDialog>
+              <div style={{
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'center'
+              }}>
+                <h1 style={{color: colors.blueDark}}>
+                  {this.state.event.title}
+                </h1>
+                <br/>
+                {`From ${this.state.event.start.toLocaleDateString() + ' ' + moment(this.state.event.start).format('hh:mm a')}`}
+                <br/>
+                {`To ${this.state.event.end.toLocaleDateString() + ' ' + moment(this.state.event.end).format('hh:mm a')}`}
+                <div className='popup-buttons2'>
+                  {
+                    this.state.email !== this.state.event.user ? null :
                       <RaisedButton
                         label='Delete'
                         primary={true}
+                        buttonStyle={buttonStyle}
                         onClick={()=>{
                           firebase.database().ref('events/'+this.state.event.room).child(this.state.event.key).remove().then(()=>{
                             this.setState({showPopup: false, event: ''});
                           });
                         }}
                       />
-                    }
-                    <RaisedButton
-                      label='Close'
-                      primary={false}
-                      onClick={()=>{
-                        this.setState({showPopup: false})
-                      }}
-                    />
-                  </div>
-                </MuiThemeProvider>
+                  }
+                  <RaisedButton
+                    label='Close'
+                    primary={false}
+                    buttonStyle={buttonStyle}
+                    onClick={()=>{
+                      this.setState({showPopup: false})
+                    }}
+                  />
+                </div>
               </div>
-            </div>
-          </div>
+            </ModalDialog>
+          </ModalContainer>
         }
       </div>
     )

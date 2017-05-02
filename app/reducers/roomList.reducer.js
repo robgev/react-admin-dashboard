@@ -1,7 +1,7 @@
 const firstRender = [
   {
     name: 'All',
-    class: 'c',
+    class: 'a',
     index: 0,
     descr: 'All rooms',
     color: 'black'
