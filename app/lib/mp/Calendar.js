@@ -172,8 +172,8 @@ class Calendar extends React.Component {
             <ModalDialog>
               <div style={{
                 display: 'flex',
-                flexDirection: 'column'
-                justifyContent: 'center',
+                flexDirection: 'column',
+                justifyContent: 'center'
               }}>
                 <h1 style={{color: colors.blueDark}}>
                   {this.state.event.title}
