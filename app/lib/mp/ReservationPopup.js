@@ -12,8 +12,8 @@ import DatePicker from 'material-ui/DatePicker';
 import TimePicker from 'material-ui/TimePicker';
 import TextField from 'material-ui/TextField';
 
-function mapStateToProps({activeRoom: room}) {
-  return {room}
+function mapStateToProps({activeRoom: room, rooms}) {
+  return {room, rooms};
 };
 
 import ErrorPopup from './ErrorPopup';
