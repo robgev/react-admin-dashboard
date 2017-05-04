@@ -272,7 +272,7 @@ class Candidates extends React.PureComponent {
               />,
               <RaisedButton
                 label='confirm'
-                buttonStyle={{backgroundColor: 'red'}}
+                className='deleteButton'
                 onTouchTap={() => {this.deleteCandidate(), this.setState({delete: false})}}
               />
             ]}

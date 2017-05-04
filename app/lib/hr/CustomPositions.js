@@ -50,12 +50,16 @@ class CustomPositions extends React.PureComponent{
   };
   render(){
     const Positions = map(this.state.positions, ({positionName, id}) => {
-      const style = this.state.selected === id ? {backgroundColor: 'red'} : null;
+      const style = this.state.selected === id ? {backgroundColor: 'E6E6E6'} : null;
         return(
           <FlatButton
             key={id}
             style={style}
-            onTouchTap={() => this.setState({selected: id, textValue: positionName})}
+            onTouchTap={() => {
+              this.state.selected !== id ?
+              this.setState({selected: id, textValue: positionName}) :
+              this.reset()
+            }}
           >
             {positionName}
           </FlatButton>
@@ -102,8 +106,8 @@ class CustomPositions extends React.PureComponent{
                 onTouchTap={() => this.setState({delete: false})}
               />,
               <RaisedButton
+                className='deleteButton'
                 label='confirm'
-                buttonStyle={{backgroundColor: 'red'}}
                 onTouchTap={() => this.deletePosition()}
               />
             ]}

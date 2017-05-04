@@ -97,7 +97,7 @@ export default class CandidateChangePopup extends React.PureComponent {
       />,
       <RaisedButton
         label='Save'
-        primary={true}
+        primary
         onTouchTap={
           () => {
             const currentDate = this.state.date || new Date(candidate.date);

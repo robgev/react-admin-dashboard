@@ -2,7 +2,7 @@ import React from 'react';
 import {map} from 'lodash';
 
 import Dialog from 'material-ui/Dialog';
-import FlatButton from 'material-ui/FlatButton';
+import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 import DropDownMenu from 'material-ui/DropDownMenu';
 import MenuItem from 'material-ui/MenuItem';
@@ -18,12 +18,11 @@ class QuestionEditScreen extends React.PureComponent {
   };
   render() {
     const actions = [
-      <FlatButton
-        primary
+      <RaisedButton
         label='cancel'
         onTouchTap={() => this.props.closeScreen()}
       />,
-      <FlatButton
+      <RaisedButton
         primary
         label='save'
         disabled={this.props.selectedPosition === '-1'}
