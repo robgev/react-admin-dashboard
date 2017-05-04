@@ -51,7 +51,7 @@ class ResourceManager extends React.PureComponent {
           signOut={this.props.signOut}
         />
         <Tabs
-          className='hrTabs'
+          
         >
           <Tab
             label='candidates'
