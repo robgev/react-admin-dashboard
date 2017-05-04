@@ -5,9 +5,10 @@ const deleteCandidate = (candidates, action) => {
 };
 
 const addQuestions = (candidates, action) => {
+  const {candidateID, questions} = action.payload;
   const candidatesCopy = Object.assign({}, candidates);
-  const cand = {...candidatesCopy[action.candidateId], questions: action.questionIds};
-  candidatesCopy[action.candidateId] = cand;
+  const cand = {...candidatesCopy[candidateID], questions};
+  candidatesCopy[candidateID] = cand;
   return candidatesCopy;
 }
 

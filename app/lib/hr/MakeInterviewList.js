@@ -13,11 +13,12 @@ import RaisedButton from 'material-ui/RaisedButton';
 import {addCandidateQuestions} from '../../actions/candidate.action';
 
 
-function mapStateToProps(state) {
+function mapStateToProps({questions, candidates, selectedCandidate}) {
   return (
     {
-      questions: state.questions,
-      candidates: state.candidates
+      questions,
+      candidates,
+      selectedCandidate
     }
   );
 };
@@ -37,22 +38,21 @@ class MakeInterviewList extends React.PureComponent {
       return this.props.questions[question.questionId];
     });
     return(
-      <div style={styles.container}>
-        <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'row'}}>
+      <div className='make-interview'>
+        <div className='tables'>
           <div>
             <Table
               multiSelectable
-              allRowsSelected={this.state.allSelected}
             >
-              <TableHeader>
+              <TableHeader displaySelectAll={false}>
                 <TableRow
+                  style={{cursor: 'pointer'}}
                   onTouchTap={() => {
                     if(this.state.allSelected) {
                       this.setState({candidateQuestions: [], allSelected: false});
                     } else {
-                      let candidateQuestions = [];
-                      this.allQuestions.map(question => {
-                        candidateQuestions.push({answer: '', questionId: question.id});
+                      const candidateQuestions = this.allQuestions.map(question => {
+                        return {answer: '', questionId: question.id};
                       });
                       this.setState({candidateQuestions, allSelected: true});
                     }
@@ -68,6 +68,7 @@ class MakeInterviewList extends React.PureComponent {
                   this.allQuestions.map(question => {
                     return(
                       <TableRow
+                        hoverable
                         key={question.id}
                         selected={!!find(this.state.candidateQuestions, {questionId: question.id})}
                         onTouchTap={() => {
@@ -96,11 +97,14 @@ class MakeInterviewList extends React.PureComponent {
           <Divider />
           <div >
             <Table
-              bodyStyle={styles.centered}
-              headerStyle={styles.centered}
+              bodyStyle={centered}
+              headerStyle={centered}
               selectable={false}
             >
-              <TableHeader displaySelectAll={false} style={styles.centered}>
+              <TableHeader
+                displaySelectAll={false}
+                className='centered'
+              >
                 <TableRow style={{border: 'none'}}>
                   <TableHeaderColumn>
                     Selected Questions
@@ -139,21 +143,10 @@ class MakeInterviewList extends React.PureComponent {
   };
 };
 
-const styles = {
-  container: {
-    display: 'flex',
-    height: '90vh',
-    justifyContent: 'center',
-    alignItems: 'center',
-    flexDirection: 'column',
-    width: '80%',
-    margin: '0 auto',
-  },
-  centered: {
-    display: 'flex',
-    justifyContent: 'center',
-    textAlign: 'center',
-  }
-}
+const centered = {
+  display: 'flex',
+  justifyContent: 'center',
+  textAlign: 'center',
+};
 
 export default connect(mapStateToProps, {addCandidateQuestions})(MakeInterviewList);

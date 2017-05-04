@@ -30,7 +30,6 @@ class QuestionEditScreen extends React.PureComponent {
         disabled={this.props.selectedPosition === '-1'}
         onTouchTap={() => {
           if(this.state.isNew) {
-            console.log(this.state.questionText)
             this.props.addNewQuestion(this.state.questionText);
           } else {
             console.log('edit')

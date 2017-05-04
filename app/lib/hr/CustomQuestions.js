@@ -41,7 +41,6 @@ class CustomQuestions extends React.PureComponent {
   };
 
   componentWillReceiveProps(props) {
-    console.log(props)
     this.setState({
       allPositions: props.positions,
       allQuestions: props.questions
