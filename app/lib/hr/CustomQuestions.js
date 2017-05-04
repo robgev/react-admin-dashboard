@@ -8,6 +8,7 @@ import {addQuestion, deleteQuestion, editQuestion} from '../../actions/questions
 import {addQuestionFirebase, deleteQuestionFirebase, editQuestionFirebase} from '../firebaseAPI';
 
 import Paper from 'material-ui/Paper';
+import Divider from 'material-ui/Divider';
 import MenuItem from 'material-ui/MenuItem';
 import TextField from 'material-ui/TextField';
 import FlatButton from 'material-ui/FlatButton';
@@ -29,7 +30,7 @@ class CustomQuestions extends React.PureComponent {
     };
   };
 
-  addQuestion =(text) => {
+  addQuestion = (text) => {
     const id = addQuestionFirebase({
       positionId: this.state.selectedPosition,
       questionText: text
@@ -69,19 +70,21 @@ class CustomQuestions extends React.PureComponent {
         const isSelected = question.id === this.state.selectedQuestion ?
             {backgroundColor: '#E6E6E6'} : {};
         return(
-          <Paper
-            className='hrPaperQuestions'
-            key={question.id}
-            style={isSelected}
-            onTouchTap={() => {
-              this.state.selectedQuestion !== question.id ?
-                this.setState({selectedQuestion: question.id}) :
-                this.setState({selectedQuestion: '-1'});
+          <div key={question.id}>
+            <Paper
+              className='hrPaperQuestions'
+              style={isSelected}
+              onTouchTap={() => {
+                this.state.selectedQuestion !== question.id ?
+                  this.setState({selectedQuestion: question.id}) :
+                  this.setState({selectedQuestion: '-1'});
+                }
               }
-            }
-          >
-            {question.questionText}
-          </Paper>
+            >
+              {question.questionText}
+            </Paper>
+            <Divider />
+          </div>
         );
       }
     });
