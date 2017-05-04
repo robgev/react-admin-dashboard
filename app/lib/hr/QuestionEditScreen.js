@@ -13,8 +13,7 @@ class QuestionEditScreen extends React.PureComponent {
     super(props);
     const question = props.question || {}
     this.state={
-      questionText: question.questionText || '',
-      isNew: !props.question
+      questionText: question.questionText || ''
     };
   };
   render() {
@@ -29,10 +28,9 @@ class QuestionEditScreen extends React.PureComponent {
         label='save'
         disabled={this.props.selectedPosition === '-1'}
         onTouchTap={() => {
-          if(this.state.isNew) {
+          if(!this.props.question) {
             this.props.addNewQuestion(this.state.questionText);
           } else {
-            console.log('edit')
             this.props.saveQuestion({
               id: this.props.question.id,
               positionId: this.props.selectedPosition,

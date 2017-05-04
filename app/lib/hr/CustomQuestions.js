@@ -24,14 +24,9 @@ class CustomQuestions extends React.PureComponent {
     this.state = {
       selectedPosition: '-1',
       newQuestion: '',
-      allQuestions: props.questions,
       selectedQuestion: '-1',
       isEditScreenOpen: false
     };
-  };
-
-  componentWillReceiveProps(props) {
-    this.setState({allQuestions: props.questions});
   };
 
   addQuestion =(text) => {
@@ -69,7 +64,7 @@ class CustomQuestions extends React.PureComponent {
         />
       );
     });
-    const RenderQuestions = map(this.state.allQuestions, question => {
+    const RenderQuestions = map(this.props.questions, question => {
       if(question.positionId === this.state.selectedPosition || this.state.selectedPosition === '-1'){
         const isSelected = question.id === this.state.selectedQuestion ?
             {backgroundColor: '#E6E6E6'} : {};
@@ -116,7 +111,10 @@ class CustomQuestions extends React.PureComponent {
           label='edit question'
           disabled={this.state.selectedQuestion === '-1'}
           primary
-          onTouchTap={() => this.setState({isEditScreenOpen: true})}
+          onTouchTap={() => this.setState({
+            isEditScreenOpen: true,
+            selectedPosition: this.props.questions[this.state.selectedQuestion].positionId
+          })}
         />
         {RenderQuestions}
         {
@@ -127,14 +125,13 @@ class CustomQuestions extends React.PureComponent {
             changeSelectedPosition={(selectedPosition) => this.setState({selectedPosition})}
             allPositions={this.props.positions}
             selectedPosition={this.state.selectedPosition}
-            question={this.state.allQuestions[this.state.selectedQuestion]}
+            question={this.props.questions[this.state.selectedQuestion]}
             saveQuestion={(question) => this.editQuestion(question)}
             addNewQuestion={(questionText) => {
               this.addQuestion(questionText);
               this.setState({selectedQuestion: '-1'})
             }}
-          /> :
-          null
+          /> : null
         }
       </div>
     )
