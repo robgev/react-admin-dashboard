@@ -4,34 +4,24 @@ import {map} from 'lodash';
 
 import firebase from 'firebase';
 
-import {setInitialPositions, addPosition,
-  deletePosition} from '../../actions/positions.action';
-import {setInitialQuestions, addQuestion, deleteQuestion, editQuestion} from '../../actions/questions.action';
-import {addPositionFirebase, deletePositionFirebase,
-  addQuestionFirebase, deleteQuestionFirebase, editQuestionFirebase} from '../firebaseAPI';
+import {addQuestion, deleteQuestion, editQuestion} from '../../actions/questions.action';
+import {addQuestionFirebase, deleteQuestionFirebase, editQuestionFirebase} from '../firebaseAPI';
 
+import Paper from 'material-ui/Paper';
+import MenuItem from 'material-ui/MenuItem';
 import TextField from 'material-ui/TextField';
 import FlatButton from 'material-ui/FlatButton';
-import Paper from 'material-ui/Paper';
 import DropDownMenu from 'material-ui/DropDownMenu';
-import MenuItem from 'material-ui/MenuItem';
 import QuestionEditScreen from './QuestionEditScreen';
 
-function mapStateToProps(state) {
-  return (
-    {
-      positions: state.positions,
-      questions: state.questions
-    }
-  )
+function mapStateToProps({positions, questions}) {
+  return {positions, questions};
 };
 
 class CustomQuestions extends React.PureComponent {
   constructor(props){
     super(props);
     this.state = {
-      allPositions: props.positions,
-      newPositonName: '',
       selectedPosition: '-1',
       newQuestion: '',
       allQuestions: props.questions,
@@ -41,24 +31,7 @@ class CustomQuestions extends React.PureComponent {
   };
 
   componentWillReceiveProps(props) {
-    this.setState({
-      allPositions: props.positions,
-      allQuestions: props.questions
-    });
-  };
-
-  addPosition = () => {
-    const id = addPositionFirebase(this.state.newPositonName);
-    firebase.database().ref('positions/' + id).on('value', snapshot => {
-      this.props.addPosition(snapshot.val());
-      this.setState({newPositonName: ''});
-    });
-  };
-
-  deletePosition = () => {
-    deletePositionFirebase(this.state.selectedPosition).then(() => {
-      this.props.deletePosition(this.state.selectedPosition);
-    });
+    this.setState({allQuestions: props.questions});
   };
 
   addQuestion =(text) => {
@@ -87,7 +60,7 @@ class CustomQuestions extends React.PureComponent {
   };
 
   render() {
-    const RenderPositions = map(this.state.allPositions, position => {
+    const RenderPositions = map(this.props.positions, position => {
       return(
         <MenuItem
           key={position.id}
@@ -99,12 +72,12 @@ class CustomQuestions extends React.PureComponent {
     const RenderQuestions = map(this.state.allQuestions, question => {
       if(question.positionId === this.state.selectedPosition || this.state.selectedPosition === '-1'){
         const isSelected = question.id === this.state.selectedQuestion ?
-            {backgroundColor: '#224C75'} : {backgroundColor: 'rgb(216, 226, 242)'};
+            {backgroundColor: '#E6E6E6'} : {};
         return(
           <Paper
             className='hrPaperQuestions'
             key={question.id}
-            style={{...isSelected, cursor: 'pointer',   transition: '1s ease-in-out'}}
+            style={isSelected}
             onTouchTap={() => {
               this.state.selectedQuestion !== question.id ?
                 this.setState({selectedQuestion: question.id}) :
@@ -119,36 +92,14 @@ class CustomQuestions extends React.PureComponent {
     });
     return(
       <div className='hrHome'>
-      <div className='hrHomeCustom'>
-        <div className='hrPosition'>
-          <div className='hrPositionAdd'>
-            <TextField
-              name='newPosition'
-              floatingLabelText='Add new position'
-              onChange={(e) => this.setState({newPositonName: e.target.value})}
-              value={this.state.newPositonName}
-            />
-            <FlatButton
-              primary
-              label='Save'
-              onTouchTap={() => this.addPosition()}
-            />
-            <FlatButton
-              primary
-              label='Delete'
-              onTouchTap={() => this.deletePosition()}
-            />
-          </div>
-          <DropDownMenu
-            className='hrPositionDropdown'
-            value={this.state.selectedPosition}
-            onChange={(e, i, selectedPosition) => this.setState({selectedPosition})}
-          >
-            <MenuItem value='-1' primaryText='All questions' />
-            {RenderPositions}
-          </DropDownMenu>
-        </div>
-        <div className='hrQuestion'>
+        <DropDownMenu
+          className='hrPositionDropdown'
+          value={this.state.selectedPosition}
+          onChange={(e, i, selectedPosition) => this.setState({selectedPosition})}
+        >
+          <MenuItem value='-1' primaryText='All questions' />
+          {RenderPositions}
+        </DropDownMenu>
         <FlatButton
           label='add question'
           disabled={this.state.selectedPosition === '-1'}
@@ -161,7 +112,6 @@ class CustomQuestions extends React.PureComponent {
           primary
           onTouchTap={() => this.deleteQuestion()}
         />
-
         <FlatButton
           label='edit question'
           disabled={this.state.selectedQuestion === '-1'}
@@ -170,32 +120,25 @@ class CustomQuestions extends React.PureComponent {
         />
         {RenderQuestions}
         {
-          (() => {
-            if(this.state.selectedQuestion !== '-1'){
-              return(
-                <QuestionEditScreen
-                  open={this.state.isEditScreenOpen}
-                  closeScreen={() => this.setState({isEditScreenOpen: false})}
-                  changeSelectedPosition={(selectedPosition) => this.setState({selectedPosition})}
-                  allPositions={this.state.allPositions}
-                  selectedPosition={this.state.selectedPosition}
-                  question={this.state.allQuestions[this.state.selectedQuestion]}
-                  saveQuestion={(question) => this.editQuestion(question)}
-                  addNewQuestion={(questionText) => {
-                    this.addQuestion(questionText);
-                    this.setState({selectedQuestion: '-1'})
-                  }}
-                />
-              );
-            }
-          })()
+          this.state.selectedQuestion !== '-1' ?
+          <QuestionEditScreen
+            open={this.state.isEditScreenOpen}
+            closeScreen={() => this.setState({isEditScreenOpen: false})}
+            changeSelectedPosition={(selectedPosition) => this.setState({selectedPosition})}
+            allPositions={this.props.positions}
+            selectedPosition={this.state.selectedPosition}
+            question={this.state.allQuestions[this.state.selectedQuestion]}
+            saveQuestion={(question) => this.editQuestion(question)}
+            addNewQuestion={(questionText) => {
+              this.addQuestion(questionText);
+              this.setState({selectedQuestion: '-1'})
+            }}
+          /> :
+          null
         }
-        </div>
-        </div>
       </div>
     )
   }
 };
 
-export default connect(mapStateToProps, {setInitialPositions, addPosition,
-  deletePosition, setInitialQuestions, addQuestion, deleteQuestion, editQuestion})(CustomQuestions);
+export default connect(mapStateToProps, {addQuestion, deleteQuestion, editQuestion})(CustomQuestions);

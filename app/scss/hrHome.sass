@@ -1,63 +1,55 @@
-$font : 'Roboto', sans-serif
-$fontSize : 25px
-$backColor : #F2F2F2
+@import "colors.sass"
 
-.hrBody
-  width: 100vw
-  height: 90vh
-  font-family: $font
-  padding: 0
-  box-sizing: border-box
-
+// .hrBody
+//   width: 100vw
+//   height: 90vh
+//   font-family: $font
+//   padding: 0
+//   box-sizing: border-box
+//
 .hrHome
-  width: 60%
   height: 90vh
   margin-left: auto
   margin-right: auto
+  .hrPositionDropdown
+    margin-top: 20px
+    margin-left: 0
+  .hrPaperQuestions
+    height: 50px
+    background-color: $listitemBackgroundColor
+    margin-bottom: 10px
+    cursor: pointer
+// .hrHomeCustom
+//     width: auto
+//     height: 90vh
+//     padding: 25px 0
+//     display: flex
+//
 
-.tableRows
-  background-color: $backColor
+//
+// .hrQuestion
+//   width: 45%
+//   padding-left: 60px
+//
+// .hrUIButtons
+//   position: fixed
+//   top: 5.5vh
+//
 
-.hrHomeCustom
-    width: auto
-    height: 90vh
-    padding: 25px 0
-    display: flex
-
-.hrPosition
-  display: flex
-  flex-direction: column
-
-.hrPositionDropdown
-  margin-top: 20px
-  margin-left: 0
-
-.hrQuestion
-  width: 45%
-  padding-left: 60px
-
-.hrUIButtons
-  position: fixed
-  top: 5.5vh
-
-.hrPaperQuestions
-  line-height: 50px
-  margin-bottom: 10px
-  text-align:justify
-
-.hrCandidateEditPopup
-  display: flex
-  justify-content: space-between
-
-.hrEditCandidateDialog
-  width: 400px
-
-.hrCandidatesButtons
-  display: flex
-  flex-direction: row
-  justify-content: flex-end
-
-.hrTabs
-  width: auto
-  margin-left: auto
-  margin-right: auto
+//
+// .hrCandidateEditPopup
+//   display: flex
+//   justify-content: space-between
+//
+// .hrEditCandidateDialog
+//   width: 400px
+//
+// .hrCandidatesButtons
+//   display: flex
+//   flex-direction: row
+//   justify-content: flex-end
+//
+// .hrTabs
+//   width: auto
+//   margin-left: auto
+//   margin-right: auto
