@@ -18,8 +18,8 @@ import RoomInfo from './RoomInfo';
 
 import colors from '../colors';
 
-function mapStateToProps(state) {
-  return {loggedIn: state.loggedIn}
+function mapStateToProps({activeRoom: room, loggedIn}) {
+  return {room, loggedIn};
 };
 
 const appBarStyle = {
@@ -82,7 +82,7 @@ class MainPage extends React.Component {
               this.setState({events});
             }}
           />
-          <div className ='room-whole-details'>
+          <div className={this.props.room.index !== 0 ? 'room-whole-details' : ''}>
             <RoomInfo/>
             <ResForm
               startTime={ this.state.startTime }
