@@ -65,7 +65,17 @@ class MainPage extends React.Component {
           <AppBar style={appBarStyle} title='Rooms' iconElementLeft={< IconButton ></IconButton>}/>
         </MuiThemeProvider>
         <div className='mainpage'>
-          <RoomList/>
+          <RoomList
+            roomChange={()=>{
+              this.setState({
+                startTime: '',
+                endTime: '',
+                date: '',
+                reservationData: {},
+                selected: false
+              });
+            }}
+          />
           <Calendar
             changeTime={(times)=>{
               this.setState({
