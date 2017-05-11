@@ -3,6 +3,7 @@ import {map} from 'lodash';
 import firebase from 'firebase';
 import {connect} from 'react-redux';
 
+import Paper from 'material-ui/Paper';
 import Dialog from 'material-ui/Dialog';
 import TextField from 'material-ui/TextField';
 import FlatButton from 'material-ui/FlatButton';
@@ -50,11 +51,12 @@ class CustomPositions extends React.PureComponent{
   };
   render(){
     const Positions = map(this.state.positions, ({positionName, id}) => {
-      const style = this.state.selected === id ? {backgroundColor: 'E6E6E6'} : null;
+      const style = this.state.selected === id ? {backgroundColor: '#E6E6E6'} : null;
         return(
-          <FlatButton
+          <Paper
             key={id}
             style={style}
+            className='hrPaperQuestions'
             onTouchTap={() => {
               this.state.selected !== id ?
               this.setState({selected: id, textValue: positionName}) :
@@ -62,11 +64,11 @@ class CustomPositions extends React.PureComponent{
             }}
           >
             {positionName}
-          </FlatButton>
+          </Paper>
         );
     });
     return (
-      <div className='custom-positions'>
+      <div className='hrHome custom-positions'>
         {Positions}
         {this.state.selected !== '-1' ?
           <div>

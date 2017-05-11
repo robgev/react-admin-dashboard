@@ -40,7 +40,7 @@ class Candidates extends React.PureComponent {
       editScreen: false,
       sortValue: {
         value: '',
-        up: false
+        up: true
       },
       delete: false
     };
@@ -165,8 +165,8 @@ class Candidates extends React.PureComponent {
                       label={column}
                       onTouchTap={() => {
                         const sortValue = {
-                          ...this.state.sortValue,
-                          value: column
+                          value: column,
+                          up: !this.state.sortValue.up
                         };
                         this.setState({sortValue});
                       }

@@ -69,7 +69,7 @@ class CustomQuestions extends React.PureComponent {
     const RenderQuestions = map(this.props.questions, question => {
       if(question.positionId === this.state.selectedPosition || this.state.selectedPosition === '-1'){
         const isSelected = question.id === this.state.selectedQuestion ?
-            {backgroundColor: '#E6E6E6'} : {};
+            {backgroundColor: '#E6E6E6'} : null;
         return(
           <div key={question.id}>
             <Paper
