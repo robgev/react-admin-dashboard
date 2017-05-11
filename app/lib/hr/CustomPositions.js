@@ -66,7 +66,7 @@ class CustomPositions extends React.PureComponent{
         );
     });
     return (
-      <div style={{display: 'flex', flexDirection: 'column'}}>
+      <div className='custom-positions'>
         {Positions}
         {this.state.selected !== '-1' ?
           <div>
