@@ -12,7 +12,8 @@ const paperstyle = {
   width: 212,
   margin: 0,
   overflow: 'hidden',
-  height: '100%'
+  height: '100%',
+  boxShadow: '0 0 10px rgba(0,0,0,0.5)'
 };
 
 function mapStateToProps(state) {
