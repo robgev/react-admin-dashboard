@@ -158,7 +158,6 @@ class Candidates extends React.PureComponent {
                 header.map(column => (
                   <TableHeaderColumn
                     key={column}
-                    className='tableRows'
                   >
                     <div
                       style={{color: 'white', cursor: 'pointer', fontSize: 20, display: 'flex'}}
@@ -210,62 +209,64 @@ class Candidates extends React.PureComponent {
 
     return(
       <div className='hrHome candidates'>
-        <TextField
-          floatingLabelText='Filter'
-          value={this.state.filter}
-          onChange={(e) => this.setState({filter: e.target.value})}
-        />
-        <div className='hrCandidatesButtons'>
-        <FlatButton
-          style={margined}
-          primary
-          style={{marginLeft: '20px'}}
-          label='add'
-          onTouchTap={() => {
-              this.setState({selected: 'new', editScreen: true});
-            }
-          }
-        />
-        <FlatButton
-          style={margined}
-          primary
-          disabled={this.state.selected === '-1' || this.state.selected === 'new'}
-          style={{marginLeft: '20px'}}
-          label='edit'
-          onTouchTap={() => this.setState({editScreen: true})}
-        />
-        <FlatButton
-          style={margined}
-          primary
-          disabled={this.state.selected === '-1' || this.state.selected === 'new'}
-          style={{marginLeft: '20px'}}
-          label='delete'
-          onTouchTap={() => this.setState({delete: true})}
-        />
-        <FlatButton
-          primary
-          disabled={isDisabled}
-          style={{marginLeft: '20px'}}
-          label='questionlist'
-          containerElement={
-            isDisabled ?
-            <div></div> :
-            <Link to={'/management/interview/' + this.state.selected} />
-          }
-        />
-        <FlatButton
-          primary
-          disabled={isDisabled}
-          style={{marginLeft: '20px'}}
-          label='interview'
-          containerElement={
-            isDisabled ?
-            <div></div> :
-            <Link to={'/management/candidateInterview/' + this.state.selected} />
-          }
-        />
+        <div>
+          <TextField
+            style={{marginLeft: 20}}
+            floatingLabelText='Filter'
+            value={this.state.filter}
+            onChange={(e) => this.setState({filter: e.target.value})}
+          />
+          <div style={{marginBottom: 5}}>
+            <RaisedButton
+              primary
+              style={{marginLeft: 20}}
+              label='add'
+              onTouchTap={() => {
+                  this.setState({selected: 'new', editScreen: true});
+                }
+              }
+            />
+            <RaisedButton
+              primary
+              disabled={this.state.selected === '-1' || this.state.selected === 'new'}
+              style={margined}
+              label='edit'
+              onTouchTap={() => this.setState({editScreen: true})}
+            />
+            <RaisedButton
+              primary
+              disabled={this.state.selected === '-1' || this.state.selected === 'new'}
+              style={margined}
+              label='delete'
+              onTouchTap={() => this.setState({delete: true})}
+            />
+            <RaisedButton
+              primary
+              disabled={isDisabled}
+              style={margined}
+              label='questionlist'
+              containerElement={
+                isDisabled ?
+                <div></div> :
+                <Link to={'/management/interview/' + this.state.selected} />
+              }
+            />
+            <RaisedButton
+              primary
+              disabled={isDisabled}
+              style={margined}
+              label='interview'
+              containerElement={
+                isDisabled ?
+                <div></div> :
+                <Link to={'/management/candidateInterview/' + this.state.selected} />
+              }
+            />
+          </div>
         </div>
-        <CandidateTable />
+        <div style={{margin: 20}}>
+          <CandidateTable />
+        </div>
         {this.state.editScreen ? <CandidateChange /> : null}
         {this.state.delete ?
           <Dialog
@@ -294,6 +295,6 @@ class Candidates extends React.PureComponent {
   };
 };
 
-const margined = {margin: 5};
+const margined = {marginLeft: 5};
 
 export default connect(mapStateToProps, {addCandidate, deleteCandidate})(Candidates);

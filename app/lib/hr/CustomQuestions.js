@@ -12,7 +12,6 @@ import Dialog from 'material-ui/Dialog';
 import Divider from 'material-ui/Divider';
 import MenuItem from 'material-ui/MenuItem';
 import TextField from 'material-ui/TextField';
-import FlatButton from 'material-ui/FlatButton';
 import DropDownMenu from 'material-ui/DropDownMenu';
 import RaisedButton from 'material-ui/RaisedButton';
 import QuestionEditScreen from './QuestionEditScreen';
@@ -57,6 +56,7 @@ class CustomQuestions extends React.PureComponent {
   };
 
   render() {
+    const isDisabled =  this.state.selectedQuestion === '-1' || this.state.selectedQuestion === 'new';
     const RenderPositions = map(this.props.positions, position => {
       return(
         <MenuItem
@@ -84,46 +84,48 @@ class CustomQuestions extends React.PureComponent {
             >
               {question.questionText}
             </Paper>
-            <Divider />
           </div>
         );
       }
     });
     return(
-      <div className='hrHome candidates'>
-        <DropDownMenu
-          className='hrPositionDropdown'
-          value={this.state.selectedPosition}
-          onChange={(e, i, selectedPosition) => this.setState({selectedPosition})}
-        >
-          <MenuItem value='-1' primaryText='All questions' />
-          {RenderPositions}
-        </DropDownMenu>
-        <FlatButton
-          style={margined}
-          label='add question'
-          disabled={this.state.selectedPosition === '-1'}
-          primary
-          onTouchTap={() => this.setState({selectedQuestion: 'new', isEditScreenOpen: true})}
-        />
-        <FlatButton
-          style={margined}
-          label='delete question'
-          disabled={this.state.selectedQuestion === '-1'}
-          primary
-          onTouchTap={() => this.setState({delete: true})}
-        />
-        <FlatButton
-          style={margined}
-          label='edit question'
-          disabled={this.state.selectedQuestion === '-1'}
-          primary
-          onTouchTap={() => this.setState({
-            isEditScreenOpen: true,
-            selectedPosition: this.props.questions[this.state.selectedQuestion].positionId
-          })}
-        />
-        {RenderQuestions}
+      <div className='hrHome'>
+        <div className='questions'>
+          <DropDownMenu
+            value={this.state.selectedPosition}
+            onChange={(e, i, selectedPosition) => this.setState({selectedPosition})}
+          >
+            <MenuItem value='-1' primaryText='All questions' />
+            {RenderPositions}
+          </DropDownMenu>
+          {RenderQuestions}
+        </div>
+        <div className='questions-actions'>
+          <RaisedButton
+            style={margined}
+            label='add question'
+            disabled={this.state.selectedPosition === '-1'}
+            primary
+            onTouchTap={() => this.setState({selectedQuestion: 'new', isEditScreenOpen: true})}
+          />
+          <RaisedButton
+            style={margined}
+            label='delete question'
+            disabled={isDisabled}
+            primary
+            onTouchTap={() => this.setState({delete: true})}
+          />
+          <RaisedButton
+            style={margined}
+            label='edit question'
+            disabled={isDisabled}
+            primary
+            onTouchTap={() => this.setState({
+              isEditScreenOpen: true,
+              selectedPosition: this.props.questions[this.state.selectedQuestion].positionId
+            })}
+          />
+        </div>
         {
           this.state.selectedQuestion !== '-1' ?
           <QuestionEditScreen
