@@ -70,6 +70,11 @@ class CustomPositions extends React.PureComponent{
     return (
       <div className='hrHome'>
         <div className='positions'>
+          <Paper
+            className='hrPaperQuestions'
+            style={{backgroundColor: '#52ABE1', color: 'white'}}>
+            All Positions
+          </Paper>
           {Positions}
         </div>
         <div>
