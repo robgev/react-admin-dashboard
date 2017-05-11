@@ -119,8 +119,11 @@ class Calendar extends React.Component {
   };
 
   componentWillReceiveProps(nextProps){
-    if (nextProps.room.index === this.state.roomN)
+    if (nextProps.room.index === this.state.roomN){
+      if (!this.props.selected)
+        this.setState({reservationSlot: {}});
       return;
+    }
     if (nextProps.room.index === 0){
       this.getAllEvents();
       this.setState({roomN: nextProps.room.index});

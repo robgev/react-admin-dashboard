@@ -34,7 +34,8 @@ class MainPage extends React.Component {
       endTime: '',
       date: '',
       reservationData: {},
-      events: []
+      events: [],
+      selected: false
     };
   };
 
@@ -70,7 +71,8 @@ class MainPage extends React.Component {
               this.setState({
                 startTime: times.startTime,
                 endTime: times.endTime,
-                date: times.date
+                date: times.date,
+                selected: true
               });
             }}
             changeData={(data)=>{
@@ -90,6 +92,16 @@ class MainPage extends React.Component {
               date={ this.state.date }
               data={ this.state.reservationData }
               events={ this.state.events }
+              selected={ this.state.selected }
+              cancel={()=>{
+                this.setState({
+                  startTime: '',
+                  endTime: '',
+                  date: '',
+                  reservationData: {},
+                  selected: false
+                });
+              }}
             />
           </div>
         </div>
