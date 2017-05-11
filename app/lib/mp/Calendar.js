@@ -6,7 +6,6 @@ import {connect} from 'react-redux';
 import BigCalendar from 'react-big-calendar';
 import moment from 'moment';
 
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import RaisedButton from 'material-ui/RaisedButton';
 
 import {ModalContainer, ModalDialog} from 'react-modal-dialog';
@@ -20,7 +19,7 @@ function mapStateToProps(state) {
 };
 
 const buttonStyle = {
-  width: 122
+  width: 122,
 };
 
 class Calendar extends React.Component {
@@ -61,7 +60,7 @@ class Calendar extends React.Component {
   eventStyleGetter = (event) => {
     const style = {
       backgroundColor: event.color,
-      opacity: 0.8,
+      opacity: 0.6,
       color: 'black',
       border: 0,
       display: 'block'
@@ -93,9 +92,9 @@ class Calendar extends React.Component {
   colorChooser = (n) => {
     switch (n) {
       case 1:
-        return colors.blueDark;
+        return colors.primaryColor;
       case 2:
-        return colors.greenDark;
+        return colors.green;
       case 3:
         return colors.yellow;
       case 4:
@@ -187,25 +186,29 @@ class Calendar extends React.Component {
                 <div className='popup-buttons2'>
                   {
                     this.state.email !== this.state.event.user ? null :
-                      <RaisedButton
-                        label='Delete'
-                        primary={true}
-                        buttonStyle={buttonStyle}
-                        onClick={()=>{
-                          firebase.database().ref('events/'+this.state.event.room).child(this.state.event.key).remove().then(()=>{
-                            this.setState({showPopup: false, event: ''});
-                          });
-                        }}
-                      />
+                      <div className='mui-buttons'>
+                        <RaisedButton
+                          label='Delete'
+                          primary={true}
+                          buttonStyle={buttonStyle}
+                          onClick={()=>{
+                            firebase.database().ref('events/'+this.state.event.room).child(this.state.event.key).remove().then(()=>{
+                              this.setState({showPopup: false, event: ''});
+                            });
+                          }}
+                        />
+                      </div>
                   }
-                  <RaisedButton
-                    label='Close'
-                    primary={false}
-                    buttonStyle={buttonStyle}
-                    onClick={()=>{
-                      this.setState({showPopup: false})
-                    }}
-                  />
+                  <div className='mui-buttons'>
+                    <RaisedButton
+                      label='Close'
+                      primary={false}
+                      buttonStyle={buttonStyle}
+                      onClick={()=>{
+                        this.setState({showPopup: false})
+                      }}
+                    />
+                  </div>
                 </div>
               </div>
             </ModalDialog>
