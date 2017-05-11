@@ -26,6 +26,7 @@ class Calendar extends React.Component {
   constructor() {
     super();
     this.state = {
+      view: 'month',
       email: '',
       events: [],
       reservationSlot: {},
@@ -150,13 +151,22 @@ class Calendar extends React.Component {
     }
   };
 
+  selectableFunc = () => {
+    if (this.state.view === 'month')
+      return false;
+    return (this.props.room.index === 0 ? false : 'ignoreEvents');
+  }
+
   render() {
     return (
       <div className='calendar'>
         <BigCalendar
-          selectable= { this.props.room.index === 0 ? false : 'ignoreEvents'}
+          selectable= { this.selectableFunc() }
           events={[...this.state.events, this.state.reservationSlot]}
           step={30}
+          onView={(view)=>{
+            this.setState({ view });
+          }}
           defaultView='month'
           onSelectSlot={(slotInfo) => {
             let startTime = slotInfo.start.toLocaleString();
