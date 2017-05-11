@@ -8,11 +8,13 @@ import {addQuestion, deleteQuestion, editQuestion} from '../../actions/questions
 import {addQuestionFirebase, deleteQuestionFirebase, editQuestionFirebase} from '../firebaseAPI';
 
 import Paper from 'material-ui/Paper';
+import Dialog from 'material-ui/Dialog';
 import Divider from 'material-ui/Divider';
 import MenuItem from 'material-ui/MenuItem';
 import TextField from 'material-ui/TextField';
 import FlatButton from 'material-ui/FlatButton';
 import DropDownMenu from 'material-ui/DropDownMenu';
+import RaisedButton from 'material-ui/RaisedButton';
 import QuestionEditScreen from './QuestionEditScreen';
 
 function mapStateToProps({positions, questions}) {
@@ -26,7 +28,8 @@ class CustomQuestions extends React.PureComponent {
       selectedPosition: '-1',
       newQuestion: '',
       selectedQuestion: '-1',
-      isEditScreenOpen: false
+      isEditScreenOpen: false,
+      delete: false
     };
   };
 
@@ -49,9 +52,10 @@ class CustomQuestions extends React.PureComponent {
   };
 
   deleteQuestion = () => {
-    deleteQuestionFirebase(this.state.selectedQuestion).then(() => {
-      this.props.deleteQuestion(this.state.selectedQuestion);
-      this.setState({selectedQuestion: '-1'});
+    const {selectedQuestion} = this.state;
+    this.setState({selectedQuestion: '-1', delete: false});
+    deleteQuestionFirebase(selectedQuestion).then(() => {
+      this.props.deleteQuestion(selectedQuestion);
     });
   };
 
@@ -108,7 +112,7 @@ class CustomQuestions extends React.PureComponent {
           label='delete question'
           disabled={this.state.selectedQuestion === '-1'}
           primary
-          onTouchTap={() => this.deleteQuestion()}
+          onTouchTap={() => this.setState({delete: true})}
         />
         <FlatButton
           label='edit question'
@@ -136,6 +140,26 @@ class CustomQuestions extends React.PureComponent {
             }}
           /> : null
         }
+        {this.state.delete ?
+          <Dialog
+            open
+            title='Confirm Question Delete'
+            actions={[
+              <RaisedButton
+                label='cancel'
+                onTouchTap={() => this.setState({delete: false})}
+              />,
+              <RaisedButton
+                className='deleteButton'
+                label='confirm'
+                onTouchTap={() => this.deleteQuestion()}
+              />
+            ]}
+            onRequestClose={() => this.setState({delete: false})}
+          >
+            You are about to delete the question {this.props.questions[this.state.selectedQuestion].questionText}, are you sure?
+          </Dialog>
+        : null}
       </div>
     )
   }
