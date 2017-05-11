@@ -28,7 +28,7 @@ class RoomList extends Component {
   };
 
   componentWillMount() {
-    if (this.props.rooms) {
+    if (this.props.rooms.length) {
       this.props.roomActivate(this.props.rooms[0])
     }
   };

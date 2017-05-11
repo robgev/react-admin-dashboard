@@ -162,6 +162,8 @@ class Calendar extends React.Component {
             this.onTimeSelect(startTime, endTime);
           }}
           onSelectEvent= {(event)=>{
+            if (!event.user)
+              event.title = 'Complete the form to save your reservation.';
             this.setState({showPopup: !this.state.showPopup, event});
           }}
           eventPropGetter={this.eventStyleGetter}
