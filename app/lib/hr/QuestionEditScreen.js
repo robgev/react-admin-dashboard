@@ -19,10 +19,12 @@ class QuestionEditScreen extends React.PureComponent {
   render() {
     const actions = [
       <RaisedButton
+        style={margined}
         label='cancel'
         onTouchTap={() => this.props.closeScreen()}
       />,
       <RaisedButton
+        style={margined}
         primary
         label='save'
         disabled={this.props.selectedPosition === '-1'}
@@ -74,3 +76,5 @@ class QuestionEditScreen extends React.PureComponent {
     );
   };
 };
+
+const margined = {margin: 5};

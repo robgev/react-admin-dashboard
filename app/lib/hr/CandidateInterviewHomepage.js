@@ -49,6 +49,7 @@ class CandidateInterviewHomepage extends React.PureComponent {
           })
         }
         <FlatButton
+          style={margined}
           primary
           label='save'
           onTouchTap={() => {
@@ -61,6 +62,8 @@ class CandidateInterviewHomepage extends React.PureComponent {
     )
   }
 }
+
+const margined = {margin: 5};
 
 const styles = {
   container: {

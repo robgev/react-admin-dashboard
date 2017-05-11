@@ -90,7 +90,7 @@ class CustomQuestions extends React.PureComponent {
       }
     });
     return(
-      <div className='hrHome'>
+      <div className='hrHome candidates'>
         <DropDownMenu
           className='hrPositionDropdown'
           value={this.state.selectedPosition}
@@ -100,18 +100,21 @@ class CustomQuestions extends React.PureComponent {
           {RenderPositions}
         </DropDownMenu>
         <FlatButton
+          style={margined}
           label='add question'
           disabled={this.state.selectedPosition === '-1'}
           primary
           onTouchTap={() => this.setState({selectedQuestion: 'new', isEditScreenOpen: true})}
         />
         <FlatButton
+          style={margined}
           label='delete question'
           disabled={this.state.selectedQuestion === '-1'}
           primary
           onTouchTap={() => this.setState({delete: true})}
         />
         <FlatButton
+          style={margined}
           label='edit question'
           disabled={this.state.selectedQuestion === '-1'}
           primary
@@ -143,11 +146,13 @@ class CustomQuestions extends React.PureComponent {
             title='Confirm Question Delete'
             actions={[
               <RaisedButton
+                style={margined}
                 label='cancel'
                 onTouchTap={() => this.setState({delete: false})}
               />,
               <RaisedButton
-                className='deleteButton'
+                style={margined}
+                secondary
                 label='confirm'
                 onTouchTap={() => this.deleteQuestion()}
               />
@@ -161,5 +166,7 @@ class CustomQuestions extends React.PureComponent {
     )
   }
 };
+
+const margined = {margin: 5};
 
 export default connect(mapStateToProps, {addQuestion, deleteQuestion, editQuestion})(CustomQuestions);

@@ -16,7 +16,6 @@ import {setInitial} from '../../actions/candidate.action';
 import {setInitialPositions} from '../../actions/positions.action';
 import {setInitialQuestions} from '../../actions/questions.action';
 
-import FlatButton from 'material-ui/FlatButton';
 import {Tabs, Tab} from 'material-ui/Tabs';
 
 class ResourceManager extends React.PureComponent {
@@ -52,7 +51,7 @@ class ResourceManager extends React.PureComponent {
           signOut={this.props.signOut}
         />
         <Tabs
-
+          style={{height: '5vh'}}
         >
           <Tab
             label='candidates'

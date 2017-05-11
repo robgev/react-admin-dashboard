@@ -130,6 +130,7 @@ class MakeInterviewList extends React.PureComponent {
           </div>
         </div>
         <RaisedButton
+          style={margined}
           label='save'
           primary={true}
           onTouchTap={() => {
@@ -142,6 +143,8 @@ class MakeInterviewList extends React.PureComponent {
     );
   };
 };
+
+const margined = {margin: 5};
 
 const centered = {
   display: 'flex',

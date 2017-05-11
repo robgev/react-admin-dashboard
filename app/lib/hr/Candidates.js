@@ -209,8 +209,7 @@ class Candidates extends React.PureComponent {
     };
 
     return(
-      <div className='hrHome'>
-      <div className='hrForButtonsandFilter'>
+      <div className='hrHome candidates'>
         <TextField
           floatingLabelText='Filter'
           value={this.state.filter}
@@ -218,6 +217,7 @@ class Candidates extends React.PureComponent {
         />
         <div className='hrCandidatesButtons'>
         <FlatButton
+          style={margined}
           primary
           style={{marginLeft: '20px'}}
           label='add'
@@ -227,6 +227,7 @@ class Candidates extends React.PureComponent {
           }
         />
         <FlatButton
+          style={margined}
           primary
           disabled={this.state.selected === '-1' || this.state.selected === 'new'}
           style={{marginLeft: '20px'}}
@@ -234,6 +235,7 @@ class Candidates extends React.PureComponent {
           onTouchTap={() => this.setState({editScreen: true})}
         />
         <FlatButton
+          style={margined}
           primary
           disabled={this.state.selected === '-1' || this.state.selected === 'new'}
           style={{marginLeft: '20px'}}
@@ -263,7 +265,6 @@ class Candidates extends React.PureComponent {
           }
         />
         </div>
-        </div>
         <CandidateTable />
         {this.state.editScreen ? <CandidateChange /> : null}
         {this.state.delete ?
@@ -272,12 +273,14 @@ class Candidates extends React.PureComponent {
             title='Confirm Candidate Delete'
             actions={[
               <RaisedButton
+                style={margined}
                 label='cancel'
                 onTouchTap={() => this.setState({delete: false})}
               />,
               <RaisedButton
+                style={margined}
                 label='confirm'
-                className='deleteButton'
+                secondary
                 onTouchTap={() => {this.deleteCandidate(), this.setState({delete: false})}}
               />
             ]}
@@ -290,5 +293,7 @@ class Candidates extends React.PureComponent {
     );
   };
 };
+
+const margined = {margin: 5};
 
 export default connect(mapStateToProps, {addCandidate, deleteCandidate})(Candidates);

@@ -92,10 +92,12 @@ export default class CandidateChangePopup extends React.PureComponent {
     }
     const actions = [
       <RaisedButton
+        style={margined}
         label='Cancel'
         onTouchTap={closeDialogueBox}
       />,
       <RaisedButton
+        style={margined}
         label='Save'
         primary
         onTouchTap={
@@ -167,3 +169,5 @@ export default class CandidateChangePopup extends React.PureComponent {
     );
   }
 }
+
+const margined = {margin: 5};

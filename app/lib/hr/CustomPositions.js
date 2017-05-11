@@ -68,8 +68,26 @@ class CustomPositions extends React.PureComponent{
         );
     });
     return (
-      <div className='hrHome custom-positions'>
-        {Positions}
+      <div className='hrHome'>
+        <div className='positions'>
+          {Positions}
+        </div>
+        <div>
+          <div>
+            <RaisedButton
+              style={margined}
+              label='new'
+              primary
+              onTouchTap={() => this.setState({textValue: '', selected: 'new'})}
+            />
+            <RaisedButton
+              style={margined}
+              label='delete'
+              primary
+              disabled={this.state.selected === '-1'}
+              onTouchTap={() => this.setState({delete: true})}
+            />
+          </div>
         {this.state.selected !== '-1' ?
           <div>
             <TextField
@@ -79,24 +97,13 @@ class CustomPositions extends React.PureComponent{
               onChange={(e) => this.setState({textValue: e.target.value})}
             />
             <FlatButton
+              style={margined}
               label='save'
               onTouchTap={() => this.savePosition()}
             />
           </div> :
           null
         }
-        <div>
-          <FlatButton
-            label='new'
-            primary
-            onTouchTap={() => this.setState({textValue: '', selected: 'new'})}
-          />
-          <FlatButton
-            label='delete'
-            primary
-            disabled={this.state.selected === '-1'}
-            onTouchTap={() => this.setState({delete: true})}
-          />
         </div>
         {this.state.delete ?
           <Dialog
@@ -104,11 +111,13 @@ class CustomPositions extends React.PureComponent{
             title='Confirm Position Delete'
             actions={[
               <RaisedButton
+                style={margined}
                 label='cancel'
                 onTouchTap={() => this.setState({delete: false})}
               />,
               <RaisedButton
-                className='deleteButton'
+                style={margined}
+                secondary
                 label='confirm'
                 onTouchTap={() => this.deletePosition()}
               />
@@ -122,5 +131,7 @@ class CustomPositions extends React.PureComponent{
     );
   };
 };
+
+const margined = {margin: 5};
 
 export default connect(mapStateToProps, {addPosition, deletePosition})(CustomPositions);
