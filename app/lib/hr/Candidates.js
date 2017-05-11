@@ -12,6 +12,7 @@ import CandidateChangePopup from './CandidateChangePopup';
 import {addCandidate, deleteCandidate} from '../../actions/candidate.action';
 import {addCandidateFirebase, editCandidateFirebase, deleteCandidateFirebase} from '../firebaseAPI';
 
+import Paper from 'material-ui/Paper';
 import Dialog from 'material-ui/Dialog';
 import TextField from 'material-ui/TextField';
 import FlatButton from 'material-ui/FlatButton';
@@ -20,14 +21,9 @@ import {Table, TableBody, TableHeader, TableHeaderColumn,
          TableRow, TableRowColumn} from 'material-ui/Table';
 
 
-function mapStateToProps(state) {
-  return (
-    {
-      candidates: state.candidates,
-      positions: state.positions
-    }
-  )
-}
+function mapStateToProps({candidates, positions}) {
+  return {candidates, positions};
+};
 
 class Candidates extends React.PureComponent {
   constructor(props) {
@@ -39,8 +35,8 @@ class Candidates extends React.PureComponent {
       interview: false,
       editScreen: false,
       sortValue: {
-        value: '',
-        up: true
+        value: 'Name',
+        up: false
       },
       delete: false
     };
@@ -48,6 +44,10 @@ class Candidates extends React.PureComponent {
 
   componentWillReceiveProps({candidates}) {
     this.setState({candidates});
+  };
+
+  componentDidMount() {
+    this.filterListElements(this.state.candidates);
   };
 
   saveCandidate = (candidate, isNew) => {
@@ -111,7 +111,7 @@ class Candidates extends React.PureComponent {
     this.state.sortValue.up ? filteredCandidates.reverse() : null;
     const RenderCandidates = filteredCandidates.map(candidate => {
       const isSelected = candidate.id === this.state.selected ?
-          {backgroundColor: '#E0E0E0'} : {};
+          {backgroundColor: '#E0E0E0'} : null;
       return (
         <TableRow
           key={candidate.id}
@@ -160,18 +160,24 @@ class Candidates extends React.PureComponent {
                     key={column}
                     className='tableRows'
                   >
-                    <FlatButton
-                      style={{color: 'white'}}
-                      label={column}
-                      onTouchTap={() => {
+                    <div
+                      style={{color: 'white', cursor: 'pointer', fontSize: 20, display: 'flex'}}
+                      onClick={() => {
                         const sortValue = {
                           value: column,
-                          up: !this.state.sortValue.up
+                          up: this.state.sortValue.value === column ? !this.state.sortValue.up : this.state.sortValue.up
                         };
                         this.setState({sortValue});
+                      }}
+                    >
+                      {column}
+                      {this.state.sortValue.value === column ?
+                        <i className='material-icons'>
+                          {this.state.sortValue.up ? 'arrow_upward' : 'arrow_downward'}
+                        </i> :
+                        null
                       }
-                    }
-                    />
+                    </div>
                   </TableHeaderColumn>
                 ))
               }
