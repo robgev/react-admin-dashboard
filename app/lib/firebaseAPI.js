@@ -253,28 +253,19 @@ export const saveEvent = (data) => {
 export const addCandidateFirebase = (data) => {
   const {name, profession, status, date, level} = data;
   const key = firebase.database().ref().child('candidates').push().key;
-  firebase.database().ref('/candidates/' + key).set({
-    name: name,
-    profession: profession,
-    status: status,
-    date: date,
-    level: level,
-    id: key
-  });
-  return key;
+  return {
+    promise: firebase.database().ref('/candidates/' + key).set({
+      name, profession, status, date, level, id: key
+    }),
+    key
+  };
 };
 
 export const editCandidateFirebase = (data) => {
   const {id, name, profession, status, date, level} = data;
-  firebase.database().ref('/candidates/' + id).set({
-    name: name,
-    profession: profession,
-    status: status,
-    date: date,
-    level: level,
-    id: id
+  return firebase.database().ref('/candidates/' + id).set({
+    name, profession, status, date, level, id
   });
-  return id;
 };
 
 export const deleteCandidateFirebase = (id) => {

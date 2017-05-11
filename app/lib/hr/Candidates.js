@@ -52,15 +52,14 @@ class Candidates extends React.PureComponent {
 
   saveCandidate = (candidate, isNew) => {
     if(isNew) {
-      const id = addCandidateFirebase(candidate);
-      firebase.database().ref('candidates/' + id).on('value', snapshot => {
-        this.props.addCandidate(snapshot.val());
+      const {promise, key} =  addCandidateFirebase(candidate);
+      promise.then(() => {
+        this.props.addCandidate({...candidate, id: key});
       });
     } else {
-      const changedId = editCandidateFirebase(candidate);
-      firebase.database().ref('candidates/' + changedId).on('value', snapshot => {
-        this.props.addCandidate(snapshot.val());
-      })
+      editCandidateFirebase(candidate).then(() => {
+        this.props.addCandidate(candidate);
+      });
     }
   };
 
