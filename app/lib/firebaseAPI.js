@@ -304,21 +304,22 @@ export const editPositionFirebase = (position) => {
 
 export const addQuestionFirebase = (info) => {
   const key = firebase.database().ref().child('questions').push().key;
-  firebase.database().ref('/questions/' + key).set({
-    id: key,
-    positionId: info.positionId,
-    questionText: info.questionText
-  });
-  return key;
+  return {
+    promise: firebase.database().ref('/questions/' + key).set({
+      id: key,
+      positionId: info.positionId,
+      questionText: info.questionText
+    }),
+    key
+  };
 };
 
 export const editQuestionFirebase = (question) => {
-  firebase.database().ref('/questions/' + question.id).set({
+  return firebase.database().ref('/questions/' + question.id).set({
     id: question.id,
     positionId: question.positionId,
     questionText: question.questionText
   });
-  return question.id;
 }
 
 export const deleteQuestionFirebase = (id) => {

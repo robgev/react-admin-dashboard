@@ -33,21 +33,18 @@ class CustomQuestions extends React.PureComponent {
     };
   };
 
-  addQuestion = (text) => {
-    const id = addQuestionFirebase({
-      positionId: this.state.selectedPosition,
-      questionText: text
-    });
-    firebase.database().ref('questions/' + id).on('value', snapshot => {
-      this.props.addQuestion(snapshot.val());
+  addQuestion = (questionText) => {
+    const {selectedPosition: positionId} = this.state;
+    const {promise, key} = addQuestionFirebase({positionId, questionText});
+    promise.then(() => {
+      this.props.addQuestion({id: key, positionId, questionText});
       this.setState({newQuestion: ''});
     });
   };
 
   editQuestion = (question) => {
-    const id = editQuestionFirebase(question);
-    firebase.database().ref('questions/' + id).on('value', snapshot => {
-      this.props.editQuestion(snapshot.val());
+    editQuestionFirebase(question).then(() => {
+      this.props.editQuestion(question);
     });
   };
 
