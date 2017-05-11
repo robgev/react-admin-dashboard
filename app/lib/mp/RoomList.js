@@ -35,8 +35,9 @@ class RoomList extends Component {
   };
 
   selectRow = (room, index) => {
-    this.setState({value: index})
-    this.props.roomActivate(room)
+    this.setState({value: index});
+    this.props.roomActivate(room);
+    this.props.roomChange();
   };
 
   renderingMenuItems() {

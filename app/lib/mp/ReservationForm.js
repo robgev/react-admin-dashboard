@@ -31,16 +31,28 @@ class ResForm extends Component {
         <p>{`Starting time: ${this.props.startTime ? moment(this.props.startTime).format('hh:mm a') : ''}`}</p>
         <p>{`End time: ${this.props.endTime ? moment(this.props.endTime).format('hh:mm a') : ''}`}</p>
         <MuiThemeProvider>
-          <RaisedButton
-            label='Reserve'
-            primary={true}
-            fullWidth={true}
-            style = {buttonStyle}
-            onClick={()=>{
-              this.setState({showPopup: true})
-            }}
-            disabled={!this.props.date}
-          />
+          <div>
+            <RaisedButton
+              label='Reserve'
+              primary={true}
+              fullWidth={true}
+              style = {buttonStyle}
+              onClick={()=>{
+                this.setState({showPopup: true})
+              }}
+              disabled={!this.props.date}
+            />
+            <RaisedButton
+              label='Cancel'
+              primary={false}
+              fullWidth={true}
+              style = {buttonStyle}
+              onClick={()=>{
+                this.props.cancel();
+              }}
+              disabled={!this.props.date}
+            />
+          </div>
         </MuiThemeProvider>
         {!this.state.showPopup ? null :
           <ReservationPopup
