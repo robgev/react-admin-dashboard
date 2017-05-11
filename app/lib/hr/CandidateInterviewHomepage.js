@@ -5,18 +5,13 @@ import {Link} from 'react-router-dom';
 import {findIndex} from 'lodash';
 
 import TextField from 'material-ui/TextField';
-import FlatButton from 'material-ui/FlatButton';
+import RaisedButton from 'material-ui/RaisedButton';
 
 import {addQuestionAnswers} from '../firebaseAPI';
 import {addCandidateQuestions} from '../../actions/candidate.action';
 
-function mapStateToProps(state) {
-  return (
-    {
-      candidates: state.candidates,
-      questions: state.questions
-    }
-  );
+function mapStateToProps({candidates, questions}) {
+  return {candidates, questions};
 };
 
 class CandidateInterviewHomepage extends React.PureComponent {
@@ -28,7 +23,7 @@ class CandidateInterviewHomepage extends React.PureComponent {
   };
   render() {
     return(
-      <div style={styles.container}>
+      <div className='interview-homepage'>
         {
           this.state.questions.map(question => {
             return(
@@ -48,7 +43,12 @@ class CandidateInterviewHomepage extends React.PureComponent {
             )
           })
         }
-        <FlatButton
+        <RaisedButton
+          style={margined}
+          label='cancel'
+          containerElement={<Link to='/management' />}
+        />
+        <RaisedButton
           style={margined}
           primary
           label='save'
@@ -64,22 +64,5 @@ class CandidateInterviewHomepage extends React.PureComponent {
 }
 
 const margined = {margin: 5};
-
-const styles = {
-  container: {
-    display: 'flex',
-    height: '90vh',
-    justifyContent: 'center',
-    alignItems: 'center',
-    flexDirection: 'column',
-    width: '70%',
-    margin: '0 auto',
-  },
-  centered: {
-    display: 'flex',
-    justifyContent: 'center',
-    textAlign: 'center',
-  }
-}
 
 export default connect(mapStateToProps, {addCandidateQuestions})(CandidateInterviewHomepage);
