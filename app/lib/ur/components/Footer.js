@@ -11,17 +11,6 @@ const ui = {
 
 
 export default () => {
-  const links = [ui.home, ui.about];
-  const listItems = links.map((currentItem, index) => {
-    const needDivisor = index !== links.length - 1;
-    const classname = needDivisor ? 'divisor' : '';
-    return (
-      <li key={currentItem.resource} style={footerListItemStyle}>
-        <Link className={classname} style={linkStyle} to={currentItem.resource}>{currentItem.link}</Link>
-      </li>
-    );
-  });
-
   return (
     <Toolbar style={footer}>
       <ToolbarGroup>
@@ -29,13 +18,11 @@ export default () => {
         <ul style={footerItemsContainer}>
           <li style={footerListItemStyle}>
             <a
-              className={'divisor'}
               style={linkStyle}
               href='https://bitbucket.org/apollobytes/ab-internal'
               target='_blank'
             >{'Source Code'}</a>
           </li>
-          {listItems}
         </ul>
       </ToolbarGroup>
       <ToolbarGroup>

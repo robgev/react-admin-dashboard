@@ -18,7 +18,7 @@ export default ({ user, signOut, admin, id }) => {
   const links = admin ? [...ui, adminResource] : [...ui];
   const listItems = links.map((currentItem, idx) => {
     const activeStyle = id===idx ?
-        {backgroundColor: 'rgba(153, 153, 153, 0.2)'} : null
+        {borderBottom: `3px solid ${colors.grayLight}`} : null
     return (
       <li key={currentItem.resource} style={{...listItemStyle, ...activeStyle}}>
         <Link style={linkStyle} to={currentItem.resource}>
