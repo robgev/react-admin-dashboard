@@ -1,21 +1,17 @@
 @import "colors.sass"
 
 .make-interview
-  display: flex
-  height: 90vh
-  justify-content: center
-  align-items: center
-  flex-direction: column
-  width: 80%
-  margin: 0 auto
-
-  .centered
-    display: flex
-    justify-content: center
-    text-align: center
-
+  height: 85vh
+  padding: 20px
   .tables
     display: flex
-    justify-content: center
-    align-items: center
-    flex-direction: row
+    .single-table
+      width: 50%
+      padding: 5px
+    .list-element
+      height: 50px
+      background-color: $listitemBackgroundColor
+      cursor: pointer
+      display: flex
+      justify-content: center
+      align-items: center

@@ -5,9 +5,8 @@ import {Link} from 'react-router-dom';
 import {map, filter, find, findIndex} from 'lodash';
 import {addQuestionToCandidate} from '../firebaseAPI';
 
-import {Table, TableBody, TableHeader, TableHeaderColumn,
-  TableRow, TableRowColumn} from 'material-ui/Table';
-import Divider from 'material-ui/Divider';
+import Paper from 'material-ui/Paper';
+import Checkbox from 'material-ui/Checkbox';
 import RaisedButton from 'material-ui/RaisedButton';
 
 import {addCandidateQuestions} from '../../actions/candidate.action';
@@ -40,99 +39,92 @@ class MakeInterviewList extends React.PureComponent {
     return(
       <div className='make-interview'>
         <div className='tables'>
-          <div>
-            <Table
-              multiSelectable
+          <div className='single-table'>
+            <Paper
+              style={{backgroundColor: '#52ABE1', padding: 10}}
+              className='list-element'
             >
-              <TableHeader displaySelectAll={false}>
-                <TableRow
-                  style={{cursor: 'pointer'}}
-                  onTouchTap={() => {
-                    if(this.state.allSelected) {
-                      this.setState({candidateQuestions: [], allSelected: false});
-                    } else {
-                      const candidateQuestions = this.allQuestions.map(question => {
-                        return {answer: '', questionId: question.id};
-                      });
-                      this.setState({candidateQuestions, allSelected: true});
-                    }
-                  }}
-                >
-                  <TableHeaderColumn>
-                    Questions
-                  </TableHeaderColumn>
-                </TableRow>
-              </TableHeader>
-              <TableBody deselectOnClickaway={false}>
-                {
-                  this.allQuestions.map(question => {
-                    return(
-                      <TableRow
-                        hoverable
-                        key={question.id}
-                        selected={!!find(this.state.candidateQuestions, {questionId: question.id})}
-                        onTouchTap={() => {
-                          if(!find(this.state.candidateQuestions, {questionId: question.id})){
-                            const candidateQuestions = [...this.state.candidateQuestions,
-                            {answer: '', questionId: question.id}];
-                            this.setState({candidateQuestions});
-                          } else {
-                            let candidateQuestions = this.state.candidateQuestions.slice();
-                            const index = findIndex(candidateQuestions, {questionId: question.id});
-                            candidateQuestions.splice(index, 1);
-                            this.setState({candidateQuestions});
-                          }
-                        }}
-                      >
-                        <TableRowColumn>
-                          {question.questionText}
-                        </TableRowColumn>
-                      </TableRow>
-                    );
-                  })
-                }
-              </TableBody>
-            </Table>
+              <Checkbox
+                labelStyle={{color: 'white'}}
+                iconStyle={{fill: 'white'}}
+                checked={this.state.allSelected}
+                label='Questions'
+                onCheck={() => {
+                  if(this.state.candidateQuestions.length !== this.allQuestions.length){
+                    let candidateQuestions = [];
+                    this.allQuestions.map(question => {
+                      candidateQuestions.push({questionId: question.id, answer: ''});
+                    });
+                    this.setState({candidateQuestions, allSelected: true});
+                  } else {
+                    this.setState({candidateQuestions: [], allSelected: false});
+                  }
+                }}
+              />
+            </Paper>
+            {
+              this.allQuestions.map(question => {
+                const selected = !!find(this.state.candidateQuestions, {questionId: question.id});
+                return(
+                  <Paper
+                    key={question.id}
+                    className='list-element'
+                    style={selected ? {backgroundColor: '#E0E0E0'} : null}
+                    onTouchTap={() => {
+                      if(!find(this.state.candidateQuestions, {questionId: question.id})){
+                        const candidateQuestions = [...this.state.candidateQuestions,
+                        {answer: '', questionId: question.id}];
+                        this.setState({candidateQuestions});
+                      } else {
+                        let candidateQuestions = this.state.candidateQuestions.slice();
+                        const index = findIndex(candidateQuestions, {questionId: question.id});
+                        candidateQuestions.splice(index, 1);
+                        this.setState({candidateQuestions});
+                      }
+                    }}
+                  >
+                    {question.questionText}
+                  </Paper>
+                );
+              })
+            }
           </div>
-          <Divider />
-          <div >
-            <Table
-              bodyStyle={centered}
-              headerStyle={centered}
-              selectable={false}
+          <div className='single-table'>
+            <Paper
+              style={{backgroundColor: '#52ABE1', color: 'white'}}
+              className='list-element'
             >
-              <TableHeader
-                displaySelectAll={false}
-                className='centered'
-              >
-                <TableRow style={{border: 'none'}}>
-                  <TableHeaderColumn>
-                    Selected Questions
-                  </TableHeaderColumn>
-                </TableRow>
-              </TableHeader>
-              <TableBody displayRowCheckbox={false}>
-                {
-                  selectedQuestions.map(question => {
-                    return(
-                      <TableRow
-                        key={question.id}
-                      >
-                        <TableRowColumn>
-                          {question.questionText}
-                        </TableRowColumn>
-                      </TableRow>
-                    )
-                  })
-                }
-              </TableBody>
-            </Table>
+              Selected Questions
+            </Paper>
+            {
+              selectedQuestions.map(question => {
+                return(
+                  <Paper
+                    key={question.id}
+                    className='list-element'
+                    onTouchTap={() => {
+                      let candidateQuestions = this.state.candidateQuestions.slice();
+                      const index = findIndex(candidateQuestions, {questionId: question.id});
+                      candidateQuestions.splice(index, 1);
+                      this.setState({candidateQuestions});
+                    }}
+                  >
+                    {question.questionText}
+                  </Paper>
+                );
+              })
+            }
           </div>
         </div>
         <RaisedButton
           style={margined}
+          label='cancel'
+          containerElement={<Link to='/management' />}
+        />
+        <RaisedButton
+          style={margined}
           label='save'
-          primary={true}
+          primary
           onTouchTap={() => {
             addQuestionToCandidate(this.selectedCandidate.id, this.state.candidateQuestions)
               .then(this.props.addCandidateQuestions(this.selectedCandidate.id, this.state.candidateQuestions))
