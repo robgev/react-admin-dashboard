@@ -41,7 +41,7 @@ class RoomList extends Component {
   renderingMenuItems() {
     return this.props.rooms.map((room, index) => {
       return (
-        <div key={room.index} className = {room.class}>
+        <div key={room.index}>
           <MenuItem
             key={room.index}
             className={room.index === this.state.value ? 'selected' : ''}
