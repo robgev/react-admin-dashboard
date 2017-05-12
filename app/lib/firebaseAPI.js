@@ -333,6 +333,15 @@ export const editQuestionFirebase = (question) => {
 
 export const deleteQuestionFirebase = (id) => {
   return firebase.database().ref('/questions/' + id).remove();
+  // const updates = {};
+  // updates['/questions/' + id] = null;
+  // return firebase.database().ref('/candidates/').once('value').then(snapshot => {
+  //   const candidates = snapshot.val();
+  //   map(candidates, candidate => {
+  //     candidate.questions ?
+  //
+  //   });
+  // });
 };
 
 export const addQuestionToCandidate = (candidateId, questions) => {
