@@ -264,9 +264,13 @@ export const addCandidateFirebase = (data) => {
 
 export const editCandidateFirebase = (data) => {
   const {id, name, profession, status, date, level} = data;
-  return firebase.database().ref('/candidates/' + id).set({
-    name, profession, status, date, level, id
-  });
+  const updates = {};
+  updates['/candidates/' + id + '/profession/'] = profession;
+  updates['/candidates/' + id + '/status/'] = status;
+  updates['/candidates/' + id + '/date/'] = date;
+  updates['/candidates/' + id + '/level/'] = level;
+  updates['/candidates/' + id + '/name/'] = name;
+  return firebase.database().ref().update(updates);
 };
 
 export const deleteCandidateFirebase = (id) => {

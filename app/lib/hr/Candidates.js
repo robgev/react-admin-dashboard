@@ -228,14 +228,14 @@ class Candidates extends React.PureComponent {
             />
             <RaisedButton
               primary
-              disabled={this.state.selected === '-1' || this.state.selected === 'new'}
+              disabled={isDisabled}
               style={margined}
               label='edit'
               onTouchTap={() => this.setState({editScreen: true})}
             />
             <RaisedButton
               primary
-              disabled={this.state.selected === '-1' || this.state.selected === 'new'}
+              disabled={isDisabled}
               style={margined}
               label='delete'
               onTouchTap={() => this.setState({delete: true})}
@@ -253,7 +253,7 @@ class Candidates extends React.PureComponent {
             />
             <RaisedButton
               primary
-              disabled={isDisabled}
+              disabled={isDisabled || !this.state.candidates[this.state.selected].questions}
               style={margined}
               label='interview'
               containerElement={

@@ -12,12 +12,23 @@ const addQuestions = (candidates, action) => {
   return candidatesCopy;
 }
 
+const editCandidate = (candidates, candidate) => {
+  const copy = Object.assign({}, candidates);
+  const {id, name, profession, status, date, level} = candidate;
+  copy[id].name = name;
+  copy[id].profession = profession;
+  copy[id].status = status;
+  copy[id].date = date;
+  copy[id].level = level;
+  return copy;
+}
+
 export default function(candidates = {}, action) {
   switch(action.type) {
     case "SET_INITIAL":
       return action.payload.candidates;
     case "ADD_CANDIDATE":
-      return {...candidates, [action.payload.candidate.id]: action.payload.candidate};
+      return editCandidate(candidates, action.payload.candidate);
     case "DELETE_CANDIDATE":
       return deleteCandidate(candidates, action);
     case "ADD_QUESTIONS_TO_CANDIDATE":
