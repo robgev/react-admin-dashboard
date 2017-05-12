@@ -23,7 +23,8 @@ function mapStateToProps({activeRoom: room, loggedIn}) {
 };
 
 const appBarStyle = {
-  zIndex: 5
+  zIndex: 5,
+  height: '5vh'
 };
 
 class MainPage extends React.Component {
@@ -63,7 +64,17 @@ class MainPage extends React.Component {
           signOut={this.props.signOut}
         />
         <MuiThemeProvider>
-          <AppBar style={appBarStyle} title='Rooms' iconElementLeft={< IconButton ></IconButton>}/>
+          <AppBar
+            style={appBarStyle}
+            title='Rooms'
+            iconElementLeft={< IconButton ></IconButton>}
+            titleStyle={{
+              fontSize: 16.5,
+              fontWeight: 500,
+              lineHeight: '5vh',
+              paddingLeft: '1vw'
+            }}
+          />
         </MuiThemeProvider>
         <div className='mainpage'>
           <RoomList

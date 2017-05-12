@@ -107,8 +107,13 @@ class Calendar extends React.Component {
     }
   };
 
+  componentDidUpdate(){
+    document.getElementsByClassName('rbc-row')[1].style.display = 'none';
+  }
+
   componentDidMount() {
     document.getElementsByClassName('rbc-month-view')[0].setAttribute('style', 'z-index: 1');
+    document.getElementsByClassName('rbc-row')[1].style.display = 'none';
     const userInterval = setInterval(()=>{
       const user = getUser();
       if (user != null){
