@@ -12,6 +12,9 @@ import RaisedButton from 'material-ui/RaisedButton';
 import {addPositionFirebase,
   editPositionFirebase, deletePositionFirebase} from '../firebaseAPI';
 import {addPosition, deletePosition} from '../../actions/positions.action';
+import {setInitial} from '../../actions/candidate.action';
+import {setInitialPositions} from '../../actions/positions.action';
+import {setInitialQuestions} from '../../actions/questions.action';
 
 const mapStateToProps = ({positions}) => {
   return {positions}
@@ -46,7 +49,26 @@ class CustomPositions extends React.PureComponent{
   };
   deletePosition = () => {
     deletePositionFirebase(this.state.selected)
-      .then(this.props.deletePosition(this.state.selected));
+      .then(() => {
+        firebase.database().ref('positions').once('value').then(snapshot => {
+          const positions = snapshot.val();
+          if (positions){
+            this.props.setInitialPositions(positions);
+          }
+        });
+        firebase.database().ref('questions').once('value').then(snapshot => {
+          const questions = snapshot.val();
+          if(questions){
+            this.props.setInitialQuestions(questions);
+          }
+        });
+        firebase.database().ref('candidates').once('value').then(candidates => {
+          candidates = candidates.val();
+          if (candidates){
+            this.props.setInitial(candidates);
+          }
+        });
+      });
     this.reset();
   };
   render(){
@@ -139,4 +161,4 @@ class CustomPositions extends React.PureComponent{
 
 const margined = {margin: 5};
 
-export default connect(mapStateToProps, {addPosition, deletePosition})(CustomPositions);
+export default connect(mapStateToProps, {addPosition, deletePosition, setInitial, setInitialPositions, setInitialQuestions})(CustomPositions);

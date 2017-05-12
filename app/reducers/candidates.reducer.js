@@ -15,6 +15,7 @@ const addQuestions = (candidates, action) => {
 export default function(candidates = {}, action) {
   switch(action.type) {
     case "SET_INITIAL":
+      console.log(action.payload.candidates);
       return action.payload.candidates;
     case "ADD_CANDIDATE":
       return {...candidates, [action.payload.candidate.id]: action.payload.candidate};

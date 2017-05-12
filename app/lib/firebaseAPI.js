@@ -1,5 +1,6 @@
 import firebase from 'firebase';
 import moment from 'moment';
+import {map} from 'lodash';
 
 export { firebase };
 
@@ -284,7 +285,24 @@ export const addPositionFirebase = (positionName) => {
 };
 
 export const deletePositionFirebase = (id) => {
-  return firebase.database().ref('/positions/' + id).remove();
+  const updates = {};
+  updates['/positions/' + id] = null;
+  return firebase.database().ref('/').once('value').then(snapshot => {
+    const {questions, candidates} = snapshot.val();
+    map(questions, question => {
+      if(question.positionId === id){
+        updates['/questions/' + question.id] = null;
+      }
+    });
+    map(candidates, candidate => {
+      if(candidate.profession === id){
+        updates['/candidates/' + candidate.id + '/profession/'] = "0";
+        updates['/candidates/' + candidate.id + '/questions/'] = null;
+      }
+    });
+  }).then(() => {
+    firebase.database().ref().update(updates);
+  });
 };
 
 export const editPositionFirebase = (position) => {
