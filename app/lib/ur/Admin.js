@@ -1,4 +1,4 @@
-import {map} from 'lodash';
+import {map, get} from 'lodash';
 import React, { Component } from 'react';
 import {Table, TableBody, TableFooter, TableHeader, TableHeaderColumn, TableRow, TableRowColumn}
   from 'material-ui/Table';
@@ -14,6 +14,10 @@ class AdminPanel extends Component {
   constructor() {
     super();
     this.state = {
+      sorting: {
+        by: 'Name',
+        up: false
+      },
       dbData: null,
       bannerText: '',
       selectedUser: '',
@@ -88,11 +92,11 @@ class AdminPanel extends Component {
     this.setState({ ...this.state, activeState: !activeState  })
   }
 
-  handleSelected = async (uid, e) => {
-    const send_to_server = generate_request({uid});
-    const data = await fetch(`/manageusers/activestatus`, send_to_server);
-    const answer = await data.json();
-    this.setState({ ...this.state, selectedUser: uid, activeState: !answer.disabled})
+  handleSelected = (uid, e) => {
+    const {dbData} = this.state;
+    const answer = get(dbData, `${uid}.active`);
+    console.log(answer);
+    this.setState({ ...this.state, selectedUser: uid, activeState: answer})
   }
 
   addNewUser = async (email, password) => {
@@ -158,6 +162,7 @@ class AdminPanel extends Component {
     } = this.state;
     const { user } = this.props
     const { displayName, email, emailVerified, photoURL, uid, providerData } = user;
+    const deactivateButtonText = activeState ? 'Deactivate' : 'Activate';
     return (
       <div className='adminContainer full-width'>
         <Header
@@ -205,10 +210,10 @@ class AdminPanel extends Component {
             <DialogAction
               warningButton
               modalAction={this.toggleUserActiveState}
-              buttonText={activeState ? 'Deactivate' : 'Activate'}
-              noticeText='Notice: You can activate the user later'
-              modalButtonText={activeState ? 'Deactivate' : 'Activate'}
-              headerText='Are you sure you want to deactivate this user?'
+              buttonText={deactivateButtonText}
+              noticeText={`Notice: You can ${activeState ? 'activate' : 'deactivate'} the user later`}
+              modalButtonText={deactivateButtonText}
+              headerText={`Are you sure you want to ${deactivateButtonText.toLowerCase()} this user?`}
               buttonStyle={{...(!selectedUser ? {disabled: true} : null)}}
             />
           </div>

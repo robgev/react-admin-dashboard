@@ -72,11 +72,41 @@ class App extends Component {
             <Switch>
               <Route
                 exact path='/'
-                render={() =>
-                currentUser ?
-                    <Redirect to='/user'/>
-                  : <Redirect to='/signin'/>
-                }
+                render={() => {
+                  if(currentUser) {
+                    return(
+                      <LoadingScreen
+                        promise={ promise }
+                        whenPending= { () => {
+                          return (
+                            <div className='loading-screen'>
+                              <img src='/images/loading.gif' />
+                            </div>
+                          );
+                        }}
+                        whenResolved={ snapshot => {
+                          const value = snapshot.val();
+                          const isAdmin = value ? value.isAdmin : false;
+                          if(isAdmin) {
+                            return (
+                              <Redirect to='/admin' />
+                            );
+                          }
+                          else {
+                            return (
+                              <Redirect to='/management'/>
+                            );
+                          }
+                        }}
+                      />
+                    );
+                  }
+                  else {
+                    return (
+                      <Redirect to='/signin'/>
+                    );
+                  }
+                }}
               />
               <Route
                 path='/signin'

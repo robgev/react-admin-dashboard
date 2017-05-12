@@ -11,6 +11,13 @@ const firebaseAPI  = require('../frontend/lib/firebaseAPI').default
 
 const serviceAccount = require('./serviceAccountKey.json');
 
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
+  databaseURL: 'https://apollobytes-internal.firebaseio.com'
+});
+
+const db = admin.database();
+
 adminRouter.use(json_parser, form_parser);
 
 adminRouter.post('/activestatus', async (req, res) => {
@@ -31,7 +38,11 @@ adminRouter.post('/deactivate', async (req, res) => {
     const updatedData = await admin.auth().updateUser(uid, {
      disabled: !userData.disabled
     })
-    firebaseAPI.deactivate(uid, updatedData.disabled)
+    console.log(updatedData.disabled)
+    const dbRef = db.ref(`users/${uid}`);
+    dbRef.update({
+      active: !updatedData.disabled
+    })
     res.end(JSON.stringify({status: 'ok', disabled: updatedData.disabled}))
   } catch(error) {
     console.log('Error fetching user data:', error);
@@ -95,10 +106,5 @@ adminRouter.post('/delete', async (req, res) => {
     res.end(JSON.stringify({status: 'error', message: 'something went wrong'}));
   }
 })
-
-admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount),
-  databaseURL: 'https://apollobytes-internal.firebaseio.com'
-});
 
 module.exports = adminRouter;
