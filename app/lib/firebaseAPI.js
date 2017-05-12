@@ -115,6 +115,7 @@ firebase.auth().onAuthStateChanged(user => {
           email: email,
           isAdmin : false,
           active : false,
+          uid: uid,
         });
       }
       else if(emailVerified && !dataWritten.active) {

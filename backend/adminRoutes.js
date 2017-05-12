@@ -98,7 +98,7 @@ adminRouter.post('/delete', async (req, res) => {
   const {uid} = req.body;
   try {
     await admin.auth().deleteUser(uid)
-    const dbRef = firebase.database().ref(`users/${uid}`);
+    const dbRef = db.ref(`users/${uid}`);
     dbRef.remove();
     res.end(JSON.stringify({status: 'ok', message: 'successfully deleted user'}))
   } catch(error) {

@@ -1,5 +1,5 @@
-import {map, get} from 'lodash';
 import React, { Component } from 'react';
+import {map, get, sortBy, filter} from 'lodash';
 import {Table, TableBody, TableFooter, TableHeader, TableHeaderColumn, TableRow, TableRowColumn}
   from 'material-ui/Table';
 
@@ -15,11 +15,12 @@ class AdminPanel extends Component {
     super();
     this.state = {
       sorting: {
-        by: 'Name',
-        up: false
+        by: 'Username',
+        ascending: false
       },
       dbData: null,
       bannerText: '',
+      searchText: '',
       selectedUser: '',
       showBanner: false,
       activeState: true,
@@ -95,7 +96,6 @@ class AdminPanel extends Component {
   handleSelected = (uid, e) => {
     const {dbData} = this.state;
     const answer = get(dbData, `${uid}.active`);
-    console.log(answer);
     this.setState({ ...this.state, selectedUser: uid, activeState: answer})
   }
 
@@ -106,9 +106,46 @@ class AdminPanel extends Component {
     this.showBanner(`User was added`);
   }
 
+  handleSearch = (e) => {
+    this.setState({...this.state, searchText: e.target.value})
+  }
+
+  sortAndFilter = () => {
+    const {sorting, dbData, searchText} = this.state;
+    let resultingArray = dbData
+    switch (sorting.by) {
+      case 'Username':
+        resultingArray = sortBy(resultingArray, i => i.username);
+        break;
+      case 'Created':
+        resultingArray = sortBy(resultingArray, i => i.created);
+        break;
+      case 'Email':
+        resultingArray = sortBy(resultingArray, i => i.email);
+        break;
+      case 'Password':
+        resultingArray = sortBy(resultingArray, i => i.password);
+        break;
+      case 'Is Admin':
+        resultingArray = sortBy(resultingArray, i => i.isAdmin);
+        break;
+      default:
+        resultingArray = resultingArray;
+        break;
+    }
+    resultingArray = filter(resultingArray, currentUserData => {
+      return currentUserData.username.includes(searchText)
+    })
+    if(this.state.sorting.ascending) {
+      resultingArray = resultingArray.reverse()
+    }
+    return resultingArray
+  }
+
   constructTable = () => {
-    const {dbData} = this.state;
-    const renderElms = map(dbData, (currentUserData, uid) => {
+    const dbData = this.sortAndFilter();
+    const renderElms = dbData.map(currentUserData => {
+      const {uid} = currentUserData
       const isSelected = this.state.selectedUser === uid ? 'selected' : '';
       return (
         <tr
@@ -147,6 +184,43 @@ class AdminPanel extends Component {
       <tbody>
         {renderElms}
       </tbody>
+    );
+  }
+
+  constructHeaders = () => {
+    const tableHeaders = ['Username', 'Created', 'Email', 'Password', 'Is Admin'];
+    const renderElms = tableHeaders.map((name) => {
+      return (
+        <th
+          key={name}
+          onClick={() => {
+            const sorting = {
+              by: name,
+              ascending: this.state.sorting.by === name ?
+                          !this.state.sorting.ascending
+                          : false,
+            };
+            this.setState({...this.state, sorting})
+          }}
+        >
+          <div>
+            {name}
+            {
+              this.state.sorting.by !== name ? null :
+              <i className='material-icons' style={{fontSize: '15px'}}>
+                {this.state.sorting.ascending ? 'arrow_downward' : 'arrow_upward'}
+              </i>
+            }
+          </div>
+        </th>
+      );
+    })
+    return (
+      <thead>
+        <tr>
+          {renderElms}
+        </tr>
+      </thead>
     );
   }
 
@@ -223,45 +297,13 @@ class AdminPanel extends Component {
               <input
                 type='text'
                 className='search'
+                onChange={this.handleSearch}
                 placeholder=' Search by email address or user UID '
               />
             </div>
             <div className='table-container'>
               <table>
-                <thead>
-                  <tr>
-                    <th>
-                      <div>
-                        Name
-                        <i className='material-icons'>arrow_downward</i>
-                      </div>
-                    </th>
-                    <th>
-                      <div>
-                        Created
-                        <i className='material-icons'>arrow_downward</i>
-                      </div>
-                    </th>
-                    <th>
-                      <div>
-                        Email
-                        <i className='material-icons'>arrow_downward</i>
-                      </div>
-                    </th>
-                    <th>
-                      <div>
-                        Password
-                        <i className='material-icons'>arrow_downward</i>
-                      </div>
-                    </th>
-                    <th>
-                      <div>
-                        Is Admin
-                        <i className='material-icons'>arrow_downward</i>
-                      </div>
-                    </th>
-                  </tr>
-                </thead>
+                {this.constructHeaders()}
                 {this.constructTable()}
               </table>
             </div>
