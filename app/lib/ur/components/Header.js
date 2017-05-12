@@ -1,12 +1,14 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import AppBar from 'material-ui/AppBar';
+import MenuItem from 'material-ui/MenuItem';
 import FlatButton from 'material-ui/FlatButton';
+import IconMenu from 'material-ui/IconMenu';
+
 
 import colors from '../../colors';
 
 const ui = [
-  {resource: '/',      link:'home',  iconName: 'home'},
   {resource: '/management', link:'management', iconName: 'contacts'},
   {resource: '/room',  link:'room reservation', iconName: 'date_range'},
 ];
@@ -18,7 +20,7 @@ export default ({ user, signOut, admin, id }) => {
   const links = admin ? [...ui, adminResource] : [...ui];
   const listItems = links.map((currentItem, idx) => {
     const activeStyle = id===idx ?
-        {borderBottom: `3px solid ${colors.grayLight}`} : null
+        {borderBottom: `2px solid ${colors.red}`} : null
     return (
       <li key={currentItem.resource} style={{...listItemStyle, ...activeStyle}}>
         <Link style={linkStyle} to={currentItem.resource}>
@@ -43,17 +45,33 @@ export default ({ user, signOut, admin, id }) => {
         {
           admin ? <p style={adminInfo}>Admin View</p> : null
         }
-        <p>{`${displayName}`}</p>
-        <img src={photoURL} className='user-pic' />
-        <FlatButton
-          style={{color: 'white'}}
-          onClick={signOut}
-          label="Sign Out"
-        />
+        <IconMenu
+          iconButtonElement={
+            <div style={dropdownContainerStyle}>
+              <p>{`${displayName}`}</p>
+              <img src={photoURL} className='user-pic' />
+            </div>
+          }
+          anchorOrigin={{horizontal: 'left', vertical: 'bottom'}}
+          targetOrigin={{horizontal: 'left', vertical: 'top'}}
+        >
+          <Link to='/user' >
+            <MenuItem primaryText="Profile" />
+          </Link>
+          <MenuItem  onTouchTap={signOut} primaryText="Sign out" />
+        </IconMenu>
       </div>
     </AppBar>
   );
 };
+
+const dropdownContainerStyle = {
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+  padding: '10px',
+  cursor: 'pointer',
+}
 
 const appBarStyle = {
   alignItems: 'center',
@@ -91,6 +109,8 @@ const listItemStyle = {
   display: 'flex',
   alignItems: 'center',
   padding: '0 15px',
+  marginBottom: '-2px',
+  borderBottom: '2px solid transparent',
 };
 
 const topMenuListStyle = {

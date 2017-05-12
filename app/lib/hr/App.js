@@ -45,7 +45,7 @@ class ResourceManager extends React.PureComponent {
     return(
       <div>
         <Header
-          id={1}
+          id={0}
           user={this.props.user}
           admin={this.props.admin}
           signOut={this.props.signOut}

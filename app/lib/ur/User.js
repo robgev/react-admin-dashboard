@@ -101,7 +101,6 @@ class User extends Component {
     return (
       <div className='userContainer full-width'>
         <Header
-          id={0}
           user={user}
           admin={admin}
           signOut={this.props.signOut}

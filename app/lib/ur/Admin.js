@@ -161,7 +161,7 @@ class AdminPanel extends Component {
     return (
       <div className='adminContainer full-width'>
         <Header
-          id={3}
+          id={2}
           user={user}
           admin={true}
           signOut={this.props.signOut}
