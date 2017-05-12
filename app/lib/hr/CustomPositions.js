@@ -72,6 +72,7 @@ class CustomPositions extends React.PureComponent{
     this.reset();
   };
   render(){
+    const isDisabled = this.state.selected === '-1' || this.state.selected === '0';
     const Positions = map(this.state.positions, ({positionName, id}) => {
       const style = this.state.selected === id ? {backgroundColor: '#E6E6E6'} : null;
         return(
@@ -94,7 +95,7 @@ class CustomPositions extends React.PureComponent{
         <div className='positions'>
           <Paper
             className='hrPaperQuestions'
-            style={{backgroundColor: '#52ABE1', color: 'white'}}>
+            style={{backgroundColor: '#52ABE1', color: 'white', marginBottom: 5}}>
             All Positions
           </Paper>
           {Positions}
@@ -111,26 +112,26 @@ class CustomPositions extends React.PureComponent{
               style={margined}
               label='delete'
               primary
-              disabled={this.state.selected === '-1'}
+              disabled={isDisabled}
               onTouchTap={() => this.setState({delete: true})}
             />
           </div>
-        {this.state.selected !== '-1' ?
-          <div>
-            <TextField
-              name='edit'
-              floatingLabelText='Position name'
-              value={this.state.textValue}
-              onChange={(e) => this.setState({textValue: e.target.value})}
-            />
-            <FlatButton
-              style={margined}
-              label='save'
-              onTouchTap={() => this.savePosition()}
-            />
-          </div> :
-          null
-        }
+          {!isDisabled ?
+            <div>
+              <TextField
+                name='edit'
+                floatingLabelText='Position name'
+                value={this.state.textValue}
+                onChange={(e) => this.setState({textValue: e.target.value})}
+              />
+              <FlatButton
+                style={margined}
+                label='save'
+                onTouchTap={() => this.savePosition()}
+              />
+            </div> :
+            null
+          }
         </div>
         {this.state.delete ?
           <Dialog
