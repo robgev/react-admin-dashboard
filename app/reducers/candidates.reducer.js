@@ -15,11 +15,15 @@ const addQuestions = (candidates, action) => {
 const editCandidate = (candidates, candidate) => {
   const copy = Object.assign({}, candidates);
   const {id, name, profession, status, date, level} = candidate;
-  copy[id].name = name;
-  copy[id].profession = profession;
-  copy[id].status = status;
-  copy[id].date = date;
-  copy[id].level = level;
+  if(copy[id]){
+    copy[id]['name'] = name;
+    copy[id]['profession'] = profession;
+    copy[id]['status'] = status;
+    copy[id]['date'] = date;
+    copy[id]['level'] = level;
+  } else {
+    copy[id] = candidate;
+  }
   return copy;
 }
 
