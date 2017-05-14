@@ -66,8 +66,8 @@ class Candidates extends React.PureComponent {
   deleteCandidate = () => {
     const {selected} = this.state;
     deleteCandidateFirebase(selected).then(() => {
-      this.props.deleteCandidate(selected);
       this.setState({selected: '-1'});
+      this.props.deleteCandidate(selected);
     });
   };
 
